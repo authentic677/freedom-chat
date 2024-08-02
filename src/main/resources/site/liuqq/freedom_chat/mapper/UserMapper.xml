@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.liuqq.freedom_chat.mapper.UserMapper">
+
+    <!--更新操作-->
+    <update id="update">
+        update users
+        <set>
+            <if test="username != null">
+                username=#{username},
+            </if>
+            <if test="personalSignature != null">
+                personal_signature=#{personalSignature},
+            </if>
+            <if test="email != null">
+                email=#{email},
+            </if>
+        </set>
+        where uid=#{uid}
+    </update>
+
+</mapper>

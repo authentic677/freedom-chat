@@ -1,0 +1,41 @@
+# Spring datasource configuration
+spring:
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 100
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/freedom_chat
+    username: root
+    password: admin123
+    type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    redis:
+      host: 192.168.109.139
+      port: 6379
+      database: 0
+      password: 123321
+      timeout: 2000
+
+# MyBatis configuration
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+# Server configuration
+server:
+  port: 443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: 123
+
+minio:
+  url: http://192.168.109.139:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  chat-bucket: chat
+
