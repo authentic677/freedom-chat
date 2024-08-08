@@ -3,6 +3,7 @@ package site.liuqq.freedom_chat.controller;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static site.liuqq.freedom_chat.utils.RedisConstants.*;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -23,6 +26,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private ServletContext servletContext;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     //搜索添加好友的接口
     @GetMapping("/users")
@@ -41,22 +46,14 @@ public class UserController {
 
     //登录的接口 - 密码登录
     @PostMapping("/login")
-    public Result login(@RequestBody User user, HttpSession session){
-        //验证验证码
-        //验证过期
-        LocalDateTime time1=LocalDateTime.now();
-        Object captchaTime = session.getAttribute("captchaTime");
-        if(captchaTime==null){
-            return Result.error("你还未获取验证码");
-        }
-        LocalDateTime time2=(LocalDateTime)captchaTime;
-        //计算两个日期之差
-        Duration duration=Duration.between(time2,time1);
-        if(duration.getSeconds()>10){
-            return Result.error("验证码过期");
+    public Result login(@RequestBody User user){
+        //从redis获取验证码
+        String captchaText = stringRedisTemplate.opsForValue().get(VERIFY_CODE + user.getAccount());
+        if(captchaText==null){
+            return Result.error("验证码过期或未获取验证码");
         }
         //验证值
-        if(!user.getVerifyCode().equalsIgnoreCase((String) session.getAttribute("captchaText"))){
+        if(!user.getVerifyCode().equalsIgnoreCase(captchaText)){
             return Result.error("验证码错误");
         }
         return  userService.login(user);
@@ -64,11 +61,10 @@ public class UserController {
 
     //登录的接口 - 邮箱登录
     @PostMapping("/email_login")
-    public Result emailLogin(@RequestBody User user, HttpSession session){
+    public Result emailLogin(@RequestBody User user){
 
-        Object emailMap = servletContext.getAttribute("emailMap");
-        HashMap<String,String> map=(HashMap<String,String>)emailMap;
-        String code = map.get(user.getEmail());
+        //从redis获取验证码
+        String code = stringRedisTemplate.opsForValue().get(VERIFY_CODE + user.getEmail());
         if(code==null){
             return Result.error("未获取验证码或验证码过期");
         }
@@ -135,9 +131,7 @@ public class UserController {
     @PostMapping("/resetPwd")
     public Result resetPwd(@RequestBody User user){
 
-        Object emailMap = servletContext.getAttribute("emailMap");
-        HashMap<String,String> map=(HashMap<String,String>)emailMap;
-        String code = map.get(user.getEmail());
+        String code=stringRedisTemplate.opsForValue().get(VERIFY_CODE+user.getEmail());
         if(code==null){
             return Result.error("未获取验证码或验证码过期");
         }

@@ -5,6 +5,7 @@ import com.google.code.kaptcha.util.Config;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,24 +28,28 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import site.liuqq.freedom_chat.pojo.User;
+import site.liuqq.freedom_chat.utils.RedisConstants;
 import site.liuqq.freedom_chat.utils.Tools;
+
+import static site.liuqq.freedom_chat.utils.RedisConstants.*;
 
 @RestController
 @RequestMapping("/api")
 public class ToolController {
 
     @Autowired
-    private ServletContext servletContext; //用于在不同的会话之间都能共享数据
-    @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     //图片验证码接口
     @GetMapping("/captcha")
-    public ResponseEntity<byte[]> captcha(HttpSession session){
+    public ResponseEntity<byte[]> captcha(String account){
         try {
             // 创建 Kaptcha 实例
             DefaultKaptcha kaptcha = new DefaultKaptcha();
@@ -65,9 +70,8 @@ public class ToolController {
             HttpHeaders headers=new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
 
-            //设置session属性
-            session.setAttribute("captchaText",captchaText);
-            session.setAttribute("captchaTime", LocalDateTime.now());
+            //设置redis key
+            stringRedisTemplate.opsForValue().set(VERIFY_CODE+account,captchaText,30, TimeUnit.SECONDS);
 
             Thread.sleep(750);
 
@@ -88,27 +92,15 @@ public class ToolController {
         if(!isValid){
             return Result.error("非法的邮箱");
         }
-        //验证获取是否频繁，必须间隔大于30秒
-        Object emailMap = servletContext.getAttribute("emailMap");
-        HashMap<String,String> map=(HashMap<String,String>)emailMap;
-        String code = map.get(email);
-        if(code!=null){
-            return Result.error("获取太频繁，稍后再试");
+        //验证获取是否频繁，必须大于一定间隔
+        if (stringRedisTemplate.opsForValue().get(VERIFY_CODE+email)!=null){
+            return Result.error("验证码发送过于频繁");
         }
         //现在可以发送邮件了
-        code=Tools.generateRandomNumberString(6);
-        map.put(email,code);
-        //10秒后删除
-        Timer timer=new Timer();
-        TimerTask task=new TimerTask() {
-            @Override
-            public void run() {
-                map.remove(email);
-            }
-        };
-        timer.schedule(task,30*1000);
-
-        System.out.println(code);
+        //生成验证码
+        String code=Tools.generateRandomNumberString(6);
+        //保存到redis
+        stringRedisTemplate.opsForValue().set(VERIFY_CODE+email,code,30, TimeUnit.SECONDS);
 //        boolean result=true;
         boolean result=Tools.sendMail(email,"【自由聊天】您的邮箱验证码是"+code);
 
@@ -135,11 +127,9 @@ public class ToolController {
 
     //检查邮箱验证码是否正确的接口
     @GetMapping("/checkEmailVerifyCode")
-    public Result checkEmailVerifyCode(String email,String code,HttpSession session){
+    public Result checkEmailVerifyCode(String email,String code){
 
-        Object emailMap = servletContext.getAttribute("emailMap");
-        HashMap<String,String> map=(HashMap<String,String>)emailMap;
-        String code1 = map.get(email);
+        String code1 = stringRedisTemplate.opsForValue().get(VERIFY_CODE+email);
 
         if (code.equals(code1)){
             return Result.success();

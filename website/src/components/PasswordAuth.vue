@@ -16,7 +16,7 @@ export default {
             let loading
 
             await new Promise((resolve,reject)=>{
-                this.captchaUrl='/api/captcha?rand='+Math.random()
+                this.captchaUrl='/api/captcha?rand='+Math.random()+'&account='+this.$store.state.account
 
                 loading = this.$loading({
                     target:'.col2',
@@ -30,55 +30,6 @@ export default {
             })
 
             loading.close();
-        },
-        async login(){
-            let flag=this.account==''||this.password==''||this.verifyCode==''
-            console.log(flag);
-            if(flag){
-                this.$message({
-                    message:'请确保表单填写完整',
-                    type:'warning'
-                })
-                return
-            }
-            let res=await fetch('/api/login',{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json;charset=utf-8'
-                },
-                body:JSON.stringify({
-                    type:'password',
-                    account:this.account,
-                    password:this.password,
-                    verifyCode:this.verifyCode,
-                    // key:this.key
-                })
-            })
-            let json=await res.json()
-
-            console.log(json);
-
-            if(json.code==1){ //表示登录成功
-                localStorage.setItem('token',json.data)
-                this.$bus.$emit('loginSuccess')
-
-                //给用户的提示
-                this.$message({
-                    message:'欢迎回来！',
-                    type:'success'
-                })
-            }else{
-                this.$message({
-                    message:json.msg,
-                    type:'error'
-                })
-            }
-
-
-
-
-
-
         }
     },
     mounted() {
