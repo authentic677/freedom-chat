@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.service.UserService;
+import site.liuqq.freedom_chat.service.impl.UserServiceImpl;
 import site.liuqq.freedom_chat.utils.Tools;
 
 import java.time.Duration;
@@ -28,6 +29,8 @@ public class UserController {
     private ServletContext servletContext;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
     //搜索添加好友的接口
     @GetMapping("/users")
@@ -92,38 +95,17 @@ public class UserController {
         return userService.register(user);
     }
 
-    //获取个人信息的接口
-    @GetMapping("/user")
-    public Result user(@RequestHeader String token){
-        User user = Tools.checkJwtToken(token);
-        String uid=user.getUid();
+    //获取请求的用户自己的信息
+    @GetMapping("/user/self")
+    public Result user(HttpSession session){
 
-        return userService.selectByUid(uid);
-    }
+        String uid = ((User) session.getAttribute("user")).getUid();
 
-    //修改用户个人信息的接口
-    @PutMapping("/user")
-    public Result update(@RequestHeader String token,@RequestBody User user){
-        User user1 = Tools.checkJwtToken(token);
-        user.setUid(user1.getUid());
-
-        //如果用户改了邮箱就要验证验证码
-        Result result = userService.selectByUid(user1.getUid());
-        User user2= (User)result.getData();
-        if(!user2.getEmail().equals(user.getEmail())){
-            //验证验证码
-            Object attribute = ((HashMap<String,String>)(servletContext.getAttribute("emailMap"))).get(user.getEmail());
-            if(attribute==null){
-                return Result.error("验证码过期或还未获取验证码");
-            }
-            String code=(String) attribute;
-            String code1=user.getVerifyCode();
-            if(!code.equals(code1)){
-                return Result.error("验证码错误");
-            }
-        }
-
-        return userService.updateUserInfo(user);
+        User one = userServiceImpl
+                .lambdaQuery()
+                .eq(User::getUid, uid)
+                .one();
+        return Result.success(one);
     }
 
     //重置密码的接口
@@ -142,9 +124,4 @@ public class UserController {
         return userService.resetPwd(user);
     }
 
-    //获取某个uid用户的信息的接口
-    @GetMapping("/user/{uid}")
-    public Result getUserInfo(@PathVariable String uid){
-        return userService.selectByUid(uid);
-    }
 }

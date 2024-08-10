@@ -18,7 +18,6 @@ public interface UserService  {
 
     Result register(User user);
 
-    Result selectByUid(String uid);
 
     Result updateUserInfo(User user);
 

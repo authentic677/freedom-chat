@@ -99,16 +99,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         return Result.success(user2);
     }
 
-    @Override
-    public Result selectByUid(String uid) {
-        User user = userMapper.selectByUid(uid);
-        if (WebSocketConnectionManager.isOnline(user.getUid())){
-            user.setIsOnline(1);
-        }else {
-            user.setIsOnline(0);
-        }
-        return Result.success(user);
-    }
 
     @Override
     public Result updateUserInfo(User user) {

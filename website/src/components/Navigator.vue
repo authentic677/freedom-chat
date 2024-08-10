@@ -1,7 +1,7 @@
 <template>
     <div class="navigation">
 
-        <img :src="user==null?'':user.avatar" :title="user==null?'':user.username">
+        <img :src="user==null?'':config.minioUrl+user.avatar" :title="user==null?'':user.username">
 
         <router-link class="item" active-class="active" to="/message">
             <svg t="1710298394085" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10693" width="200" height="200"><path d="M930.503111 1019.448889a43.804444 43.804444 0 0 1-22.528-6.257778l-190.236444-113.749333A576.540444 576.540444 0 0 1 512 936.618667c-282.311111 0-512-198.343111-512-442.140445C0 250.680889 229.688889 52.337778 512 52.337778s512 198.343111 512 442.140444c0 107.576889-44.145778 209.294222-125.041778 289.649778l72.334222 173.368889c7.395556 17.749333 2.673778 38.286222-11.690666 50.944-8.248889 7.281778-18.631111 11.008-29.098667 11.008zM254.008889 498.688v1.194667a57.884444 57.884444 0 0 0 57.912889 57.543111 57.912889 57.912889 0 0 0 57.344-58.140445c0-32-25.6-58.026667-57.344-58.168889a57.884444 57.884444 0 0 0-57.912889 57.571556z m191.658667 0c0 32.881778 26.424889 59.505778 58.993777 59.505778a59.249778 59.249778 0 0 0 58.965334-59.505778 59.249778 59.249778 0 0 0-58.965334-59.505778 59.249778 59.249778 0 0 0-58.993777 59.505778z m191.687111 0v1.194667a57.884444 57.884444 0 0 0 57.912889 57.543111 57.912889 57.912889 0 0 0 57.344-58.140445c0-32-25.6-58.026667-57.344-58.168889a57.884444 57.884444 0 0 0-57.912889 57.571556z" p-id="10694"></path></svg>
@@ -22,104 +22,30 @@
 </template>
 
 <script>
+import config from "../config/config.js";
+
 export default {
     name:'Navigator',
+    computed: {
+        config() {
+            return config
+        }
+    },
     data(){
         return {
             user:null
         }
     },
     methods:{
-        async getData(){
-            let res=await fetch('/api/user',{
-                headers:{
-                    token:localStorage.getItem('token')
-                }
-            })
-            let json=await res.json()
-
-            console.log(json);
-
-            if(json.code==1){
-                this.user=json.data
-            }
+        getData(){
+            this.user=JSON.parse(localStorage.getItem("user"))
         }
     },
     created(){
-        //获取用户个人数据
-        // this.getData()
-        // this.$bus.$on('refresh',async ()=>{
-        //     await this.getData()
-        //     this.$router.push({
-        //         path:'/three',
-        //         query:this.user
-        //     })
-        // })
-        //
-        // //建立websocket连接
-        // let protocol=location.protocol
-        // let protocol2
-        // if(protocol=='http:'){
-        //     protocol2='ws:'
-        // }else if(protocol=='https:'){
-        //     protocol2='wss:'
-        // }
-        // let ws=new WebSocket(`${protocol2}//${location.host}/websocket`)
-        //
-        // ws.onopen=function (e) {
-        //     console.log("websocket连接建立");
-        //
-        //     ws.send(JSON.stringify({
-        //         command:'auth',
-        //         token:localStorage.getItem('token')
-        //     }))
-        // }
-        //
-        // ws.onclose=function (e) {
-        //     console.log('websocket连接关闭');
-        // }
-        //
-        // ws.onerror = function(event) {
-        //     console.log(event);
-        // }
-        //
-        // ws.onmessage=(e)=> {
-        //     let json=JSON.parse(e.data)
-        //     switch (json.command) {
-        //         case "auth":
-        //             console.log("auth result: "+json.result);
-        //             break;
-        //         case "dataUpdate":
-        //             //数据更新
-        //             json.dataPoints.forEach(e => {
-        //                 switch (e) {
-        //                     case 'contactNotice':
-        //                         this.$bus.$emit('contactNoticeUpdate')
-        //                         break;
-        //                     case 'contact':
-        //                         this.$bus.$emit('contactUpdate')
-        //                         break
-        //                     case 'message':
-        //                         this.$bus.$emit('messageUpdate')
-        //                         break
-        //                     case 'messageNotice':
-        //                         this.$bus.$emit('messageNoticeUpdate')
-        //                         break
-        //                     default:
-        //                         break;
-        //                 }
-        //             });
-        //             break
-        //         default:
-        //             break;
-        //     }
-        // }
-        //
-        // //挂载到window上
-        // window.ws=ws
+        this.getData()
     },
-    beforeDestroy(){
-        // this.$bus.$off('refresh')
+    beforeUnmount(){
+
     }
 }
 </script>

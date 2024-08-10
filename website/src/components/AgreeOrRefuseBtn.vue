@@ -29,11 +29,11 @@ export default {
         btnClick(e){
             if(this.$refs.other.contains(e.target)){
                 console.log(e.target);
-                if(e.target==this.$refs.refuse){
+                if(e.target===this.$refs.refuse){
                     console.log("拒绝");
                     this.otherShow=false
                     this.$emit('refuse')
-                }else if(e.target==this.$refs.ignore){
+                }else if(e.target===this.$refs.ignore){
                     console.log("忽视");
                     this.otherShow=false
                     this.$emit('ignore')
@@ -49,7 +49,7 @@ export default {
     created(){
         window.addEventListener('click',this.btnClick)
     },
-    beforeDestroy(){
+    beforeUnmount(){
         window.removeEventListener('click',this.btnClick)
     }
 }
