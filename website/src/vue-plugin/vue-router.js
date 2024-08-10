@@ -19,6 +19,7 @@ import Live from "../views/live/Live.vue";
 import AudioLiveCaller from "../views/live/AudioLiveCaller.vue";
 import VideoLiveCaller from "../views/live/VideoLiveCaller.vue";
 import VideoLiveCallee from "../views/live/VideoLiveCallee.vue";
+import GroupInfoShow from "../views/Contact/GroupInfoShow.vue";
 
 const router= createRouter({
     history: createWebHashHistory(),
@@ -58,7 +59,7 @@ const router= createRouter({
                     path:'user/:uid',component:UserInfoShow,
                 },
                 {
-                    path:'group/:gid',component:GroupChatFrame,
+                    path:'group/:gid',component:GroupInfoShow,
                 },
                 {
                     path:'friendNotification',component: FriendNotification,

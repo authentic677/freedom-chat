@@ -19,6 +19,10 @@ import org.springframework.web.socket.WebSocketSession;
 
 import site.liuqq.freedom_chat.conf.CustomConfig;
 import site.liuqq.freedom_chat.pojo.User;
+import site.liuqq.freedom_chat.pojo.group.GroupApplicant;
+import site.liuqq.freedom_chat.pojo.group.GroupMember;
+import site.liuqq.freedom_chat.service.impl.GroupApplicantServiceImpl;
+import site.liuqq.freedom_chat.service.impl.GroupMemberServiceImpl;
 import site.liuqq.freedom_chat.utils.Tools;
 
 import javax.imageio.ImageIO;
@@ -39,13 +43,18 @@ public class OtherTest {
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private GroupMemberServiceImpl groupMemberServiceImpl;
+    @Autowired
+    private GroupApplicantServiceImpl groupApplicantServiceImpl;
 
     @Test
     public void test(){
 
-        String s = stringRedisTemplate.opsForValue().get("name");
-        System.out.println(s);
-
-
+        List<GroupApplicant> list = groupApplicantServiceImpl
+                .lambdaQuery()
+                .eq(GroupApplicant::getApplicantUid, "5465763738")
+                .list();
+        System.out.println(list);
     }
 }

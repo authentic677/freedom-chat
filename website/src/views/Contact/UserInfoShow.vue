@@ -43,7 +43,7 @@
             <div class="line"></div>
             <div class="part3">
                 <div class="delete">删除</div>
-                <div class="chat" @click="chat">发消息</div>
+                <div class="chat" @click="this.$router.push(`/message/user/${this.detail.uid2}`)">发消息</div>
             </div>
         </div>
     </div>
@@ -80,26 +80,7 @@ export default {
                 this.detail=json.data[0]
             }
 
-        },
-        async chat(){
-            let res=await fetch('/api/messageNotices?targetUid='+this.$route.query.uid,{
-                headers:{
-                    token:localStorage.getItem('token')
-                }
-            })
-            let json=await res.json()
-
-            console.log(json);
-
-            if(json.code===1){
-                //编程路由导航
-                this.$router.push({
-                    path:'/one/chatwindow',
-                    query:json.data.find(e=>e.uid2===this.$route.query.uid)
-                })
-            }
-                
-        },
+        }
     },
     created() {
         this.getData()

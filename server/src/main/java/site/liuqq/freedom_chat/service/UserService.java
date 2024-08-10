@@ -1,11 +1,12 @@
 package site.liuqq.freedom_chat.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService  {
 
     List<User> list();
 

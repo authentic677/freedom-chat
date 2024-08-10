@@ -11,15 +11,15 @@
                     <SearchBox placeholder="UID / 用户名 / GID / 群名" @enter="search" />
                 
                     <div class="condition">
-                        <div class="c" :class="{selected:condition==0}" @click="condition=0">
+                        <div class="c" :class="{selected:condition===0}" @click="condition=0">
                             <div class="text">全部</div>
                             <div class="bottom"></div>
                         </div>
-                        <div class="c" :class="{selected:condition==1}" @click="condition=1">
+                        <div class="c" :class="{selected:condition===1}" @click="condition=1">
                             <div class="text">用户</div>
                             <div class="bottom"></div>
                         </div>
-                        <div class="c" :class="{selected:condition==2}" @click="condition=2">
+                        <div class="c" :class="{selected:condition===2}" @click="condition=2">
                             <div class="text">群聊</div>
                             <div class="bottom"></div>
                         </div>
@@ -27,10 +27,10 @@
                 </div>
                 <div class="part2">
                     
-                    <div class="tag" v-if="users2.length!=0">用户</div>
+                    <div class="tag" v-if="users2.length!==0">用户</div>
                     <div class="item" v-for="item in users2" :key="item.uid">
                         <div class="left">
-                            <img :src="item.avatar" alt="">
+                            <img :src="config.minioUrl+item.avatar" alt="">
                             <div class="info">
                                 <div class="name" v-html="item.username"></div>
                                 <div class="describe">uid: <span v-html="item._uid"></span></div>
@@ -41,10 +41,10 @@
                         </div>
                     </div>
 
-                    <div class="tag" v-if="groups2.length!=0">群聊</div>
+                    <div class="tag" v-if="groups2.length!==0">群聊</div>
                     <div class="item" v-for="item in groups2" :key="item.gid">
                         <div class="left">
-                            <img :src="item.avatar" alt="">
+                            <img :src="config.minioUrl+item.avatar" alt="">
                             <div class="info">
                                 <div class="name" v-html="item.name"></div>
                                 <div class="describe">gid: <span v-html="item._gid"></span></div>
@@ -69,9 +69,15 @@
 import SearchBox from "./SearchBox.vue";
 import AddContact from './AddContact.vue'
 import AddGroup from "./AddGroup.vue";
+import config from "../config/config.js";
 
 export default {
     name:'ContactSearch',
+    computed: {
+        config() {
+            return config
+        }
+    },
     data(){
         return {
             users:[], //从服务器获取的原始搜索数据
@@ -130,7 +136,7 @@ export default {
             }
             
         },
-        async addUser(user){
+        async addUser(user){ //与用户成为好友的申请
             
             //获取用户给对方的留言
             let note=await new Promise((resolve,reject)=>{
@@ -160,7 +166,7 @@ export default {
 
             console.log(json);
 
-            if(json.code==1){
+            if(json.code===1){
                 this.$message({
                     message:'发送成功',
                     type:'success'
@@ -172,7 +178,7 @@ export default {
                 })
             }
         },
-        async addGroup(group){
+        async addGroup(group){ //入群申请
             
             //获取用户给对方的留言
             let note=await new Promise((resolve,reject)=>{
@@ -182,18 +188,18 @@ export default {
                 this.callback=resolve
             })
 
-            return
+            console.log('入群留言',note)
+
             //网络请求
-            let res=await fetch('/api/contactNotice',{
+            let res=await fetch('/api/groupApplicant',{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json;charset=utf-8',
                     token:localStorage.getItem("token")
                 },
                 body:JSON.stringify({
-                    uid1:uid,
-                    uid2:null, //我自己的uid通过token告诉后端
-                    leaveMessage:note
+                    gid:group.gid,
+                    message:note
                 })
             })
 
@@ -201,7 +207,7 @@ export default {
 
             console.log(json);
 
-            if(json.code==1){
+            if(json.code===1){
                 this.$message({
                     message:'发送成功',
                     type:'success'
@@ -218,7 +224,7 @@ export default {
             this.callback(e)
         },
         note2(e){
-            this.isAddGroup=false
+            this.isAddGroup=false //关闭获取入群申请留言对话框
             this.callback(e)
         },
         putUsers2(){
@@ -337,6 +343,8 @@ export default {
 
                     .c{
                         margin-right: 50px;
+
+                        cursor: pointer;
 
                         .text{
                             margin-bottom: 10px;

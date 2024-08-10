@@ -13,7 +13,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
   data:
     redis:
-      host: 192.168.109.139
+      host: 192.168.109.164
       port: 6379
       database: 0
       password: 123321
@@ -34,7 +34,7 @@ server:
     key-store-password: 123
 
 minio:
-  url: http://192.168.109.139:9000
+  url: http://192.168.109.164:9000
   access-key: minioadmin
   secret-key: minioadmin
   chat-bucket: chat

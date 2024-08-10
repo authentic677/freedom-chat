@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -9,7 +10,7 @@ import site.liuqq.freedom_chat.pojo.User;
 import java.util.List;
 
 @Mapper
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
 
     @Select("select * from users")
     List<User> selectAll();
@@ -31,7 +32,7 @@ public interface UserMapper {
     User getByAccountAndPassword(User user);
 
     @Insert("insert into users (uid,username,password,registration_time,personal_signature,email) values (#{uid},#{username},#{password},#{registrationTime},#{personalSignature},#{email})")
-    void insert(User user);
+    void insert1(User user);
 
     //动态sql，采用配置文件，实现用户信息的更新操作
     void update(User user);

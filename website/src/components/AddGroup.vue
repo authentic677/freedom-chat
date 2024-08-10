@@ -7,7 +7,7 @@
                 <div class="applicant_note">
                     {{group.applicantNote}}
                 </div>
-                <SearchBox :icon="true" placeholder="请输入你的留言" @input="input" @enter="send" />
+                <SearchBox :icon="true" placeholder="请输入你的留言" @in="input" @enter="send" />
 
                 <div class="control">
                     <div class="send" :class="{opacity:!canSend}" @click="send">发送</div>
@@ -34,7 +34,7 @@ export default {
             this.$emit('close')
         },
         send(){
-            if(this.note==''){
+            if(this.note===''){
                 return
             }
             this.$emit('note',this.note)
@@ -45,7 +45,7 @@ export default {
     },
     watch:{
         note(newValue){
-            if(newValue&&newValue!=''){
+            if(newValue&&newValue!==''){
                 this.canSend=true
             }else{
                 this.canSend=false

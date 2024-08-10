@@ -4,20 +4,25 @@ import SearchBox from "../../components/SearchBox.vue";
 import ContactSearch from "../../components/ContactSearch.vue";
 import {emitter} from "../../utils/utils.js";
 import config from "../../config/config.js";
+import CreateGroup from "../../components/CreateGroup.vue";
 
 export default {
     name: "Contact",
-    components: {ContactSearch, SearchBox, Navigator},
+    components: {CreateGroup, ContactSearch, SearchBox, Navigator},
     data(){
         return {
             isContact:true, //标识显示的是好友还是群聊
             contacts:[], //数据
 
             isSearch:false, //标识是否打开联系人搜索框
+            isCreateGroup:false //标识创建群组件是否显示
         }
     },
     methods:{
+        //获取联系人数据
         async getData(){
+            //先清空一下数据
+            this.contacts=[]
             let res=await fetch('/api/contacts',{
                 headers:{
                     token:localStorage.getItem('token')
@@ -37,6 +42,23 @@ export default {
             }
 
             console.log(json);
+        },
+        //获取群聊数据
+        async getData2(){
+            //先清空一下数据
+            this.contacts=[]
+            let res=await fetch('/api/group',{
+                headers:{
+                    token:localStorage.getItem('token')
+                }
+            })
+            let json=await res.json()
+
+            if(json.code===1){
+                this.contacts=json.data
+            }
+
+            console.log(json);
         }
     },
     computed:{
@@ -44,9 +66,19 @@ export default {
             return config
         },
         contacts2(){
-            return this.contacts.sort((a,b)=>{ //在线的显示在离线的前面
-                return b.status-a.status
-            })
+            if(this.isContact){
+                return this.contacts.sort((a,b)=>{ //在线的显示在离线的前面
+                    return b.status-a.status
+                })
+            }else{
+                return this.contacts
+            }
+
+        }
+    },
+    watch:{
+        isContact(){
+            this.isContact?this.getData():this.getData2()
         }
     },
     created(){
@@ -66,7 +98,7 @@ export default {
             <navigator/>
         </div>
         <div class="right">
-            <div class="list">
+            <div class="listBar">
                 <div class="top">
 
                     <div class="search">
@@ -75,7 +107,7 @@ export default {
                         <div class="add" >
                             <svg t="1709628183096" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2415" width="200" height="200"><path d="M863.328262 481.340895l-317.344013 0.099772L545.984249 162.816826c0-17.664722-14.336138-32.00086-32.00086-32.00086s-31.99914 14.336138-31.99914 32.00086l0 318.400215-322.368714-0.17718c-0.032684 0-0.063647 0-0.096331 0-17.632039 0-31.935493 14.239806-32.00086 31.904529-0.096331 17.664722 14.208843 32.031824 31.871845 32.095471l322.59234 0.17718 0 319.167424c0 17.695686 14.336138 32.00086 31.99914 32.00086s32.00086-14.303454 32.00086-32.00086L545.982529 545.440667l317.087703-0.099772c0.063647 0 0.096331 0 0.127295 0 17.632039 0 31.935493-14.239806 32.00086-31.904529S880.960301 481.404542 863.328262 481.340895z" fill="#575B66" p-id="2416"></path></svg>
                             <div class="addFrame">
-                                <div class="item">发起群聊</div>
+                                <div class="item" @click="isCreateGroup=true">创建群聊</div>
                                 <div class="item" @click="isSearch=true">添加好友/群</div>
                             </div>
                         </div>
@@ -102,29 +134,46 @@ export default {
                 </div>
                 <div class="list">
 
-                    <router-link
-                        v-for="item in contacts2" :key="item.id"
-                        :to="`/contact/user/${item.uid2}`"
-                    >
+                    <div class="friend" v-if="isContact">
+                        <router-link
+                            v-for="item in contacts2" :key="item.id"
+                            :to="`/contact/user/${item.uid2}`"
+                        >
 
-                        <div class="item">
-                            <div class="avatar" :class="{offline:item.status===0}">
-                                <img :src="config.minioUrl+item.avatar" alt="">
-                            </div>
+                            <div class="item">
+                                <div class="avatar" :class="{offline:item.status===0}">
+                                    <img :src="config.minioUrl+item.avatar" alt="">
+                                </div>
 
-                            <div class="info">
-                                <div class="name">{{item.name}}</div>
-                                <div class="status">
-                                    [
-                                    <span :class="{offline:item.status===0}"></span>
-                                    {{item.status===0?'离线':'在线'}}
-                                    ]
-                                    {{item.signature}}
+                                <div class="info">
+                                    <div class="name">{{item.name}}</div>
+                                    <div class="status">
+                                        [
+                                        <span :class="{offline:item.status===0}"></span>
+                                        {{item.status===0?'离线':'在线'}}
+                                        ]
+                                        {{item.signature}}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </router-link>
+                        </router-link>
+                    </div>
+                    <div class="group" v-if="!isContact">
+                        <router-link
+                            v-for="item in contacts" :key="item.id"
+                            :to="`/contact/group/${item.gid}`"
+                        >
+                            <div class="item">
+                                <div class="avatar">
+                                    <img :src="config.minioUrl+item.group.avatar" alt="">
+                                </div>
 
+                                <div class="info">
+                                    <div class="name">{{item.group.name}}</div>
+                                </div>
+                            </div>
+                        </router-link>
+                    </div>
 
                 </div>
             </div>
@@ -134,6 +183,7 @@ export default {
         </div>
 
         <ContactSearch v-if="isSearch" @close="isSearch=false" />
+        <CreateGroup v-if="isCreateGroup" @close="isCreateGroup=false"  />
     </div>
 </template>
 
@@ -150,7 +200,7 @@ export default {
 
         display: flex;
 
-        .list{
+        .listBar{
             display: flex;
             width: 400px;
             flex-direction: column;
@@ -266,66 +316,114 @@ export default {
                 flex-grow: 1;
                 overflow: auto;
 
-                a{
-                    color: inherit;
-                    text-decoration: none;
-                    display: block;
-                }
-                a:hover{
-                    cursor: default;
-                    background-color: #EBEBEB;
-                }
-                a.router-link-active{
-                    background-color: #0099FF;
-                    color: white;
+                .friend{
+                    a {
+                        color: inherit;
+                        text-decoration: none;
+                        display: block;
+                    }
+                    a:hover{
+                        cursor: default;
+                        background-color: #EBEBEB;
+                    }
+                    a.router-link-active{
+                        background-color: #0099FF;
+                        color: white;
 
+                        .item{
+                            .status{
+                                color: white;
+                            }
+                        }
+                    }
                     .item{
-                        .status{
-                            color: white;
-                        }
-                    }
-                }
-                .item{
-                    padding: 20px;
-                    display: flex;
+                        padding: 20px;
+                        display: flex;
 
-                    .avatar{
-                        margin-right: 10px;
+                        .avatar{
+                            margin-right: 10px;
 
-                        img{
-                            width: 50px;
-                            height: 50px;
-                            border-radius: 50%;
-                        }
-                    }
-                    .avatar.offline{
-                        opacity: 0.3;
-                    }
-                    .info{
-                        flex-grow: 1;
-
-                        .name{
-                            font-size: 18px;
-                            margin-bottom: 2px;
-                        }
-                        .status{
-                            color: #999999;
-
-                            span{
-                                display: inline-block;
-                                width: 15px;
-                                height: 15px;
-                                background: radial-gradient(#15DE86, #43F196);
+                            img{
+                                width: 50px;
+                                height: 50px;
                                 border-radius: 50%;
-
-                                margin-bottom: -2px;
                             }
-                            span.offline{
-                                background: radial-gradient(#B1B4C0, #C8CBD3);
+                        }
+                        .avatar.offline{
+                            opacity: 0.3;
+                        }
+                        .info{
+                            flex-grow: 1;
+
+                            .name{
+                                font-size: 18px;
+                                margin-bottom: 2px;
+                            }
+                            .status{
+                                color: #999999;
+
+                                span{
+                                    display: inline-block;
+                                    width: 15px;
+                                    height: 15px;
+                                    background: radial-gradient(#15DE86, #43F196);
+                                    border-radius: 50%;
+
+                                    margin-bottom: -2px;
+                                }
+                                span.offline{
+                                    background: radial-gradient(#B1B4C0, #C8CBD3);
+                                }
                             }
                         }
                     }
                 }
+                .group{
+                    a {
+                        color: inherit;
+                        text-decoration: none;
+                        display: block;
+                    }
+                    a:hover{
+                        cursor: default;
+                        background-color: #EBEBEB;
+                    }
+                    a.router-link-active{
+                        background-color: #0099FF;
+                        color: white;
+
+                        .item{
+                            .status{
+                                color: white;
+                            }
+                        }
+                    }
+                    .item{
+                        padding: 20px;
+                        display: flex;
+
+                        align-items: center;
+
+                        .avatar{
+                            display: flex;
+                            margin-right: 10px;
+
+                            img{
+                                width: 50px;
+                                height: 50px;
+                                border-radius: 50%;
+                            }
+                        }
+                        .info{
+                            flex-grow: 1;
+
+                            .name{
+                                font-size: 18px;
+                            }
+                        }
+                    }
+                }
+
 
             }
         }

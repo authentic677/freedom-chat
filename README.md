@@ -8,4 +8,4 @@
 
 项目管理工具：Vite，Maven
 
-依赖的软件：MySQL、MinIO
+依赖的软件：MySQL、MinIO、Redis

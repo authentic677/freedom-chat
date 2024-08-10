@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.liuqq.freedom_chat.conf.CustomConfig;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
 
     @Autowired
     private UserDao userDao;
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
         user.setRegistrationTime(Tools.now(customConfig.getZone()));
         user.setPersonalSignature("因为个性，所以没有签名");
         //存入数据库
-        userMapper.insert(user);
+        userMapper.insert1(user);
 
         //设置响应数据
         User user2=new User();

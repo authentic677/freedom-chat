@@ -80,11 +80,10 @@ public class UserController {
     @PostMapping("/register")
     public Result register(@RequestBody User user){
         //验证验证码
-        Object attribute = ((HashMap<String,String>)(servletContext.getAttribute("emailMap"))).get(user.getEmail());
-        if(attribute==null){
-            return Result.error("验证码过期或还未获取验证码");
+        String code=stringRedisTemplate.opsForValue().get(VERIFY_CODE+user.getEmail());
+        if(code==null){
+            return Result.error("验证码过期或未获取验证码");
         }
-        String code=(String) attribute;
         String code1=user.getVerifyCode();
         if(!code.equals(code1)){
             return Result.error("验证码错误");
