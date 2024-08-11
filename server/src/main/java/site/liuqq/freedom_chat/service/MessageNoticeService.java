@@ -7,7 +7,6 @@ public interface MessageNoticeService {
 
     Result selectByUid(String uid,String targetUid);
 
-    Result clearCount(MessageNotice messageNotice);
 
     Result delete(MessageNotice messageNotice);
 }

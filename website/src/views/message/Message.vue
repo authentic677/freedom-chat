@@ -4,6 +4,7 @@ import SearchBox from "../../components/SearchBox.vue";
 import {displayTime, emitter} from "../../utils/utils.js";
 import axios from "axios";
 import config from "../../config/config.js";
+import MessageNoticeListItem from "../../components/MessageNoticeListItem.vue";
 
 export default {
     name: "Message",
@@ -12,11 +13,16 @@ export default {
             return config
         }
     },
-    components: {SearchBox, Navigator},
+    components: {MessageNoticeListItem, SearchBox, Navigator},
     data(){
         return {
             messageNotice:[],
             messageNotice2:[],
+
+            groupMessageNotice:[],
+
+            renderList:[], //渲染列表
+
             highLightItemId:null, //标识当前高亮的项
 
             rightClickShow:false, //表示右键item的菜单是否显示
@@ -48,17 +54,70 @@ export default {
     },
     methods:{
         async getData(){
-            let res=await fetch('/api/messageNotices',{
-                headers:{
-                    token:localStorage.getItem('token')
-                }
-            })
-            let json=await res.json()
+            this.renderList=[]
 
-            console.log(json);
-            if(json.code===1){
-                this.messageNotice=json.data
+            //两个数据
+            //数据1
+            {
+                let res=await fetch('/api/groupMessageNotices',{
+                    headers:{
+                        token:localStorage.getItem('token')
+                    }
+                })
+                let json=await res.json()
+
+                console.log('groupMessageNotice数据',json);
+
+                if(json.code===1){
+
+                    this.renderList=this.renderList.concat(json.data.map(e=>{
+                        return {
+                            id:e.id,
+
+                            type:'group',
+                            gid:e.gid,
+                            routeTo:`/message/group/${e.gid}`,
+                            //展示列表项所需数据
+                            avatar:e.group.avatar,
+                            name:e.group.name,
+                            content:e.groupMessage.content,
+                            time:displayTime(new Date(e.groupMessage.time)),
+                            count:e.count
+                        }
+                    }))
+                }
             }
+            //数据2
+            {
+                let res=await fetch('/api/messageNotices',{
+                    headers:{
+                        token:localStorage.getItem('token')
+                    }
+                })
+                let json=await res.json()
+
+                console.log('messageNotice数据',json);
+                if(json.code===1){
+                    // this.messageNotice=json.data
+
+                    this.renderList=this.renderList.concat(json.data.map(e=>{
+                        return {
+                            id:e.id,
+
+                            type:'user',
+                            uid:e.uid2,
+                            routeTo:`/message/user/${e.uid2}`,
+                            //展示列表项所需数据
+                            avatar:e.avatar,
+                            name:e.username,
+                            content:this.showContent(e.content),
+                            time:displayTime(new Date(e.time)),
+                            count:e.count
+                        }
+                    }))
+                }
+            }
+
         },
         select(item){
             this.highLightItemId=item.id
@@ -70,19 +129,12 @@ export default {
                 return
             }
             //发请求
-            let res=await axios.put(`/api/messageNotice`,{
-                uid1:item.uid1,
-                uid2:item.uid2,
-                count:0
-            },{
+            let res=await axios.put(`/api/messageNotice/clearCount/${item.uid}`,{},{
                 headers:{
                     token:localStorage.getItem('token'),
-                    'Content-Type':'application/json;charset=UTF-8',
                 }
             })
             let json=res.data
-
-            console.log('clear count',json);
 
             if(json.code===1){
                 item.count=0
@@ -105,18 +157,15 @@ export default {
             this.rightClickShow=false
         },
         //以下是右键菜单的回调
-        copyId(){
-            console.log('复制ID');
-            navigator.clipboard.writeText(this.rightClickItem.uid2).then(()=>{
-                this.$message({
-                    message:'复制成功',
-                    type:'success'
-                })
-            }).catch(err=>{
-                this.$message({
-                    message:'复制失败',
-                    type:'error'
-                })
+        async copyId(){
+            let value=this.rightClickItem.type==='user'?this.rightClickItem.uid:this.rightClickItem.gid;
+
+            console.log('复制ID',value);
+            await navigator.clipboard.writeText(value)
+
+            this.$message({
+                message:'复制成功',
+                type:'success'
             })
         },
         topping(){
@@ -185,32 +234,15 @@ export default {
                 </div>
                 <div class="msgList">
 
-                    <router-link
-                        v-for="item in messageNotice2" :key="item.id"
-                        :to="`/message/user/${item.uid2}`"
-                    >
-                        <div
-                            class="item"
-                            :class="{highLight:highLightItemId===item.id}"
-                            @click="select(item)"
-                            @contextmenu.prevent="(()=>{})"
-                            @mouseup.stop="handleRightClick($event,item)"
-                        >
-                            <div class="avatar">
-                                <img :src="config.minioUrl+item.avatar" alt="">
-                            </div>
+                    <MessageNoticeListItem
+                        v-for="item in renderList" :key="item.id"
 
-                            <div class="info">
-                                <div class="name">{{item.username}}</div>
-                                <div class="msg">{{showContent(item.content)}}</div>
-                            </div>
+                        @click="select(item)"
+                        @contextmenu.prevent
+                        @mouseup.stop="handleRightClick($event,item)"
 
-                            <div class="right2">
-                                <div class="time">{{item.time2==null?'':item.time2}}</div>
-                                <div class="count" :class="{opacity:item.count===0}">{{item.count}}</div>
-                            </div>
-                        </div>
-                    </router-link>
+                        :item="item"
+                    />
 
                     <div class="rightClick" v-if="rightClickShow" :style="{left:x+'px',top:y+'px'}">
                         <div class="item" @mousedown="copyId">复制ID</div>
@@ -261,78 +293,6 @@ export default {
             .msgList{
                 flex-grow: 1;
                 overflow: auto;
-
-                a{
-                    color: black;
-                    text-decoration: none;
-                    display: block;
-                }
-                a:hover{
-                    cursor: default;
-                    background-color: #EBEBEB;
-                }
-                a.router-link-active {
-                    color: white;
-                    background-color: #0099FF;
-
-                    .item{
-                        .msg{
-                            color: white;
-                        }
-                    }
-                }
-                .item{
-                    padding: 20px;
-                    display: flex;
-
-                    .avatar{
-                        margin-right: 10px;
-
-                        img{
-                            width: 50px;
-                            height: 50px;
-                            border-radius: 50%;
-                        }
-                    }
-                    .info{
-                        flex-grow: 1;
-                        overflow: hidden;
-
-                        .name{
-                            font-size: 18px;
-                            margin-bottom: 2px;
-                        }
-                        .msg{
-                            color: #999999;
-
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            overflow: hidden;
-                        }
-                    }
-                    .right2{
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items:flex-end;
-
-                        .time{
-                            margin-bottom: 2px;
-                        }
-                        .count{
-                            padding: 2px 6px;
-                            background-color: #F74C30;
-                            border-radius: 10px;
-                            font-size: 12px;
-                            font-weight: bold;
-                            color: white;
-                        }
-                        .count.opacity{
-                            opacity: 0;
-                        }
-                    }
-                }
-
 
                 .rightClick{
                     position: fixed;

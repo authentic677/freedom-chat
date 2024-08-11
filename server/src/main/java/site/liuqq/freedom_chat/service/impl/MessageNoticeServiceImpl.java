@@ -62,17 +62,7 @@ public class MessageNoticeServiceImpl extends ServiceImpl<MessageNoticeMapper,Me
         return Result.success(messageNotices);
     }
 
-    public Result clearCount(MessageNotice messageNotice){
 
-        //验证给出的数是否合法
-        int count = messageNotice.getCount();
-        if(count!=0){
-            Result.error("非法的修改");
-        }
-        messageNoticeMapper.update3(messageNotice);
-
-        return Result.success();
-    }
 
     @Override
     public Result delete(MessageNotice messageNotice) {

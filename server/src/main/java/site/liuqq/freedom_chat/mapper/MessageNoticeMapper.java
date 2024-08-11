@@ -26,8 +26,6 @@ public interface MessageNoticeMapper extends BaseMapper<MessageNotice> {
     @Update("update message_notices set message_id=#{messageId},count=#{count} where uid1=#{uid1} and uid2=#{uid2}")
     void update0(MessageNotice messageNotice);
 
-    @Update("update message_notices set count=#{count} where uid1=#{uid1} and uid2=#{uid2}")
-    void update3(MessageNotice messageNotice);
 
     @Delete("delete from message_notices where uid1=#{uid1} and uid2=#{uid2}")
     void delete(MessageNotice messageNotice);

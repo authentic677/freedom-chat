@@ -97,14 +97,23 @@ public class MessageNoticeController {
     }
 
     //改
-    @PutMapping("/messageNotice")
-    Result clearCount(@RequestBody MessageNotice messageNotice,@RequestHeader String token){
-        User user = Tools.checkJwtToken(token);
-        String uid=user.getUid();
+    @PutMapping("/messageNotice/clearCount/{uid2}")
+    Result clearCount(@PathVariable String uid2,HttpSession session){
 
-        messageNotice.setUid1(uid);
+        String uid1 = ((User) session.getAttribute("user")).getUid();
 
-        return messageNoticeService.clearCount(messageNotice);
+        boolean update = messageNoticeServiceImpl
+                .lambdaUpdate()
+                .eq(MessageNotice::getUid1, uid1)
+                .eq(MessageNotice::getUid2, uid2)
+                .set(MessageNotice::getCount, 0)
+                .update();
+        if (update){
+            return Result.success();
+        }else{
+            return Result.error("清零失败");
+        }
+
     }
 
     //删
