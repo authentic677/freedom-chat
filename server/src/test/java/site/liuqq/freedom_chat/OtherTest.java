@@ -18,11 +18,15 @@ import org.springframework.web.socket.WebSocketSession;
 
 
 import site.liuqq.freedom_chat.conf.CustomConfig;
+import site.liuqq.freedom_chat.pojo.Message;
 import site.liuqq.freedom_chat.pojo.User;
+import site.liuqq.freedom_chat.pojo.UserChatRecord;
 import site.liuqq.freedom_chat.pojo.group.GroupApplicant;
 import site.liuqq.freedom_chat.pojo.group.GroupMember;
 import site.liuqq.freedom_chat.service.impl.GroupApplicantServiceImpl;
 import site.liuqq.freedom_chat.service.impl.GroupMemberServiceImpl;
+import site.liuqq.freedom_chat.service.impl.MessageServiceImpl;
+import site.liuqq.freedom_chat.service.impl.UserChatRecordServiceImpl;
 import site.liuqq.freedom_chat.utils.Tools;
 
 import javax.imageio.ImageIO;
@@ -47,14 +51,40 @@ public class OtherTest {
     private GroupMemberServiceImpl groupMemberServiceImpl;
     @Autowired
     private GroupApplicantServiceImpl groupApplicantServiceImpl;
+    @Autowired
+    private UserChatRecordServiceImpl userChatRecordServiceImpl;
+    @Autowired
+    private MessageServiceImpl messageServiceImpl;
 
     @Test
     public void test(){
 
-        List<GroupApplicant> list = groupApplicantServiceImpl
+
+        //获取他们之间最新一条的消息
+        List<UserChatRecord> list = userChatRecordServiceImpl
                 .lambdaQuery()
-                .eq(GroupApplicant::getApplicantUid, "5465763738")
+                .eq(UserChatRecord::getUid1, "9627223950")
+                .eq(UserChatRecord::getUid2, "5465763738")
                 .list();
-        System.out.println(list);
+        //处理外键
+        list.forEach(e->{
+            Message message = messageServiceImpl
+                    .lambdaQuery()
+                    .eq(Message::getId, e.getMessageId())
+                    .one();
+            e.setMessage(message);
+        });
+        //取最值
+        LocalDateTime max=list.getFirst().getMessage().getTime();
+        int index=0;
+        for(int i=0;i<list.size();i++){
+
+            if(list.get(i).getMessage().getTime().isAfter(max)){
+                max=list.get(i).getMessage().getTime();
+                index=i;
+            }
+        }
+        System.out.println(list.get(index));
+
     }
 }

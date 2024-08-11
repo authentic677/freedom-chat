@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -9,10 +10,10 @@ import site.liuqq.freedom_chat.pojo.UserChatRecord;
 import java.util.List;
 
 @Mapper
-public interface UserChatRecordMapper {
+public interface UserChatRecordMapper extends BaseMapper<UserChatRecord> {
 
     @Insert("insert into user_chat_record (uid1,uid2,message_id,flag) values (#{uid1},#{uid2},#{messageId},#{flag})")
-    void insert(UserChatRecord userChatRecord);
+    void insert0(UserChatRecord userChatRecord);
 
     @Select("select u.id,u.uid1,u.uid2,u.flag,m.time,m.type,m.content,u1.username as username1,u1.avatar as avatar1,u2.username as username2,u2.avatar as avatar2 " +
             "from user_chat_record as u " +

@@ -227,21 +227,21 @@ public class ContactNoticeServiceImpl implements ContactNoticeService {
                     message.setType("system");
                     message.setTime(Tools.now(customConfig.getZone()));
                     message.setContent("你们已经成功添加为好友，现在可以开始聊天了！");
-                    messageMapper.insert(message);
+                    messageMapper.insert0(message);
                     //第一条
                     UserChatRecord userChatRecord=new UserChatRecord();
                     userChatRecord.setUid1(contactNotice.getUid1());
                     userChatRecord.setUid2(contactNotice.getUid2());
                     userChatRecord.setMessageId(message.getId());
                     userChatRecord.setFlag(-1);
-                    userChatRecordMapper.insert(userChatRecord);
+                    userChatRecordMapper.insert0(userChatRecord);
                     //第二条
                     userChatRecord=new UserChatRecord();
                     userChatRecord.setUid1(contactNotice.getUid2());
                     userChatRecord.setUid2(contactNotice.getUid1());
                     userChatRecord.setMessageId(message.getId());
                     userChatRecord.setFlag(-1);
-                    userChatRecordMapper.insert(userChatRecord);
+                    userChatRecordMapper.insert0(userChatRecord);
                     //还有聊天消息列表的项也要不存在即创建，为什么会存在，因为可能之前加了好友然后删掉了
                     boolean flag=false;//标识是否存在
                     //对方的列表是否存在我

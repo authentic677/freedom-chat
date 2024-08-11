@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.liuqq.freedom_chat.mapper.ContactMapper;
@@ -12,7 +13,7 @@ import site.liuqq.freedom_chat.service.MessageNoticeService;
 import java.util.List;
 
 @Service
-public class MessageNoticeServiceImpl implements MessageNoticeService {
+public class MessageNoticeServiceImpl extends ServiceImpl<MessageNoticeMapper,MessageNotice> implements MessageNoticeService {
 
     @Autowired
     private MessageNoticeMapper messageNoticeMapper;
@@ -48,7 +49,7 @@ public class MessageNoticeServiceImpl implements MessageNoticeService {
                     MessageNotice messageNotice=new MessageNotice();
                     messageNotice.setUid1(uid);
                     messageNotice.setUid2(targetUid);
-                    messageNoticeMapper.insert(messageNotice);
+                    messageNoticeMapper.insert00(messageNotice);
                     //刷新数据
                     messageNotices=messageNoticeMapper.selectByUid(uid);
                 }
@@ -81,4 +82,6 @@ public class MessageNoticeServiceImpl implements MessageNoticeService {
 
         return Result.success();
     }
+
+
 }

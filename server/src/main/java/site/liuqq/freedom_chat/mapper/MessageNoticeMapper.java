@@ -1,12 +1,13 @@
 package site.liuqq.freedom_chat.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 import site.liuqq.freedom_chat.pojo.MessageNotice;
 
 import java.util.List;
 
 @Mapper
-public interface MessageNoticeMapper {
+public interface MessageNoticeMapper extends BaseMapper<MessageNotice> {
 
     //注意这里要用left join(左外连接，省略left有问题)
     @Select("select mn.id,mn.uid1,mn.uid2,mn.count,m.time,m.type,m.content,u.avatar,u.username " +
@@ -20,7 +21,7 @@ public interface MessageNoticeMapper {
     void insert0(MessageNotice messageNotice);
 
     @Insert("insert into message_notices (uid1,uid2) values (#{uid1},#{uid2})")
-    void insert(MessageNotice messageNotice);
+    void insert00(MessageNotice messageNotice);
 
     @Update("update message_notices set message_id=#{messageId},count=#{count} where uid1=#{uid1} and uid2=#{uid2}")
     void update0(MessageNotice messageNotice);

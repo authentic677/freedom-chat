@@ -108,6 +108,21 @@ public class UserController {
         return Result.success(one);
     }
 
+    //某用户查询指定uid用户的信息
+    @GetMapping("/user/{uid}")
+    public Result queryUser(@PathVariable String uid,HttpSession session){
+
+        String uid0 = ((User) session.getAttribute("user")).getUid();
+
+        //不会查询所有的字段，敏感字段不能查询
+        User one = userServiceImpl
+                .lambdaQuery()
+                .select(User::getUid,User::getUsername,User::getAvatar,User::getPersonalSignature)
+                .eq(User::getUid, uid)
+                .one();
+        return Result.success(one);
+    }
+
     //重置密码的接口
     @PostMapping("/resetPwd")
     public Result resetPwd(@RequestBody User user){

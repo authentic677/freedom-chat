@@ -43,7 +43,7 @@
             <div class="line"></div>
             <div class="part3">
                 <div class="delete">删除</div>
-                <div class="chat" @click="this.$router.push(`/message/user/${this.detail.uid2}`)">发消息</div>
+                <div class="chat" @click="sendMsg">发消息</div>
             </div>
         </div>
     </div>
@@ -80,6 +80,20 @@ export default {
                 this.detail=json.data[0]
             }
 
+        },
+        async sendMsg(){
+
+            let res=await fetch(`/api/messageNotice/${this.detail.uid2}`,{
+                method:'POST',
+                headers:{
+                    token:localStorage.getItem('token'),
+                    'content-type':'application/json;charset=UTF-8',
+                }
+            })
+            let json=await res.json();
+            console.log('新增messageNotice',json)
+
+            this.$router.push(`/message/user/${this.detail.uid2}`)
         }
     },
     created() {

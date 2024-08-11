@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
-public class UserChatRecordServiceImpl implements UserChatRecordService {
+public class UserChatRecordServiceImpl extends ServiceImpl<UserChatRecordMapper,UserChatRecord> implements UserChatRecordService {
     @Autowired
     private UserChatRecordMapper userChatRecordMapper;
     @Autowired
@@ -60,7 +61,7 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
             message.setTime(Tools.now(customConfig.getZone()));
             message.setType("text");
             message.setContent(userChatRecord.getContent());
-            messageMapper.insert(message);
+            messageMapper.insert0(message);
             //2.userChatRecord表新增两条记录
             //发送方新增1条
             UserChatRecord userChatRecord1 = new UserChatRecord();
@@ -68,14 +69,14 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
             userChatRecord1.setUid2(userChatRecord.getUid1());
             userChatRecord1.setMessageId(message.getId());
             userChatRecord1.setFlag(0);
-            userChatRecordMapper.insert(userChatRecord1);
+            userChatRecordMapper.insert0(userChatRecord1);
             //接受方新增1条
             userChatRecord1 = new UserChatRecord();
             userChatRecord1.setUid1(userChatRecord.getUid1());
             userChatRecord1.setUid2(userChatRecord.getUid2());
             userChatRecord1.setMessageId(message.getId());
             userChatRecord1.setFlag(1);
-            userChatRecordMapper.insert(userChatRecord1);
+            userChatRecordMapper.insert0(userChatRecord1);
             //下面是消息通知表的修改
             //存在即更新，不存在则创建
             boolean flag=false;//表示是否存在
@@ -171,7 +172,7 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
         message.setTime(Tools.now(customConfig.getZone()));
         message.setType(userChatRecord.getType());
         message.setContent(userChatRecord.getContent());
-        messageMapper.insert(message);
+        messageMapper.insert0(message);
         //2.userChatRecord表新增两条记录
         //发送方新增1条
         UserChatRecord userChatRecord1 = new UserChatRecord();
@@ -179,14 +180,14 @@ public class UserChatRecordServiceImpl implements UserChatRecordService {
         userChatRecord1.setUid2(userChatRecord.getUid1());
         userChatRecord1.setMessageId(message.getId());
         userChatRecord1.setFlag(0);
-        userChatRecordMapper.insert(userChatRecord1);
+        userChatRecordMapper.insert0(userChatRecord1);
         //接受方新增1条
         userChatRecord1 = new UserChatRecord();
         userChatRecord1.setUid1(userChatRecord.getUid1());
         userChatRecord1.setUid2(userChatRecord.getUid2());
         userChatRecord1.setMessageId(message.getId());
         userChatRecord1.setFlag(1);
-        userChatRecordMapper.insert(userChatRecord1);
+        userChatRecordMapper.insert0(userChatRecord1);
         //下面是消息通知表的修改
         //存在即更新，不存在则创建
         boolean flag=false;//表示是否存在
