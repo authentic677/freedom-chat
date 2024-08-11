@@ -36,25 +36,4 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper,Group> implements 
         }
     }
 
-    //新增群
-    public Result insert(Group group){
-
-        group.setGid(Tools.generateRandomNumberString(10));
-        group.setAvatar("/avatar/0-120x120.jpg");
-        group.setTime(Tools.now(customConfig.getZone()));
-
-        //mybatis-plus
-        save(group);
-        //还有一张表呢
-        GroupMember groupMember = new GroupMember();
-        groupMember.setGid(group.getGid());
-        groupMember.setMemberUid(group.getCreatorUid());
-        groupMember.setJoinTime(group.getTime());
-        groupMember.setRole("owner");
-        groupMember.setSpeakTime(group.getTime());
-
-        groupMemberServiceImpl.save(groupMember);
-
-        return Result.success();
-    }
 }

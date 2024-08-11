@@ -126,8 +126,39 @@ export default {
             let json=await res.json()
 
             console.log(json)
-        }
+        },
 
+        async deleteGroup(){
+
+            try {
+                await ElMessageBox.confirm(
+                    '此群的所有数据都会被永久删除，确定继续？',
+                    '警告',
+                    {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }
+                )
+            }catch (err){
+                console.log(err)
+                return
+            }
+
+            let res=await fetch(`/api/group/${this.$route.params.gid}`,{
+                method:'DELETE',
+                headers:{
+                    token:localStorage.getItem('token')
+                }
+            })
+            let json=await res.json()
+            console.log('删除群聊',json)
+
+            ElMessage({
+                type: 'success',
+                message: '删除成功',
+            })
+        }
     },
     created() {
         this.getData()
@@ -212,7 +243,7 @@ export default {
         <div class="line"></div>
         <div class="part3">
             <div class="exit" v-show="detail.role==='ordinary'">退出群聊</div>
-            <div class="dissolution" v-show="detail.role==='owner'">解散群聊</div>
+            <div class="dissolution" v-show="detail.role==='owner'" @click="deleteGroup">解散群聊</div>
             <div class="chat" @click="chat">发消息</div>
         </div>
     </div>

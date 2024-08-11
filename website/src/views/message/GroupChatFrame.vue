@@ -6,7 +6,12 @@ export default {
 
 <template>
     <div class="group-chat-frame">
-        群组聊天框
+        <div class="top">
+            <div class="left">{{peerUserInfo.username}}</div>
+            <div class="right">
+
+            </div>
+        </div>
     </div>
 </template>
 
