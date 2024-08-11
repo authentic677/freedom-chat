@@ -7,17 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.conf.CustomConfig;
-import site.liuqq.freedom_chat.pojo.group.Group;
+import site.liuqq.freedom_chat.pojo.group.*;
 import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
-import site.liuqq.freedom_chat.pojo.group.GroupMember;
-import site.liuqq.freedom_chat.pojo.group.GroupMessage;
-import site.liuqq.freedom_chat.pojo.group.GroupMessageNotice;
 import site.liuqq.freedom_chat.service.GroupService;
-import site.liuqq.freedom_chat.service.impl.GroupMessageServiceImpl;
-import site.liuqq.freedom_chat.service.impl.GroupMemberServiceImpl;
-import site.liuqq.freedom_chat.service.impl.GroupMessageNoticeServiceImpl;
-import site.liuqq.freedom_chat.service.impl.GroupServiceImpl;
+import site.liuqq.freedom_chat.service.impl.*;
 import site.liuqq.freedom_chat.utils.Tools;
 
 @RestController
@@ -35,6 +29,8 @@ public class GroupController {
     private GroupMessageServiceImpl groupMessageServiceImpl;
     @Autowired
     private GroupMessageNoticeServiceImpl groupMessageNoticeServiceImpl;
+    @Autowired
+    private GroupApplicantServiceImpl groupApplicantServiceImpl;
 
     //根据关键字(群名，群号)搜索群的接口
     @GetMapping("/groups")
@@ -124,7 +120,7 @@ public class GroupController {
 
         //鉴权，略
 
-        //操作4张表
+        //操作5张表
         {
             LambdaQueryWrapper<GroupMessageNotice> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(GroupMessageNotice::getGid,gid);
@@ -139,6 +135,11 @@ public class GroupController {
             LambdaQueryWrapper<GroupMember> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(GroupMember::getGid,gid);
             groupMemberServiceImpl.remove(wrapper);
+        }
+        {
+            LambdaQueryWrapper<GroupApplicant> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(GroupApplicant::getGid,gid);
+            groupApplicantServiceImpl.remove(wrapper);
         }
         {
             LambdaQueryWrapper<Group> wrapper = new LambdaQueryWrapper<>();
