@@ -29,8 +29,15 @@ export default createStore({
         init(context){ //此处放身份认证之后的初始化逻辑
             console.log('身份认证后初始化')
             let token = localStorage.getItem('token');
-            //从token获取uid
-            localStorage.setItem('uid', JSON.parse(atob(token.split('.')[1])).uid)
+            //获取当前用户信息
+            fetch('/api/user/self',{
+                headers:{
+                    token:localStorage.getItem('token')
+                }
+            }).then(res=>res.json()).then(json=>{
+                localStorage.setItem('user',JSON.stringify(json.data))
+            })
+
 
             websocket()
             function websocket() {
