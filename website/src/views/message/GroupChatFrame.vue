@@ -7,7 +7,7 @@ export default {
 <template>
     <div class="group-chat-frame">
         <div class="top">
-            <div class="left">{{peerUserInfo.username}}</div>
+            <div class="left">哒哒哒</div>
             <div class="right">
 
             </div>

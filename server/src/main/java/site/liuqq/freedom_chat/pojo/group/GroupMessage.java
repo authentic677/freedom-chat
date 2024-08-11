@@ -1,11 +1,13 @@
 package site.liuqq.freedom_chat.pojo.group;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import site.liuqq.freedom_chat.pojo.User;
 
 import java.time.LocalDateTime;
 
@@ -22,4 +24,6 @@ public class GroupMessage {
     String type;
     String content;
 
+    @TableField(exist = false)
+    User user;
 }
