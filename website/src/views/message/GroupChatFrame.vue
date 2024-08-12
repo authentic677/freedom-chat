@@ -1,9 +1,41 @@
 <script>
 import FileMsgDisplay from "../../components/FileMsgDisplay.vue";
+import MsgSend from "../../components/MsgSend.vue";
 
 export default {
     name: "GroupChatFrame",
-    components: {FileMsgDisplay}
+    data(){
+        return {
+            groupInfo:'',
+            renderList:[]
+        }
+    },
+    methods:{
+        async getData(){
+            let res=await fetch(`/api/groupMessages/${this.$route.params.gid}`,{
+                headers:{
+                    token:localStorage.getItem('token')
+                }
+            })
+            let json=await res.json()
+
+            console.log('群消息',json)
+        }
+    },
+    created() {
+        this.getData()
+
+        this.renderList.push({
+            isShowTime:true,
+            flag:-1,
+            content:'系统消息',
+            time:'2024/8/8'
+        })
+    },
+    beforeUnmount() {
+
+    },
+    components: {MsgSend, FileMsgDisplay}
 }
 </script>
 
@@ -16,7 +48,7 @@ export default {
             </div>
         </div>
         <div class="middle" ref="msgShow">
-            <div class="msg" v-for="item in messages2" :key="item.id">
+            <div class="msg" v-for="item in renderList" :key="item.id">
                 <div class="timebar" v-if="item.isShowTime">{{item.time}}</div>
                 <div class="local" v-if="item.flag===0">
                     <div class="content" >
@@ -52,6 +84,8 @@ export default {
                 </div>
             </div>
         </div>
+
+        <MsgSend />
     </div>
 </template>
 
