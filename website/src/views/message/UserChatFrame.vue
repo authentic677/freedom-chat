@@ -543,8 +543,8 @@ export default {
 
                     .text{
                         padding: 13px 10px;
-                        background-color: #0099FF;
-                        color: white;
+                        background-color: white;
+                        color: black;
                         border-radius: 5px;
 
                         //长文本单词换行必备设置

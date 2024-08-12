@@ -129,16 +129,30 @@ export default {
                 return
             }
             //发请求
-            let res=await axios.put(`/api/messageNotice/clearCount/${item.uid}`,{},{
-                headers:{
-                    token:localStorage.getItem('token'),
-                }
-            })
-            let json=res.data
+            if(item.type==='user'){
+                let res=await axios.put(`/api/messageNotice/clearCount/${item.uid}`,{},{
+                    headers:{
+                        token:localStorage.getItem('token'),
+                    }
+                })
+                let json=res.data
 
-            if(json.code===1){
-                item.count=0
+                if(json.code===1){
+                    item.count=0
+                }
+            }else if (item.type==='group'){
+                let res=await axios.put(`/api/groupMessageNotice/clearCount/${item.gid}`,{},{
+                    headers:{
+                        token:localStorage.getItem('token'),
+                    }
+                })
+                let json=res.data
+
+                if(json.code===1){
+                    item.count=0
+                }
             }
+
         },
         //消息项右键的菜单显示回调
         handleRightClick(e,item){

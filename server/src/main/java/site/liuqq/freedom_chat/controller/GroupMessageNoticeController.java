@@ -3,9 +3,8 @@ package site.liuqq.freedom_chat.controller;
 import jakarta.servlet.http.HttpSession;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import site.liuqq.freedom_chat.pojo.MessageNotice;
 import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.pojo.group.Group;
@@ -60,6 +59,26 @@ public class GroupMessageNoticeController {
         });
 
         return Result.success(list);
+    }
+
+    //清理未读数量
+    @PutMapping("/groupMessageNotice/clearCount/{gid}")
+    Result clearCount(@PathVariable("gid") String gid,HttpSession session){
+
+        String uid = ((User) session.getAttribute("user")).getUid();
+
+        boolean update = groupMessageNoticeServiceImpl
+                .lambdaUpdate()
+                .eq(GroupMessageNotice::getUid, uid)
+                .eq(GroupMessageNotice::getGid, gid)
+                .set(GroupMessageNotice::getCount, 0)
+                .update();
+        if (update){
+            return Result.success();
+        }else{
+            return Result.error("清零失败");
+        }
+
     }
 
 }
