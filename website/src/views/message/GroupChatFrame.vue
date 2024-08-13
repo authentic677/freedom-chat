@@ -1,17 +1,45 @@
 <script>
 import FileMsgDisplay from "../../components/FileMsgDisplay.vue";
 import MsgSend from "../../components/MsgSend.vue";
+import {displayTime} from "../../utils/utils.js";
+import config from "../../config/config.js";
 
 export default {
     name: "GroupChatFrame",
+    computed: {
+        config() {
+            return config
+        }
+    },
     data(){
         return {
-            groupInfo:'',
+            groupInfo: {
+                group:{}
+            },
             renderList:[]
         }
     },
     methods:{
         async getData(){
+
+            //获取群组信息
+            {
+                let res=await fetch(`/api/group/${this.$route.params.gid}`,{
+                    headers:{
+                        token:localStorage.getItem('token')
+                    }
+                })
+                let json=await res.json()
+
+                console.log('群信息',json)
+
+                console.log(json)
+
+                if (json.code===1){
+                    this.groupInfo=json.data
+                }
+            }
+            //获取群聊天消息
             let res=await fetch(`/api/groupMessages/${this.$route.params.gid}`,{
                 headers:{
                     token:localStorage.getItem('token')
@@ -19,7 +47,53 @@ export default {
             })
             let json=await res.json()
 
-            console.log('群消息',json)
+            console.log('群消息数据',json)
+
+            //转换为渲染数据
+            this.renderList=json.data.map((e,index,arr)=>{
+                let flag,type,time,content,isShowTime,avatar
+
+                {
+                    let me=JSON.parse(localStorage.getItem('user'))
+                    if(e.memberUid===e.gid){ //说明是系统消息
+                        flag=-1
+                    }else if(e.memberUid===me.uid){ //我方发送的消息
+                        flag=0
+                        avatar=me.avatar
+                    }else{ //对方发送的消息
+                        flag=1
+                        avatar=e.user.avatar
+                    }
+                }
+                type=e.type
+                content=e.content
+                {
+                    //判断是否显示时间
+                    if(index!==0){
+
+                        let diff=new Date(e.time)-new Date(arr[index-1].time)
+
+                        if(diff>1000*60*5){
+                            isShowTime=true
+                        }else{
+                            isShowTime=false
+                        }
+                    }else{
+                        isShowTime=true
+                    }
+                }
+                if(isShowTime){
+                    time=displayTime(new Date(e.time))
+                }
+                return {
+                    isShowTime,
+                    flag,
+                    content,
+                    time,
+                    type,
+                    avatar
+                }
+            })
         }
     },
     created() {
@@ -29,7 +103,8 @@ export default {
             isShowTime:true,
             flag:-1,
             content:'系统消息',
-            time:'2024/8/8'
+            time:'2024/8/8',
+            type:''
         })
     },
     beforeUnmount() {
@@ -42,7 +117,7 @@ export default {
 <template>
     <div class="group-chat-frame">
         <div class="top">
-            <div class="left">哒哒哒</div>
+            <div class="left">{{groupInfo.group.name}}</div>
             <div class="right">
 
             </div>
@@ -61,12 +136,12 @@ export default {
                         </div>
                     </div>
                     <div class="avatar">
-                        <img :src="config.minioUrl+item.avatar1" alt="">
+                        <img :src="config.minioUrl+item.avatar" alt="">
                     </div>
                 </div>
                 <div class="remote" v-if="item.flag===1">
                     <div class="avatar">
-                        <img :src="config.minioUrl+item.avatar2" alt="">
+                        <img :src="config.minioUrl+item.avatar" alt="">
                     </div>
                     <div class="content">
                         <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
@@ -139,6 +214,8 @@ export default {
                 .content{
                     display: flex;
                     justify-content: flex-end;
+
+                    flex-grow: 1;
 
                     .text{
                         padding: 13px 10px;

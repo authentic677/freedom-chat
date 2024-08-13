@@ -509,6 +509,8 @@ export default {
                     display: flex;
                     justify-content: flex-end;
 
+                    flex-grow: 1;
+
                     .text{
                         padding: 13px 10px;
                         background-color: #0099FF;
