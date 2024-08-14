@@ -77,6 +77,9 @@ export default createStore({
                                     case 'messageNotice':
                                         emitter.emit('messageNoticeUpdate')
                                         break
+                                    case 'groupMessage':
+                                        emitter.emit('groupMessage')
+                                        break
                                     default:
                                         break;
                                 }

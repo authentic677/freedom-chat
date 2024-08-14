@@ -91,4 +91,29 @@ public class DataUpdateNotify {
         }
 
     }
+
+    //群组聊天消息更新
+    public static void groupMessageNotify(List<String> uids){
+        Map<String,Object> map=new HashMap<>();
+        map.put("command","dataUpdate");
+        List<String> dataPoints=new ArrayList<>();
+        dataPoints.add("groupMessage");
+        map.put("dataPoints",dataPoints);
+
+        for (String uid : uids) {
+            WebSocketConnectionManager.notify(map, uid);
+        }
+    }
+
+    public static void groupMessageNoticeNotify(List<String> uids){
+        Map<String,Object> map=new HashMap<>();
+        map.put("command","dataUpdate");
+        List<String> dataPoints=new ArrayList<>();
+        dataPoints.add("messageNotice");
+        map.put("dataPoints",dataPoints);
+
+        for (String uid : uids) {
+            WebSocketConnectionManager.notify(map, uid);
+        }
+    }
 }

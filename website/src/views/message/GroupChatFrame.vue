@@ -1,7 +1,7 @@
 <script>
 import FileMsgDisplay from "../../components/FileMsgDisplay.vue";
 import MsgSend from "../../components/MsgSend.vue";
-import {displayTime} from "../../utils/utils.js";
+import {displayTime, emitter} from "../../utils/utils.js";
 import config from "../../config/config.js";
 
 export default {
@@ -94,21 +94,21 @@ export default {
                     avatar
                 }
             })
+
+            this.$nextTick( ()=> {
+                // DOM 更新完毕之后的回调操作
+                this.$refs.msgShow.scrollTop=this.$refs.msgShow.scrollHeight
+            });
         }
     },
     created() {
         this.getData()
 
-        this.renderList.push({
-            isShowTime:true,
-            flag:-1,
-            content:'系统消息',
-            time:'2024/8/8',
-            type:''
-        })
+        emitter.on('groupMessage',this.getData)
     },
     beforeUnmount() {
 
+        emitter.off('groupMessage',this.getData)
     },
     components: {MsgSend, FileMsgDisplay}
 }
@@ -127,13 +127,19 @@ export default {
                 <div class="timebar" v-if="item.isShowTime">{{item.time}}</div>
                 <div class="local" v-if="item.flag===0">
                     <div class="content" >
-                        <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
-                        <div class="file" v-if="item.type==='file'">
-                            <FileMsgDisplay :msg-content="item.content" />
+
+                        <div class="wrapper">
+                            <div class="nickname">群主</div>
+
+                            <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
+                            <div class="file" v-if="item.type==='file'">
+                                <FileMsgDisplay :msg-content="item.content" />
+                            </div>
+                            <div class="img" v-if="item.type==='img'">
+                                <img :src="config.minioUrl+item.content">
+                            </div>
                         </div>
-                        <div class="img" v-if="item.type==='img'">
-                            <img :src="config.minioUrl+item.content">
-                        </div>
+
                     </div>
                     <div class="avatar">
                         <img :src="config.minioUrl+item.avatar" alt="">
@@ -212,26 +218,37 @@ export default {
                 justify-content: flex-end;
 
                 .content{
-                    display: flex;
-                    justify-content: flex-end;
 
                     flex-grow: 1;
 
-                    .text{
-                        padding: 13px 10px;
-                        background-color: #0099FF;
-                        color: white;
-                        border-radius: 5px;
+                    .wrapper{
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-end;
 
-                        //长文本单词换行必备设置
-                        max-width: 60%;
-                        overflow-wrap: anywhere;
+                        .nickname{
+                            margin-bottom: 5px;
+                            font-size: 16px;
+                            color: gray;
+                        }
+                        .text{
+                            padding: 13px 10px;
+                            background-color: #0099FF;
+                            color: white;
+                            border-radius: 5px;
 
-                        white-space: pre-wrap;
+                            //长文本单词换行必备设置
+                            max-width: 60%;
+                            overflow-wrap: anywhere;
+
+                            white-space: pre-wrap;
+                        }
+                        .file{
+
+                        }
                     }
-                    .file{
 
-                    }
                 }
                 .avatar{
                     margin-left: 10px;
@@ -251,8 +268,7 @@ export default {
 
                     .text{
                         padding: 13px 10px;
-                        background-color: #0099FF;
-                        color: white;
+                        background-color: white;
                         border-radius: 5px;
 
                         //长文本单词换行必备设置

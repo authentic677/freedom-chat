@@ -54,7 +54,7 @@ export default {
     },
     methods:{
         async getData(){
-            this.renderList=[]
+            let renderList=[]
 
             //两个数据
             //数据1
@@ -70,7 +70,7 @@ export default {
 
                 if(json.code===1){
 
-                    this.renderList=this.renderList.concat(json.data.map(e=>{
+                    renderList=renderList.concat(json.data.map(e=>{
                         return {
                             id:e.id,
 
@@ -100,7 +100,7 @@ export default {
                 if(json.code===1){
                     // this.messageNotice=json.data
 
-                    this.renderList=this.renderList.concat(json.data.map(e=>{
+                    renderList=renderList.concat(json.data.map(e=>{
                         return {
                             id:e.id,
 
@@ -118,6 +118,7 @@ export default {
                 }
             }
 
+            this.renderList=renderList
         },
         select(item){
             this.highLightItemId=item.id
