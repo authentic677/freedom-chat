@@ -5,6 +5,7 @@ import {displayTime, emitter} from "../../utils/utils.js";
 import axios from "axios";
 import config from "../../config/config.js";
 import MessageNoticeListItem from "../../components/MessageNoticeListItem.vue";
+import {NSplit} from 'naive-ui'
 
 export default {
     name: "Message",
@@ -13,7 +14,7 @@ export default {
             return config
         }
     },
-    components: {MessageNoticeListItem, SearchBox, Navigator},
+    components: {MessageNoticeListItem, SearchBox, Navigator, NSplit},
     data(){
         return {
             messageNotice:[],
@@ -243,33 +244,46 @@ export default {
             <navigator/>
         </div>
         <div class="right">
-            <div class="list">
-                <div class="search">
-                    <SearchBox placeholder="在消息中搜索" class="s" />
-                </div>
-                <div class="msgList">
 
-                    <MessageNoticeListItem
-                        v-for="item in renderList" :key="item.id"
+            <n-split direction="horizontal" default-size="400px" :max="0.75" :min="0.25">
+                <template #1>
+                    <div class="list">
+                        <div class="search">
+                            <SearchBox placeholder="在消息中搜索" class="s" />
+                        </div>
+                        <div class="msgList">
 
-                        @click="select(item)"
-                        @contextmenu.prevent
-                        @mouseup.stop="handleRightClick($event,item)"
+                            <MessageNoticeListItem
+                                v-for="item in renderList" :key="item.id"
 
-                        :item="item"
-                    />
+                                @click="select(item)"
+                                @contextmenu.prevent
+                                @mouseup.stop="handleRightClick($event,item)"
 
-                    <div class="rightClick" v-if="rightClickShow" :style="{left:x+'px',top:y+'px'}">
-                        <div class="item" @mousedown="copyId">复制ID</div>
-                        <div class="item" @mousedown="topping">置顶</div>
-                        <div class="item" @mousedown="notDisturb">设置免打扰</div>
-                        <div class="item" @mousedown="remove">从消息列表中移除</div>
+                                :item="item"
+                            />
+
+                            <div class="rightClick" v-if="rightClickShow" :style="{left:x+'px',top:y+'px'}">
+                                <div class="item" @mousedown="copyId">复制ID</div>
+                                <div class="item" @mousedown="topping">置顶</div>
+                                <div class="item" @mousedown="notDisturb">设置免打扰</div>
+                                <div class="item" @mousedown="remove">从消息列表中移除</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="chat-window">
-                <router-view></router-view>
-            </div>
+                </template>
+                <template #resize-trigger>
+                    <div class="split"></div>
+                </template>
+                <template #2>
+                    <div class="chat-window">
+                        <router-view></router-view>
+                    </div>
+                </template>
+            </n-split>
+
+
+
         </div>
     </div>
 </template>
@@ -288,13 +302,11 @@ export default {
         display: flex;
 
         .list{
+            height: 100%;
+
             display: flex;
             flex-direction: column;
             background-color: white;
-            border-right: 1px solid #E9E9E9;
-            width: 400px;
-
-            flex-shrink: 0;
 
             .search{
                 display: flex;
@@ -326,8 +338,16 @@ export default {
                 }
             }
         }
+        .split{
+            height: 100%;
+            background-color: #E9E9E9;
+            transition: 0.3s;
+        }
+        .split:hover{
+            background-color: #0099FF;
+        }
         .chat-window{
-            flex-grow: 1;
+            height: 100%;
 
             background-color: #F2F2F2;
             background-image: url('/logo3.png');

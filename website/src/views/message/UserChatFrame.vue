@@ -3,9 +3,10 @@ import {displayTime, emitter, formatFileSize} from "../../utils/utils.js"
 import FileList from "../../components/FileList.vue";
 import FileMsgDisplay from "../../components/FileMsgDisplay.vue";
 import config from "../../config/config.js";
+import {NSplit} from 'naive-ui'
 export default {
     name: "UserChatFrame",
-    components: {FileMsgDisplay, FileList},
+    components: {FileMsgDisplay, FileList, NSplit},
     data(){
         return {
             messages:[],
@@ -358,103 +359,117 @@ export default {
                 <svg  class="icon" viewBox="0 0 1024 1024"  xmlns="http://www.w3.org/2000/svg"  ><path d="M889.6 127.488H141.696c-38.656 0-70.08 31.488-70.08 70.144v467.392c0 38.656 31.488 70.144 70.08 70.144h342.976v99.456H368.384c-18.688 0-33.792 13.888-33.792 30.976s15.104 30.976 33.792 30.976h294.592c18.688 0 33.792-13.888 33.792-30.976s-15.104-30.976-33.792-30.976H546.688v-99.456H889.6c38.656 0 70.144-31.424 70.144-70.144V197.568c0-38.592-31.424-70.08-70.144-70.08z m4.864 526.592a22.272 22.272 0 0 1-22.272 22.336H159.168a22.272 22.272 0 0 1-22.272-22.336V208.512c0-12.352 10.048-22.272 22.272-22.272h713.024c12.288 0 22.272 9.92 22.272 22.272v445.568z"  p-id="11653"></path><path d="M566.976 313.984c-13.184-10.624-23.936-2.88-23.936 15.872v49.984h-2.176c-77.056 0-208.128 89.024-209.216 168.192 0 6.336 5.12 8.128 10.048 0 24.896-44.416 129.536-67.456 182.848-67.456h18.496v52.736c0 15.744 11.648 26.496 24.896 15.872l121.856-97.792c13.184-10.56 13.184-27.904 0-38.528L566.976 313.984z"  p-id="11654"></path></svg>
             </div>
         </div>
-        <div class="middle" ref="msgShow">
-            <div class="msg" v-for="item in messages2" :key="item.id">
-                <div class="timebar" v-if="item.isShowTime">{{item.time}}</div>
-                <div class="local" v-if="item.flag===0">
-                    <div class="content" >
-                        <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
-                        <div class="file" v-if="item.type==='file'">
-                            <FileMsgDisplay :msg-content="item.content" />
-                        </div>
-                        <div class="img" v-if="item.type==='img'">
-                            <img :src="config.minioUrl+item.content">
-                        </div>
-                    </div>
-                    <div class="avatar">
-                        <img :src="config.minioUrl+item.avatar1" alt="">
-                    </div>
-                </div>
-                <div class="remote" v-if="item.flag===1">
-                    <div class="avatar">
-                        <img :src="config.minioUrl+item.avatar2" alt="">
-                    </div>
-                    <div class="content">
-                        <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
-                        <div class="file" v-if="item.type==='file'">
-                            <FileMsgDisplay :msg-content="item.content" />
-                        </div>
-                        <div class="img" v-if="item.type==='img'">
-                            <img :src="config.minioUrl+item.content">
-                        </div>
-                    </div>
-                </div>
 
-                <div class="system" v-if="item.flag===-1">
-                    {{item.content}}
-                </div>
-            </div>
-        </div>
-        <div class="bottom">
-            <div class="bar">
-                <!-- 表情 -->
-                <div class="item" @click="expr" ref="expr">
-                    <!-- 表情按钮图标 -->
-                    <svg t="1711940262243" class="icon" viewBox="0 0 1044 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8504" width="200" height="200"><path d="M515.204746 1024C377.571561 1024 248.168301 970.752 150.869338 874.116741 53.551412 777.367704-0.018958 648.798815 5.0e-06 512 5.0e-06 375.220148 53.608301 246.632296 150.94519 149.921185 248.244153 53.248 377.647412 0 515.299561 0 652.989635 0 782.373931 53.248 879.71082 149.921185 1080.623412 349.601185 1080.604449 674.417778 879.71082 874.021926 782.354968 970.714074 652.89482 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024ZM515.299561 66.730667C395.567412 66.730667 283.060153 113.019259 198.409487 197.101037 113.75882 281.163852 67.147857 393.02637 67.147857 512 67.128894 630.992593 113.720894 742.836148 198.333635 826.936889 282.965338 910.980741 395.510524 957.326222 515.204746 957.326222 634.955857 957.326222 747.557931 910.942815 832.227561 826.842074 1006.933338 653.255111 1006.933338 370.744889 832.227561 197.101037 747.576894 113.019259 635.031709 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667ZM332.174227 651.738074C332.174227 651.738074 392.552301 747.633778 515.185783 747.633778 637.819264 747.633778 718.24119 651.738074 718.24119 651.738074 718.24119 651.738074 763.828153 651.58637 763.80919 699.676444 763.80919 699.676444 684.771561 811.557926 515.185783 811.557926 345.600005 811.557926 290.39882 699.676444 290.39882 699.676444 290.39882 699.676444 288.730079 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074ZM365.454227 347.363556C330.714079 347.363556 302.345487 375.447704 302.345487 410.074074 302.345487 444.662519 330.695116 472.746667 365.454227 472.746667 400.365042 472.746667 428.562968 444.662519 428.562968 410.074074 428.562968 375.447704 400.365042 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556ZM688.791709 347.363556C653.994672 347.363556 625.720894 375.447704 625.720894 410.074074 625.720894 444.662519 653.994672 472.746667 688.791709 472.746667 723.664598 472.746667 751.900449 444.662519 751.900449 410.074074 751.900449 375.447704 723.664598 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556Z" p-id="8505"></path></svg>
-                    <!-- 表情框 -->
-                    <div class="expr" v-if="isShowExpr">
-                        <div class="content" >
-                            <div class="i" v-for="item in expression" :key="item.id" @click="insertExpression(item)">
-                                <img :src="config.minioUrl+item.path" :title="item.description" >
-                            </div>
-                        </div>
-                        <div class="lists">
-                            <div class="i" v-for="item in exprList" :key="item.id" @click="currentExprListItem=item" :class="{hightlight:currentExprListItem==item}">
-                                {{item.name}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 语音 -->
-                <div class="item">
-                    <svg t="1711940159479" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5421" width="200" height="200"><path d="M469.632 808.064A341.376 341.376 0 0 1 170.666667 469.333333h85.333333a256 256 0 0 0 256 256h1.749333A256 256 0 0 0 768 469.333333h85.333333a341.376 341.376 0 0 1-298.368 338.645334l0.426667 130.56-85.333333 0.256-0.426667-130.730667zM512 128a85.333333 85.333333 0 0 0-85.333333 85.333333v256a85.333333 85.333333 0 1 0 170.666666 0V213.333333a85.333333 85.333333 0 0 0-85.333333-85.333333z m0-85.333333a170.666667 170.666667 0 0 1 170.666667 170.666666v256a170.666667 170.666667 0 1 1-341.333334 0V213.333333a170.666667 170.666667 0 0 1 170.666667-170.666666z"  p-id="5422"></path><path d="M341.333333 981.333333v-85.333333h341.333334v85.333333z"  p-id="5423"></path></svg>
-
-                </div>
-
-                <div class="item" @click="this.$refs.imgInput.click()">
-                    <svg t="1711940193445" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6437" width="200" height="200"><path d="M938.666667 553.92V768c0 64.8-52.533333 117.333333-117.333334 117.333333H202.666667c-64.8 0-117.333333-52.533333-117.333334-117.333333V256c0-64.8 52.533333-117.333333 117.333334-117.333333h618.666666c64.8 0 117.333333 52.533333 117.333334 117.333333v297.92z m-64-74.624V256a53.333333 53.333333 0 0 0-53.333334-53.333333H202.666667a53.333333 53.333333 0 0 0-53.333334 53.333333v344.48A290.090667 290.090667 0 0 1 192 597.333333a286.88 286.88 0 0 1 183.296 65.845334C427.029333 528.384 556.906667 437.333333 704 437.333333c65.706667 0 126.997333 16.778667 170.666667 41.962667z m0 82.24c-5.333333-8.32-21.130667-21.653333-43.648-32.917333C796.768 511.488 753.045333 501.333333 704 501.333333c-121.770667 0-229.130667 76.266667-270.432 188.693334-2.730667 7.445333-7.402667 20.32-13.994667 38.581333-7.68 21.301333-34.453333 28.106667-51.370666 13.056-16.437333-14.634667-28.554667-25.066667-36.138667-31.146667A222.890667 222.890667 0 0 0 192 661.333333c-14.464 0-28.725333 1.365333-42.666667 4.053334V768a53.333333 53.333333 0 0 0 53.333334 53.333333h618.666666a53.333333 53.333333 0 0 0 53.333334-53.333333V561.525333zM320 480a96 96 0 1 1 0-192 96 96 0 0 1 0 192z m0-64a32 32 0 1 0 0-64 32 32 0 0 0 0 64z" p-id="6438"></path></svg>
-                    <div class="img-input">
-                        <input type="file" accept="image/*" multiple ref="imgInput" @change="imgInputChangeHandler">
-                    </div>
-                </div>
-                <!--文件-->
-                <div class="item" @click="fileInputHandler">
-                    <svg t="1711940219559" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7457" width="200" height="200"><path d="M912 208H427.872l-50.368-94.176A63.936 63.936 0 0 0 321.056 80H112c-35.296 0-64 28.704-64 64v736c0 35.296 28.704 64 64 64h800c35.296 0 64-28.704 64-64v-608c0-35.296-28.704-64-64-64z m-800-64h209.056l68.448 128H912v97.984c-0.416 0-0.8-0.128-1.216-0.128H113.248c-0.416 0-0.8 0.128-1.248 0.128V144z m0 736v-96l1.248-350.144 798.752 1.216V784h0.064v96H112z"  p-id="7458"></path></svg>
-                    <div class="file-input" @click.stop>
-                        <input type="file" ref="fileInput" @change="fileChangeHandler" multiple>
-                        <el-dialog
-                            v-model="dialogVisible"
-                            title="确认发送内容"
-                            width="500"
-                        >
-                            <FileList :file-list="fileList" />
-                            <template #footer>
-                                <div class="dialog-footer">
-                                    <el-button @click="dialogVisible = false">取消</el-button>
-                                    <el-button type="primary" @click="fileSendHandler">
-                                        发送({{fileList.length}})
-                                    </el-button>
+        <div class="b">
+            <n-split direction="vertical" :default-size="0.65" >
+                <template #1>
+                    <div class="middle" ref="msgShow">
+                        <div class="msg" v-for="item in messages2" :key="item.id">
+                            <div class="timebar" v-if="item.isShowTime">{{item.time}}</div>
+                            <div class="local" v-if="item.flag===0">
+                                <div class="content" >
+                                    <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
+                                    <div class="file" v-if="item.type==='file'">
+                                        <FileMsgDisplay :msg-content="item.content" />
+                                    </div>
+                                    <div class="img" v-if="item.type==='img'">
+                                        <img :src="config.minioUrl+item.content">
+                                    </div>
                                 </div>
-                            </template>
-                        </el-dialog>
+                                <div class="avatar">
+                                    <img :src="config.minioUrl+item.avatar1" alt="">
+                                </div>
+                            </div>
+                            <div class="remote" v-if="item.flag===1">
+                                <div class="avatar">
+                                    <img :src="config.minioUrl+item.avatar2" alt="">
+                                </div>
+                                <div class="content">
+                                    <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
+                                    <div class="file" v-if="item.type==='file'">
+                                        <FileMsgDisplay :msg-content="item.content" />
+                                    </div>
+                                    <div class="img" v-if="item.type==='img'">
+                                        <img :src="config.minioUrl+item.content">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="system" v-if="item.flag===-1">
+                                {{item.content}}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="textarea" contenteditable ref="msg" @keydown="keydown" @input="input"></div>
-            <div class="control">
-                <div class="send" @click="prepareSend">发送</div>
-            </div>
+                </template>
+                <template #2>
+                    <div class="bottom">
+                        <div class="bar">
+                            <!-- 表情 -->
+                            <div class="item" @click="expr" ref="expr">
+                                <!-- 表情按钮图标 -->
+                                <svg t="1711940262243" class="icon" viewBox="0 0 1044 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8504" width="200" height="200"><path d="M515.204746 1024C377.571561 1024 248.168301 970.752 150.869338 874.116741 53.551412 777.367704-0.018958 648.798815 5.0e-06 512 5.0e-06 375.220148 53.608301 246.632296 150.94519 149.921185 248.244153 53.248 377.647412 0 515.299561 0 652.989635 0 782.373931 53.248 879.71082 149.921185 1080.623412 349.601185 1080.604449 674.417778 879.71082 874.021926 782.354968 970.714074 652.89482 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024 515.204746 1024ZM515.299561 66.730667C395.567412 66.730667 283.060153 113.019259 198.409487 197.101037 113.75882 281.163852 67.147857 393.02637 67.147857 512 67.128894 630.992593 113.720894 742.836148 198.333635 826.936889 282.965338 910.980741 395.510524 957.326222 515.204746 957.326222 634.955857 957.326222 747.557931 910.942815 832.227561 826.842074 1006.933338 653.255111 1006.933338 370.744889 832.227561 197.101037 747.576894 113.019259 635.031709 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667 515.299561 66.730667ZM332.174227 651.738074C332.174227 651.738074 392.552301 747.633778 515.185783 747.633778 637.819264 747.633778 718.24119 651.738074 718.24119 651.738074 718.24119 651.738074 763.828153 651.58637 763.80919 699.676444 763.80919 699.676444 684.771561 811.557926 515.185783 811.557926 345.600005 811.557926 290.39882 699.676444 290.39882 699.676444 290.39882 699.676444 288.730079 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074 332.174227 651.738074ZM365.454227 347.363556C330.714079 347.363556 302.345487 375.447704 302.345487 410.074074 302.345487 444.662519 330.695116 472.746667 365.454227 472.746667 400.365042 472.746667 428.562968 444.662519 428.562968 410.074074 428.562968 375.447704 400.365042 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556 365.454227 347.363556ZM688.791709 347.363556C653.994672 347.363556 625.720894 375.447704 625.720894 410.074074 625.720894 444.662519 653.994672 472.746667 688.791709 472.746667 723.664598 472.746667 751.900449 444.662519 751.900449 410.074074 751.900449 375.447704 723.664598 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556 688.791709 347.363556Z" p-id="8505"></path></svg>
+                                <!-- 表情框 -->
+                                <div class="expr" v-if="isShowExpr">
+                                    <div class="content" >
+                                        <div class="i" v-for="item in expression" :key="item.id" @click="insertExpression(item)">
+                                            <img :src="config.minioUrl+item.path" :title="item.description" >
+                                        </div>
+                                    </div>
+                                    <div class="lists">
+                                        <div class="i" v-for="item in exprList" :key="item.id" @click="currentExprListItem=item" :class="{hightlight:currentExprListItem==item}">
+                                            {{item.name}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 语音 -->
+                            <div class="item">
+                                <svg t="1711940159479" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5421" width="200" height="200"><path d="M469.632 808.064A341.376 341.376 0 0 1 170.666667 469.333333h85.333333a256 256 0 0 0 256 256h1.749333A256 256 0 0 0 768 469.333333h85.333333a341.376 341.376 0 0 1-298.368 338.645334l0.426667 130.56-85.333333 0.256-0.426667-130.730667zM512 128a85.333333 85.333333 0 0 0-85.333333 85.333333v256a85.333333 85.333333 0 1 0 170.666666 0V213.333333a85.333333 85.333333 0 0 0-85.333333-85.333333z m0-85.333333a170.666667 170.666667 0 0 1 170.666667 170.666666v256a170.666667 170.666667 0 1 1-341.333334 0V213.333333a170.666667 170.666667 0 0 1 170.666667-170.666666z"  p-id="5422"></path><path d="M341.333333 981.333333v-85.333333h341.333334v85.333333z"  p-id="5423"></path></svg>
+
+                            </div>
+
+                            <div class="item" @click="this.$refs.imgInput.click()">
+                                <svg t="1711940193445" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6437" width="200" height="200"><path d="M938.666667 553.92V768c0 64.8-52.533333 117.333333-117.333334 117.333333H202.666667c-64.8 0-117.333333-52.533333-117.333334-117.333333V256c0-64.8 52.533333-117.333333 117.333334-117.333333h618.666666c64.8 0 117.333333 52.533333 117.333334 117.333333v297.92z m-64-74.624V256a53.333333 53.333333 0 0 0-53.333334-53.333333H202.666667a53.333333 53.333333 0 0 0-53.333334 53.333333v344.48A290.090667 290.090667 0 0 1 192 597.333333a286.88 286.88 0 0 1 183.296 65.845334C427.029333 528.384 556.906667 437.333333 704 437.333333c65.706667 0 126.997333 16.778667 170.666667 41.962667z m0 82.24c-5.333333-8.32-21.130667-21.653333-43.648-32.917333C796.768 511.488 753.045333 501.333333 704 501.333333c-121.770667 0-229.130667 76.266667-270.432 188.693334-2.730667 7.445333-7.402667 20.32-13.994667 38.581333-7.68 21.301333-34.453333 28.106667-51.370666 13.056-16.437333-14.634667-28.554667-25.066667-36.138667-31.146667A222.890667 222.890667 0 0 0 192 661.333333c-14.464 0-28.725333 1.365333-42.666667 4.053334V768a53.333333 53.333333 0 0 0 53.333334 53.333333h618.666666a53.333333 53.333333 0 0 0 53.333334-53.333333V561.525333zM320 480a96 96 0 1 1 0-192 96 96 0 0 1 0 192z m0-64a32 32 0 1 0 0-64 32 32 0 0 0 0 64z" p-id="6438"></path></svg>
+                                <div class="img-input">
+                                    <input type="file" accept="image/*" multiple ref="imgInput" @change="imgInputChangeHandler">
+                                </div>
+                            </div>
+                            <!--文件-->
+                            <div class="item" @click="fileInputHandler">
+                                <svg t="1711940219559" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7457" width="200" height="200"><path d="M912 208H427.872l-50.368-94.176A63.936 63.936 0 0 0 321.056 80H112c-35.296 0-64 28.704-64 64v736c0 35.296 28.704 64 64 64h800c35.296 0 64-28.704 64-64v-608c0-35.296-28.704-64-64-64z m-800-64h209.056l68.448 128H912v97.984c-0.416 0-0.8-0.128-1.216-0.128H113.248c-0.416 0-0.8 0.128-1.248 0.128V144z m0 736v-96l1.248-350.144 798.752 1.216V784h0.064v96H112z"  p-id="7458"></path></svg>
+                                <div class="file-input" @click.stop>
+                                    <input type="file" ref="fileInput" @change="fileChangeHandler" multiple>
+                                    <el-dialog
+                                        v-model="dialogVisible"
+                                        title="确认发送内容"
+                                        width="500"
+                                    >
+                                        <FileList :file-list="fileList" />
+                                        <template #footer>
+                                            <div class="dialog-footer">
+                                                <el-button @click="dialogVisible = false">取消</el-button>
+                                                <el-button type="primary" @click="fileSendHandler">
+                                                    发送({{fileList.length}})
+                                                </el-button>
+                                            </div>
+                                        </template>
+                                    </el-dialog>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="textInput">
+                            <div class="textarea" contenteditable ref="msg" @keydown="keydown" @input="input"></div>
+                        </div>
+                        <div class="control">
+                            <div class="send" @click="prepareSend">发送</div>
+                        </div>
+                    </div>
+                </template>
+            </n-split>
         </div>
+
+
+
     </div>
 </template>
 
@@ -464,6 +479,7 @@ export default {
     display: flex;
     flex-direction: column;
     background-color: #F2F2F2;
+    overflow: hidden;
 
     .top{
         padding: 40px 20px 20px;
@@ -488,204 +504,217 @@ export default {
             }
         }
     }
-    .middle{
+    .b{
         flex-grow: 1;
-        padding: 25px;
-        overflow: auto;
+        overflow: hidden;
 
-        .msg{
-            margin-bottom: 30px;
+        .middle{
+            height: 100%;
+            box-sizing: border-box;
+            padding: 25px;
+            overflow: auto;
 
-            .timebar{
-                text-align: center;
-                color: #9C9C9C;
-                margin-bottom: 24px;
-            }
-            .local{
-                display: flex;
-                justify-content: flex-end;
+            .msg{
+                margin-bottom: 30px;
 
-                .content{
+                .timebar{
+                    text-align: center;
+                    color: #9C9C9C;
+                    margin-bottom: 24px;
+                }
+                .local{
                     display: flex;
                     justify-content: flex-end;
 
-                    flex-grow: 1;
-
-                    .text{
-                        padding: 13px 10px;
-                        background-color: #0099FF;
-                        color: white;
-                        border-radius: 5px;
-
-                        //长文本单词换行必备设置
-                        max-width: 60%;
-                        overflow-wrap: anywhere;
-
-                        white-space: pre-wrap;
-                    }
-                    .file{
-
-                    }
-                }
-                .avatar{
-                    margin-left: 10px;
-
-                    img{
-                        width:40px;
-                        height: 40px;
-                        border-radius: 50%;
-                    }
-                }
-            }
-            .remote{
-                display: flex;
-
-                .content{
-                    display: flex;
-
-                    .text{
-                        padding: 13px 10px;
-                        background-color: white;
-                        color: black;
-                        border-radius: 5px;
-
-                        //长文本单词换行必备设置
-                        max-width: 60%;
-                        overflow-wrap: anywhere;
-
-                        white-space: pre-wrap;
-                    }
-                    .file{
-
-                    }
-                }
-                .avatar{
-                    margin-right: 10px;
-
-                    img{
-                        width:40px;
-                        height: 40px;
-                        border-radius: 50%;
-                    }
-                }
-            }
-            .system{
-                text-align: center;
-                color: #9C9C9C;
-            }
-
-        }
-    }
-    .bottom{
-        border-top: 1px solid #E9E9E9;
-        padding: 0px 25px 25px;
-
-        .bar{
-            padding-top: 10px;
-            padding-bottom: 5px;
-
-            display: flex;
-
-            .item{
-                padding-right: 10px;
-                position: relative;
-
-                svg{
-                    width: 26px;
-                    height: 26px;
-                }
-                svg:hover{
-                    fill: #0099FF;
-                }
-
-                .expr{
-                    position: absolute;
-                    left: -25%;
-                    bottom: 150%;
-                    display: flex;
-                    flex-direction: column;
-
-                    width: 560px;
-                    height: 415px;
-                    box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.3);
-                    border-radius: 5px;
-                    background-color: white;
-
                     .content{
+                        display: flex;
+                        justify-content: flex-end;
+
                         flex-grow: 1;
-                        overflow: auto;
-                        padding: 20px;
-                        display: flex;
-                        flex-wrap: wrap;
 
-                        .i{
-                            padding: 5px;
-
-                            img{
-                                width: 45px;
-                                height: 45px;
-                            }
-                        }
-                        .i:hover{
-                            background-color: #F1F2F1;
-                            border-radius: 5px;
-                        }
-                    }
-                    .lists{
-                        display: flex;
-                        padding: 5px;
-                        border-top: 1px solid #ddd;
-
-                        .i{
-                            padding: 5px;
-                            border-radius: 5px;
-                        }
-                        .i:hover{
-                            background-color: #F3F3F3;
-                        }
-                        .i.hightlight{
+                        .text{
+                            padding: 13px 10px;
                             background-color: #0099FF;
                             color: white;
+                            border-radius: 5px;
+
+                            //长文本单词换行必备设置
+                            max-width: 60%;
+                            overflow-wrap: anywhere;
+
+                            white-space: pre-wrap;
+                        }
+                        .file{
+
+                        }
+                    }
+                    .avatar{
+                        margin-left: 10px;
+
+                        img{
+                            width:40px;
+                            height: 40px;
+                            border-radius: 50%;
                         }
                     }
                 }
+                .remote{
+                    display: flex;
 
-                .img-input{
+                    .content{
+                        display: flex;
 
-                    input{
-                        display: none;
+                        .text{
+                            padding: 13px 10px;
+                            background-color: white;
+                            color: black;
+                            border-radius: 5px;
+
+                            //长文本单词换行必备设置
+                            max-width: 60%;
+                            overflow-wrap: anywhere;
+
+                            white-space: pre-wrap;
+                        }
+                        .file{
+
+                        }
+                    }
+                    .avatar{
+                        margin-right: 10px;
+
+                        img{
+                            width:40px;
+                            height: 40px;
+                            border-radius: 50%;
+                        }
                     }
                 }
-                .file-input{
+                .system{
+                    text-align: center;
+                    color: #9C9C9C;
+                }
 
-                    input{
-                        display: none;
+            }
+        }
+        .bottom{
+            height: 100%;
+            box-sizing: border-box;
+            padding: 0px 25px 25px;
+
+            display: flex;
+            flex-direction: column;
+
+            .bar{
+                padding-top: 10px;
+                padding-bottom: 5px;
+
+                display: flex;
+
+                .item{
+                    padding-right: 10px;
+                    position: relative;
+
+                    svg{
+                        width: 26px;
+                        height: 26px;
+                    }
+                    svg:hover{
+                        fill: #0099FF;
+                    }
+
+                    .expr{
+                        position: absolute;
+                        left: -25%;
+                        bottom: 150%;
+                        display: flex;
+                        flex-direction: column;
+
+                        width: 560px;
+                        height: 415px;
+                        box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.3);
+                        border-radius: 5px;
+                        background-color: white;
+
+                        .content{
+                            flex-grow: 1;
+                            overflow: auto;
+                            padding: 20px;
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            .i{
+                                padding: 5px;
+
+                                img{
+                                    width: 45px;
+                                    height: 45px;
+                                }
+                            }
+                            .i:hover{
+                                background-color: #F1F2F1;
+                                border-radius: 5px;
+                            }
+                        }
+                        .lists{
+                            display: flex;
+                            padding: 5px;
+                            border-top: 1px solid #ddd;
+
+                            .i{
+                                padding: 5px;
+                                border-radius: 5px;
+                            }
+                            .i:hover{
+                                background-color: #F3F3F3;
+                            }
+                            .i.hightlight{
+                                background-color: #0099FF;
+                                color: white;
+                            }
+                        }
+                    }
+
+                    .img-input{
+
+                        input{
+                            display: none;
+                        }
+                    }
+                    .file-input{
+
+                        input{
+                            display: none;
+                        }
                     }
                 }
             }
-        }
-        .textarea{
-            width: 100%;
-            height:150px;
+            .textInput{
+                flex-grow: 1;
 
-            border: none;
-            outline: none;
-            font-size: 18px;
-            font-family: "微软雅黑";
-            background-color: transparent;
+                .textarea{
+                    height: 100%;
 
-        }
-        .control{
-            margin-top: 20px;
-            display: flex;
-            justify-content: flex-end;
+                    border: none;
+                    outline: none;
+                    font-size: 18px;
+                    font-family: "微软雅黑";
+                    background-color: transparent;
 
-            .send{
-                padding: 10px 24px;
-                background-color: #0099FF;
-                color: white;
-                border-radius: 5px;
-                cursor: pointer;
+                }
+            }
+            .control{
+                margin-top: 20px;
+                display: flex;
+                justify-content: flex-end;
+
+                .send{
+                    padding: 10px 24px;
+                    background-color: #0099FF;
+                    color: white;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
             }
         }
     }
