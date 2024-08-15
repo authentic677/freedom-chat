@@ -3,10 +3,10 @@ import {displayTime, emitter, formatFileSize} from "../../utils/utils.js"
 import FileList from "../../components/FileList.vue";
 import FileMsgDisplay from "../../components/FileMsgDisplay.vue";
 import config from "../../config/config.js";
-import {NSplit} from 'naive-ui'
+import {NSplit, NScrollbar} from 'naive-ui'
 export default {
     name: "UserChatFrame",
-    components: {FileMsgDisplay, FileList, NSplit},
+    components: {FileMsgDisplay, FileList, NSplit, NScrollbar},
     data(){
         return {
             messages:[],
@@ -126,10 +126,12 @@ export default {
             if(json.code===1){
                 this.messages=json.data
 
-                this.$nextTick( ()=> {
-                    // DOM 更新完毕之后的回调操作
-                    this.$refs.msgShow.scrollTop=this.$refs.msgShow.scrollHeight
-                });
+                this.$nextTick(()=>{
+                    //滚动到底部
+                    let m=this.$refs.msgShow
+                    let c=m.children
+                    c[c.length-1].scrollIntoView()
+                })
             }
         },
         //这个是获取表情列表的
@@ -363,43 +365,46 @@ export default {
         <div class="b">
             <n-split direction="vertical" :default-size="0.65" >
                 <template #1>
-                    <div class="middle" ref="msgShow">
-                        <div class="msg" v-for="item in messages2" :key="item.id">
-                            <div class="timebar" v-if="item.isShowTime">{{item.time}}</div>
-                            <div class="local" v-if="item.flag===0">
-                                <div class="content" >
-                                    <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
-                                    <div class="file" v-if="item.type==='file'">
-                                        <FileMsgDisplay :msg-content="item.content" />
+                    <n-scrollbar>
+                        <div class="middle" ref="msgShow">
+                            <div class="msg" v-for="item in messages2" :key="item.id">
+                                <div class="timebar" v-if="item.isShowTime">{{item.time}}</div>
+                                <div class="local" v-if="item.flag===0">
+                                    <div class="content" >
+                                        <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
+                                        <div class="file" v-if="item.type==='file'">
+                                            <FileMsgDisplay :msg-content="item.content" />
+                                        </div>
+                                        <div class="img" v-if="item.type==='img'">
+                                            <img :src="config.minioUrl+item.content">
+                                        </div>
                                     </div>
-                                    <div class="img" v-if="item.type==='img'">
-                                        <img :src="config.minioUrl+item.content">
-                                    </div>
-                                </div>
-                                <div class="avatar">
-                                    <img :src="config.minioUrl+item.avatar1" alt="">
-                                </div>
-                            </div>
-                            <div class="remote" v-if="item.flag===1">
-                                <div class="avatar">
-                                    <img :src="config.minioUrl+item.avatar2" alt="">
-                                </div>
-                                <div class="content">
-                                    <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
-                                    <div class="file" v-if="item.type==='file'">
-                                        <FileMsgDisplay :msg-content="item.content" />
-                                    </div>
-                                    <div class="img" v-if="item.type==='img'">
-                                        <img :src="config.minioUrl+item.content">
+                                    <div class="avatar">
+                                        <img :src="config.minioUrl+item.avatar1" alt="">
                                     </div>
                                 </div>
-                            </div>
+                                <div class="remote" v-if="item.flag===1">
+                                    <div class="avatar">
+                                        <img :src="config.minioUrl+item.avatar2" alt="">
+                                    </div>
+                                    <div class="content">
+                                        <div class="text" v-if="item.type==='text'" v-html="item.content"></div>
+                                        <div class="file" v-if="item.type==='file'">
+                                            <FileMsgDisplay :msg-content="item.content" />
+                                        </div>
+                                        <div class="img" v-if="item.type==='img'">
+                                            <img :src="config.minioUrl+item.content">
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div class="system" v-if="item.flag===-1">
-                                {{item.content}}
+                                <div class="system" v-if="item.flag===-1">
+                                    {{item.content}}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </n-scrollbar>
+
                 </template>
                 <template #2>
                     <div class="bottom">
