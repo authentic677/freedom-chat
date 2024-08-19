@@ -1,9 +1,15 @@
 package site.liuqq.freedom_chat.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.CreateEmailResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import site.liuqq.freedom_chat.conf.CustomConfig;
 import site.liuqq.freedom_chat.pojo.User;
 
 import java.security.MessageDigest;
@@ -19,8 +25,12 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+@Component
 public class Tools {
     private static final String secretKey="lqq677...";
+
+    @Autowired
+    CustomConfig customConfig;
 
     public static byte[] hexStringToByteArray(String hexString) {
         int len = hexString.length();
@@ -100,6 +110,22 @@ public class Tools {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void sendMail2(String email,String code) throws Exception{
+        Resend resend = new Resend(customConfig.getResendApiKey());
+        System.out.println(customConfig.getResendApiKey());
+
+        CreateEmailOptions build = CreateEmailOptions.builder()
+                .from("freedom-chat <admin@"+customConfig.getEmailDomain()+">")
+                .to(email)
+                .subject("自由聊天")
+                .html("<p>您的邮箱验证码是：<strong>"+code+"</strong></p>")
+                .build();
+
+        CreateEmailResponse send = resend.emails().send(build);
+
+        System.out.println("resend邮箱发送id："+send.getId());
     }
 
     public static String generateRandomNumberString(int length){

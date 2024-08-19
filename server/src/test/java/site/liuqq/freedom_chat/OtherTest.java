@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -55,36 +56,24 @@ public class OtherTest {
     private UserChatRecordServiceImpl userChatRecordServiceImpl;
     @Autowired
     private MessageServiceImpl messageServiceImpl;
+    @Autowired
+    private CustomConfig customConfig;
+
+    @Value("${site.liuqq.freedomchat.zone}")
+    String zone;
 
     @Test
     public void test(){
 
+        String emailDomain = customConfig.getEmailDomain();
+        System.out.println(emailDomain);
 
-        //获取他们之间最新一条的消息
-        List<UserChatRecord> list = userChatRecordServiceImpl
-                .lambdaQuery()
-                .eq(UserChatRecord::getUid1, "9627223950")
-                .eq(UserChatRecord::getUid2, "5465763738")
-                .list();
-        //处理外键
-        list.forEach(e->{
-            Message message = messageServiceImpl
-                    .lambdaQuery()
-                    .eq(Message::getId, e.getMessageId())
-                    .one();
-            e.setMessage(message);
-        });
-        //取最值
-        LocalDateTime max=list.getFirst().getMessage().getTime();
-        int index=0;
-        for(int i=0;i<list.size();i++){
+        String resendApiKey = customConfig.getResendApiKey();
+        System.out.println(resendApiKey);
 
-            if(list.get(i).getMessage().getTime().isAfter(max)){
-                max=list.get(i).getMessage().getTime();
-                index=i;
-            }
-        }
-        System.out.println(list.get(index));
+        System.out.println(customConfig.getZone());
+
+        System.out.println(zone);
 
     }
 }

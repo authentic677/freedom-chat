@@ -46,6 +46,8 @@ public class ToolController {
     private UserMapper userMapper;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private Tools tools;
 
     //图片验证码接口
     @GetMapping("/captcha")
@@ -102,7 +104,14 @@ public class ToolController {
         //保存到redis
         stringRedisTemplate.opsForValue().set(VERIFY_CODE+email,code,30, TimeUnit.SECONDS);
 //        boolean result=true;
-        boolean result=Tools.sendMail(email,"【自由聊天】您的邮箱验证码是"+code);
+        boolean result;
+        try {
+            tools.sendMail2(email,code);
+            result=true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            result=Tools.sendMail(email,"【自由聊天】您的邮箱验证码是"+code);
+        }
 
         return result?Result.success():Result.error("未知错误");
     }

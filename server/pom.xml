@@ -156,12 +156,19 @@
         </dependency>
 
 <!--        minio-->
-
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>8.5.11</version>
         </dependency>
+
+<!--        resend 邮件发送平台，只需有一个域名就能提供发送以此域名的邮箱作为发件人的邮件，有免费计划-->
+        <dependency>
+            <groupId>com.resend</groupId>
+            <artifactId>resend-java</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
 
     </dependencies>
 

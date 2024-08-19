@@ -2,6 +2,9 @@ package site.liuqq.freedom_chat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.resend.Resend;
+import com.resend.services.emails.model.CreateEmailOptions;
+import com.resend.services.emails.model.CreateEmailResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,14 +32,20 @@ public class PlainTest {
 
     public static void main(String[] args) throws Exception {
 
-        RedisTemplate<String,Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(new LettuceConnectionFactory());
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
-        Object o = redisTemplate.opsForValue().get("name");
+        Resend resend = new Resend("re_Q4viMZtB_JUdFVK2tcvbqMTP4pUMEtc8p");
 
-        System.out.println(o);
+
+        CreateEmailOptions build = CreateEmailOptions.builder()
+                .from("freedom-chat <admin@liuqq.site>")
+                .to("945491917@qq.com")
+                .subject("自由聊天")
+                .html("<p>您的邮箱验证码是：<strong>"+123+"</strong></p>")
+                .build();
+
+        CreateEmailResponse send = resend.emails().send(build);
+
+        System.out.println(send.getId());
 
 
     }
