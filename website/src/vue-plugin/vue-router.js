@@ -20,6 +20,7 @@ import AudioLiveCaller from "../views/live/AudioLiveCaller.vue";
 import VideoLiveCaller from "../views/live/VideoLiveCaller.vue";
 import VideoLiveCallee from "../views/live/VideoLiveCallee.vue";
 import GroupInfoShow from "../views/Contact/GroupInfoShow.vue";
+import * as path from "node:path";
 
 const router= createRouter({
     history: createWebHashHistory(),
@@ -83,6 +84,20 @@ const router= createRouter({
                 },
                 {
                     path: 'video/from/:uid',component: VideoLiveCallee
+                }
+            ]
+        },
+        {
+            path:'/zone',component:()=>import('../views/zone/Zone.vue'),
+            redirect:'/zone/saying',
+            children:[
+                {
+                    path:'saying',component: ()=>import('../views/zone/Saying.vue'),
+                    children:[
+                        {
+                            path:'sayingDetail',component:()=>import('../views/zone/SayingDetail.vue'),
+                        }
+                    ]
                 }
             ]
         },
