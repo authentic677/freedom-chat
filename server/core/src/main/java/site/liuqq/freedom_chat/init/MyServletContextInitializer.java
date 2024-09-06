@@ -11,6 +11,7 @@ import java.util.HashMap;
 public class MyServletContextInitializer implements ServletContextInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+        //这个操作貌似废弃
         servletContext.setAttribute("emailMap",new HashMap<>());
     }
 }

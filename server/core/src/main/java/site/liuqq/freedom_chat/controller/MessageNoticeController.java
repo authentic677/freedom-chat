@@ -9,13 +9,11 @@ import site.liuqq.freedom_chat.service.MessageNoticeService;
 import site.liuqq.freedom_chat.service.impl.MessageNoticeServiceImpl;
 import site.liuqq.freedom_chat.service.impl.MessageServiceImpl;
 import site.liuqq.freedom_chat.service.impl.UserChatRecordServiceImpl;
-import site.liuqq.freedom_chat.utils.Tools;
+import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.common.Tools;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-
-import static org.bouncycastle.asn1.x500.style.RFC4519Style.uid;
 
 @Slf4j
 @RestController
@@ -34,7 +32,7 @@ public class MessageNoticeController {
     //某用户在它的消息通知列表中添加另一个用户
     //增
     @PostMapping("/messageNotice/{uid2}")
-    Result insert(@PathVariable String uid2,HttpSession session){
+    Result insert(@PathVariable String uid2, HttpSession session){
 
         String uid1 = ((User) session.getAttribute("user")).getUid();
 
@@ -70,7 +68,7 @@ public class MessageNoticeController {
                     e.setMessage(message);
                 });
                 //取最值
-                LocalDateTime max=list.getFirst().getMessage().getTime();
+                LocalDateTime max=list.get(0).getMessage().getTime();
                 int index=0;
                 for(int i=0;i<list.size();i++){
                     if(list.get(i).getMessage().getTime().isAfter(max)){

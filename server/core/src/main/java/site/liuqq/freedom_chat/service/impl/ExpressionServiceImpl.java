@@ -1,16 +1,14 @@
 package site.liuqq.freedom_chat.service.impl;
 
-import ch.qos.logback.core.model.IncludeModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import site.liuqq.freedom_chat.mapper.ExpressionMapper;
 import site.liuqq.freedom_chat.pojo.Expression;
-import site.liuqq.freedom_chat.pojo.Result;
+import site.liuqq.freedom_chat.common.Result;
 import site.liuqq.freedom_chat.service.ExpressionService;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
 import java.util.Base64;
 import java.util.List;

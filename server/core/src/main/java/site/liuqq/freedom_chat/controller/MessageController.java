@@ -6,14 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import site.liuqq.freedom_chat.conf.CustomConfig;
-import site.liuqq.freedom_chat.mapper.MessageMapper;
-import site.liuqq.freedom_chat.pojo.Message;
-import site.liuqq.freedom_chat.pojo.Result;
+import site.liuqq.freedom_chat.common.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.pojo.UserChatRecord;
 import site.liuqq.freedom_chat.service.UserChatRecordService;
-import site.liuqq.freedom_chat.utils.Tools;
+import site.liuqq.freedom_chat.common.Tools;
 
 import java.io.InputStream;
 import java.util.HashMap;

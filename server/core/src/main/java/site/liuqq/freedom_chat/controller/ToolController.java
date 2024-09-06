@@ -2,7 +2,6 @@ package site.liuqq.freedom_chat.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -10,33 +9,23 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.liuqq.freedom_chat.mapper.UserMapper;
-import site.liuqq.freedom_chat.pojo.Result;
+import site.liuqq.freedom_chat.common.Result;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.sql.Time;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import site.liuqq.freedom_chat.pojo.User;
-import site.liuqq.freedom_chat.utils.RedisConstants;
-import site.liuqq.freedom_chat.utils.Tools;
+import site.liuqq.freedom_chat.common.Tools;
 
-import static site.liuqq.freedom_chat.utils.RedisConstants.*;
+import static site.liuqq.freedom_chat.common.RedisConstants.*;
 
 @RestController
 @RequestMapping("/api")

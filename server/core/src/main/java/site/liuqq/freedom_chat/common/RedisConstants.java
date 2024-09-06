@@ -1,4 +1,4 @@
-package site.liuqq.freedom_chat.utils;
+package site.liuqq.freedom_chat.common;
 
 public class RedisConstants {
 

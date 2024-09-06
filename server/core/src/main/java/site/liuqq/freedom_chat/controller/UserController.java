@@ -5,19 +5,15 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
-import site.liuqq.freedom_chat.pojo.Result;
+import site.liuqq.freedom_chat.common.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.service.UserService;
 import site.liuqq.freedom_chat.service.impl.UserServiceImpl;
-import site.liuqq.freedom_chat.utils.Tools;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import static site.liuqq.freedom_chat.utils.RedisConstants.*;
+import static site.liuqq.freedom_chat.common.RedisConstants.*;
 
 @RestController
 @RequestMapping("/api")

@@ -1,11 +1,9 @@
 package site.liuqq.freedom_chat.controller;
 
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.conf.CustomConfig;
-import site.liuqq.freedom_chat.pojo.Result;
+import site.liuqq.freedom_chat.common.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.pojo.group.Group;
 import site.liuqq.freedom_chat.pojo.group.GroupApplicant;
@@ -14,7 +12,7 @@ import site.liuqq.freedom_chat.service.impl.GroupApplicantServiceImpl;
 import site.liuqq.freedom_chat.service.impl.GroupMemberServiceImpl;
 import site.liuqq.freedom_chat.service.impl.GroupServiceImpl;
 import site.liuqq.freedom_chat.service.impl.UserServiceImpl;
-import site.liuqq.freedom_chat.utils.Tools;
+import site.liuqq.freedom_chat.common.Tools;
 
 import java.util.ArrayList;
 import java.util.List;

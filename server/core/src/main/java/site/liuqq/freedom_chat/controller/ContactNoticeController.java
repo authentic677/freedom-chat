@@ -1,13 +1,12 @@
 package site.liuqq.freedom_chat.controller;
 
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.pojo.ContactNotice;
-import site.liuqq.freedom_chat.pojo.Result;
+import site.liuqq.freedom_chat.common.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.service.ContactNoticeService;
-import site.liuqq.freedom_chat.utils.Tools;
+import site.liuqq.freedom_chat.common.Tools;
 
 import java.time.LocalDateTime;
 

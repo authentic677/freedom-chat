@@ -1,4 +1,4 @@
-package site.liuqq.freedom_chat.utils;
+package site.liuqq.freedom_chat.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,14 +1,10 @@
 package site.liuqq.freedom_chat.controller;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
-import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import site.liuqq.freedom_chat.mapper.GroupMemberMapper;
-import site.liuqq.freedom_chat.pojo.Result;
+import site.liuqq.freedom_chat.common.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.pojo.group.Group;
 import site.liuqq.freedom_chat.pojo.group.GroupMember;
@@ -17,7 +13,6 @@ import site.liuqq.freedom_chat.service.impl.GroupServiceImpl;
 import site.liuqq.freedom_chat.service.impl.UserServiceImpl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")

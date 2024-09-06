@@ -1,3 +1,3 @@
 export default {
-    minioUrl:'http://192.168.109.164:9000'
+    minioUrl:'http://127.0.0.1:9000'
 }

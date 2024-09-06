@@ -7,15 +7,12 @@ import site.liuqq.freedom_chat.conf.CustomConfig;
 import site.liuqq.freedom_chat.mapper.*;
 import site.liuqq.freedom_chat.pojo.*;
 import site.liuqq.freedom_chat.service.ContactNoticeService;
-import site.liuqq.freedom_chat.utils.DataUpdateNotify;
-import site.liuqq.freedom_chat.utils.Tools;
-import site.liuqq.freedom_chat.websocket.WebSocketConnectionManager;
+import site.liuqq.freedom_chat.common.DataUpdateNotify;
+import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.common.Tools;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service

@@ -1,15 +1,13 @@
 package site.liuqq.freedom_chat.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import site.liuqq.freedom_chat.pojo.User;
-import site.liuqq.freedom_chat.utils.DataUpdateNotify;
-import site.liuqq.freedom_chat.utils.Tools;
+import site.liuqq.freedom_chat.common.DataUpdateNotify;
+import site.liuqq.freedom_chat.common.Tools;
 
-import javax.xml.crypto.Data;
 import java.util.HashMap;
 import java.util.Map;
 

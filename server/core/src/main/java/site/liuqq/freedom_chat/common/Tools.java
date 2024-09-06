@@ -1,6 +1,5 @@
-package site.liuqq.freedom_chat.utils;
+package site.liuqq.freedom_chat.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.resend.Resend;
 import com.resend.services.emails.model.CreateEmailOptions;
 import com.resend.services.emails.model.CreateEmailResponse;

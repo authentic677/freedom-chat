@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.conf.CustomConfig;
 import site.liuqq.freedom_chat.pojo.group.*;
-import site.liuqq.freedom_chat.pojo.Result;
+import site.liuqq.freedom_chat.common.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.service.GroupService;
 import site.liuqq.freedom_chat.service.impl.*;
-import site.liuqq.freedom_chat.utils.Tools;
+import site.liuqq.freedom_chat.common.Tools;
 
 @RestController
 @RequestMapping("/api")
