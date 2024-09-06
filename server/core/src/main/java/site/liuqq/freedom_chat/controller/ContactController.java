@@ -3,7 +3,7 @@ package site.liuqq.freedom_chat.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.pojo.Contact;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.service.ContactService;
 import site.liuqq.freedom_chat.common.Tools;

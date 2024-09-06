@@ -1,4 +1,4 @@
-package site.liuqq.freedom_chat.filter;
+package xyz677123.filter;
 
 import com.alibaba.fastjson2.JSONObject;
 import jakarta.servlet.*;
@@ -6,21 +6,29 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import site.liuqq.freedom_chat.common.Tools;
 import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
-import site.liuqq.freedom_chat.common.Tools;
+
+
 
 import java.io.IOException;
 
 @Slf4j
-@WebFilter(urlPatterns = "/api/*") //拦截所有api接口请求,要想生效启动类必须加上@ServletComponentScan注解
+@WebFilter(urlPatterns = "/api/zone/*")
 public class MainFilter implements Filter {
+
+    private static final ThreadLocal<User> threadLocal = new ThreadLocal<>();
+
+    public static ThreadLocal<User> getThreadLocal() {
+        return threadLocal;
+    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         System.out.println("filter init");
-        Filter.super.init(filterConfig);
     }
 
     @Override
@@ -31,32 +39,16 @@ public class MainFilter implements Filter {
 
         //1.获取请求url
         String url = request.getRequestURL().toString();
-        log.info("请求路径：{}", url); //请求路径：http://localhost/api/login
+        log.info("请求路径：{}", url);
 
 
-        //2.判断请求url中是否包含要放行的接口
-        if(url.contains("/login")||
-                url.contains("/email_login")||
-                url.contains("/register")||
-                url.contains("/captcha")||
-                url.contains("/mailVerifyCode")||
-                url.contains("/checkToken")||
-                url.contains("/checkAccount")||
-                url.contains("/checkEmailVerifyCode")||
-                url.contains("/resetPwd")||
-                url.contains("/resource")){
-            chain.doFilter(request, response);//放行请求
-            return;//结束当前方法的执行
-        }
-
-
-        //3.获取请求头中的令牌（token）
+        //2.获取请求头中的令牌（token）
         String token = request.getHeader("token");
         log.info("从请求头中获取的令牌：{}",token);
 
 
-        //4.判断令牌是否存在且有效
-        User user=Tools.checkJwtToken(token);
+        //3.判断令牌是否存在且有效
+        User user= Tools.checkJwtToken(token);
         if(user==null){
             log.info("Token不存在或无效");
 
@@ -70,16 +62,18 @@ public class MainFilter implements Filter {
             return;
         }
 
-        //5.放行，设置用户uid信息
-        HttpSession session = request.getSession();
-        if(session.isNew()){
-            session.setAttribute("user",user);
+        //5.放行，设置用户uid信息，使用threadlocal共享数据
+        try {
+            threadLocal.set(user);
+            chain.doFilter(request, response);
+        }finally {
+            threadLocal.remove();
         }
-        chain.doFilter(request, response);
+
     }
 
     @Override
     public void destroy() {
-        Filter.super.destroy();
+        System.out.println("filter destroy");
     }
 }

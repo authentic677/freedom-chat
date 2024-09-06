@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.service.ExprListService;
 import site.liuqq.freedom_chat.common.Tools;

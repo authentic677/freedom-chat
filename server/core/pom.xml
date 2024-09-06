@@ -13,11 +13,6 @@
     <artifactId>core</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0</version>
-        </dependency>
 
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

@@ -8,7 +8,6 @@
     <modules>
         <module>core</module>
         <module>zone</module>
-        <module>common</module>
     </modules>
 
     <groupId>org.example</groupId>

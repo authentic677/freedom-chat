@@ -2,24 +2,28 @@ package xyz677123.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
+import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.filter.MainFilter;
 import xyz677123.pojo.Post;
 import xyz677123.service.PostService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/zone")
 public class PostController {
 
     @Autowired
     PostService postService;
 
-    @GetMapping("/post")
-    public Result postList(@PathVariable String uid) {
+    @GetMapping("/posts")
+    public Result postList() {
+        //获取请求所关联的用户
+        User user = MainFilter.getThreadLocal().get();
 
         List<Post> list = postService.lambdaQuery()
-                .eq(Post::getUid, uid)
+                .eq(Post::getUid, user.getUid())
                 .eq(Post::getParent,-1)
                 .list();
 

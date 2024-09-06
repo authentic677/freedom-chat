@@ -7,7 +7,7 @@ import site.liuqq.freedom_chat.mapper.ContactMapper;
 import site.liuqq.freedom_chat.mapper.MessageNoticeMapper;
 import site.liuqq.freedom_chat.pojo.Contact;
 import site.liuqq.freedom_chat.pojo.MessageNotice;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.service.MessageNoticeService;
 
 import java.util.List;

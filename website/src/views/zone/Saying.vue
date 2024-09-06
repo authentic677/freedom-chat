@@ -1,15 +1,18 @@
 <script setup>
 import {ref} from "vue";
 import {useRouter} from "vue-router";
+import config from "../../config/config.js";
 
 const router = useRouter();
 
 let currentClick=ref(-1)
 
-const md=(i)=>{
+let postsList=ref([])
+
+const mousedown=(i)=>{
     currentClick.value=i
 }
-const mu=()=>{
+const mouseup=()=>{
     currentClick.value=-1
 
     setTimeout(()=>{
@@ -17,29 +20,47 @@ const mu=()=>{
         router.push('/zone/saying/sayingDetail')
     },50)
 }
+
+const getData=async ()=>{
+    let res=await fetch('/api/zone/posts',{
+        headers:{
+            token:localStorage.getItem('token')
+        }
+    })
+    let json=await res.json()
+
+    console.log(json)
+
+    postsList.value=json.data.map(e=>{
+        e.content=JSON.parse(e.content)
+        return e
+    })
+}
+
+getData()
 </script>
 
 <template>
     <div class="saying">
         <div
-            class="item" v-for="item in 10"
+            class="item" v-for="(item,index) in postsList"
             :class="{'highlight':currentClick===item}"
-            @mousedown="md(item)"
-            @mouseup="mu"
+            @mousedown="mousedown(item)"
+            @mouseup="mouseup"
         >
             <div class="left">
                 <img src="https://ts1.cn.mm.bing.net/th?id=ODLS.3dc6f5f0-f66b-4880-893d-62d29cba6f62&w=18&h=18&o=6&dpr=1.3&pid=Tech" alt="">
             </div>
             <div class="right">
                 <div class="name">多伦多</div>
-                <div class="time">2021年8月21日 17:55:21</div>
+                <div class="time">{{item.time}}</div>
                 <div class="content">
-                    <div>图一加拿大学生学习的东西</div>
-                    <div>图二中国学生学习的东西</div>
-                    <div>图一加拿大学生学习的东西</div>
-                    <div>图二中国学生学习的东西</div>
-                    <div>图一加拿大学生学习的东西</div>
-                    <div>图二中国学生学习的东西</div>
+                    <div class="text">
+                        {{item.content.text}}
+                    </div>
+                    <div class="attachment" v-for="(item2,index) in item.content.attachments">
+                        <img :src="config.minioUrl+item2" alt="">
+                    </div>
                 </div>
                 <div class="ops">
                     <div class="ops_item">
@@ -98,6 +119,15 @@ const mu=()=>{
                 color: gray;
 
                 margin-bottom: 10px;
+            }
+            .content{
+
+                .attachment{
+
+                    img{
+                        max-width: 48%;
+                    }
+                }
             }
             .ops{
                 padding-top: 1rem;

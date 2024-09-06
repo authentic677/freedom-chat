@@ -8,7 +8,7 @@ import site.liuqq.freedom_chat.mapper.*;
 import site.liuqq.freedom_chat.pojo.*;
 import site.liuqq.freedom_chat.service.ContactNoticeService;
 import site.liuqq.freedom_chat.common.DataUpdateNotify;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.common.Tools;
 
 import java.time.LocalDateTime;

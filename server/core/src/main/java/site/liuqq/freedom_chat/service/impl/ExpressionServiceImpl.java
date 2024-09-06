@@ -6,7 +6,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import site.liuqq.freedom_chat.mapper.ExpressionMapper;
 import site.liuqq.freedom_chat.pojo.Expression;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.service.ExpressionService;
 
 import java.io.InputStream;

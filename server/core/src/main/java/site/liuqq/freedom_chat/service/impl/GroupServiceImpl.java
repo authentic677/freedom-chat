@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import site.liuqq.freedom_chat.conf.CustomConfig;
 import site.liuqq.freedom_chat.mapper.GroupMapper;
 import site.liuqq.freedom_chat.pojo.group.Group;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.service.GroupService;
 
 import java.util.List;

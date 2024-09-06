@@ -9,7 +9,7 @@ import site.liuqq.freedom_chat.service.MessageNoticeService;
 import site.liuqq.freedom_chat.service.impl.MessageNoticeServiceImpl;
 import site.liuqq.freedom_chat.service.impl.MessageServiceImpl;
 import site.liuqq.freedom_chat.service.impl.UserChatRecordServiceImpl;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.common.Tools;
 
 import java.time.LocalDateTime;

@@ -3,7 +3,7 @@ package site.liuqq.freedom_chat.controller;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.conf.CustomConfig;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.pojo.group.Group;
 import site.liuqq.freedom_chat.pojo.group.GroupApplicant;

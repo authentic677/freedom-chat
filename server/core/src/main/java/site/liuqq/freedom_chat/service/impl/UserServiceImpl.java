@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import site.liuqq.freedom_chat.conf.CustomConfig;
 import site.liuqq.freedom_chat.dao.UserDao;
 import site.liuqq.freedom_chat.mapper.UserMapper;
-import site.liuqq.freedom_chat.common.Result;
+import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
 import site.liuqq.freedom_chat.service.UserService;
 import site.liuqq.freedom_chat.common.Tools;
