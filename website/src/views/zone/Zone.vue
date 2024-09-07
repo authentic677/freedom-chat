@@ -1,18 +1,39 @@
 <script setup>
 
+import config from "../../config/config.js";
+import {useRoute} from "vue-router";
+import {ref} from "vue";
+
+const route=useRoute()
+
+const currentUser=ref({})
 
 
+const getData=async ()=>{
+    let res=await fetch(`/api/user/${route.params.uid}`,{
+        headers:{
+            token:localStorage.getItem('token')
+        }
+    })
+    let json=await res.json()
+
+    currentUser.value=json.data
+}
+
+getData()
 </script>
 
 <template>
 <div class="zone">
     <div class="main">
         <div class="middle">
-            <div class="title">XXX的空间</div>
+            <div class="title">{{ currentUser.username }}的空间</div>
 
             <div class="header">
-                <img src="https://qlogo2.store.qq.com/qzone/945491917/945491917/100?0" alt="">
-                <div class="name">XXX</div>
+                <div class="img-wrapper">
+                    <img :src="config.minioUrl+currentUser.avatar" alt="">
+                </div>
+                <div class="name">{{ currentUser.username }}</div>
             </div>
 
             <div class="nav">
@@ -22,7 +43,7 @@
                 <div class="item">留言板</div>
             </div>
 
-            <router-view></router-view>
+            <router-view :currentUser="currentUser"></router-view>
 
         </div>
     </div>
@@ -64,8 +85,17 @@
                 display: flex;
                 align-items: center;
 
-                img{
+                .img-wrapper{
+                    padding: 3px;
+                    border: 1px solid #D9D9D9;
+                    background-color: white;
                     margin-right: 1rem;
+
+                    img{
+                        width: 120px;
+                        height: 120px;
+                        vertical-align: top;
+                    }
                 }
                 .name{
                     font-size: 25px;

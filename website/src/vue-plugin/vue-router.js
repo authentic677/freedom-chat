@@ -88,11 +88,11 @@ const router= createRouter({
             ]
         },
         {
-            path:'/zone',component:()=>import('../views/zone/Zone.vue'),
-            redirect:'/zone/saying',
+            path:'/zone/:uid',component:()=>import('../views/zone/Zone.vue'),
             children:[
                 {
                     path:'saying',component: ()=>import('../views/zone/Saying.vue'),
+                    props:true, //此属性为真时，路由参数(params)当作props传递给路由子组件
                     children:[
                         {
                             path:'sayingDetail',component:()=>import('../views/zone/SayingDetail.vue'),

@@ -1,6 +1,7 @@
 package xyz677123.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -23,4 +24,9 @@ public class Post {
     String content;
     Long view;
     Integer parent;
+
+    @TableField(exist = false)
+    Integer commentCount;
+    @TableField(exist = false)
+    Integer likeCount;
 }

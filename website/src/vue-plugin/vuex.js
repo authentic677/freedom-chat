@@ -36,6 +36,7 @@ export default createStore({
                 }
             }).then(res=>res.json()).then(json=>{
                 localStorage.setItem('user',JSON.stringify(json.data))
+                localStorage.setItem('uid',json.data.uid)
             })
 
 
