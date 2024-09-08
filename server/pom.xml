@@ -10,7 +10,7 @@
         <module>zone</module>
     </modules>
 
-    <groupId>org.example</groupId>
+    <groupId>xyz.677123</groupId>
     <artifactId>freedom_chat</artifactId>
     <version>1.0</version>
 
@@ -187,6 +187,13 @@
     </dependencies>
 
 
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

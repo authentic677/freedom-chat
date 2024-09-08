@@ -4,16 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.example</groupId>
+        <groupId>xyz.677123</groupId>
         <artifactId>freedom_chat</artifactId>
         <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>zone</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.example</groupId>
+            <groupId>xyz.677123</groupId>
             <artifactId>core</artifactId>
             <version>1.0</version>
         </dependency>
