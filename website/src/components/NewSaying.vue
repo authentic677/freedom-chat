@@ -59,7 +59,7 @@ export default {
 
             console.log(json)
 
-            this.$emit('close')
+            this.$emit('close',true)
         }
     },
     watch:{

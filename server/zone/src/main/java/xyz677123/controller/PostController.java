@@ -41,6 +41,7 @@ public class PostController {
         List<Post> list = postService.lambdaQuery()
                 .eq(Post::getUid, uid)
                 .eq(Post::getParent,-1)
+                .orderByDesc(Post::getTime)
                 .list();
 
         list.forEach(e->{
