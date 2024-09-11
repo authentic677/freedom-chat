@@ -1,5 +1,6 @@
 package xyz677123.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.pojo.Result;
@@ -24,10 +25,10 @@ public class PostController {
     @GetMapping("/posts")
     public Result postList() {
         //获取请求所关联的用户
-        User user = MainFilter.getThreadLocal().get();
+        String uid=(String) StpUtil.getLoginId();
 
         List<Post> list = postService.lambdaQuery()
-                .eq(Post::getUid, user.getUid())
+                .eq(Post::getUid, uid)
                 .eq(Post::getParent,-1)
                 .list();
 

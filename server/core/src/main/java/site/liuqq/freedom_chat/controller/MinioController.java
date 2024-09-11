@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
@@ -30,7 +31,9 @@ public class MinioController {
     UserChatRecordService userChatRecordService;
 
     @PostMapping("/upload/{uuid}")
-    public Result upload(@PathVariable String uuid, HttpServletRequest request, HttpSession session) {
+    public Result upload(@PathVariable String uuid, HttpServletRequest request) {
+
+        String uid= (String) StpUtil.getLoginId();
 
         try {
             InputStream inputStream = request.getInputStream();
@@ -59,7 +62,7 @@ public class MinioController {
             );
             //添加消息记录
             UserChatRecord userChatRecord=new UserChatRecord();
-            userChatRecord.setUid2(((User)session.getAttribute("user")).getUid());
+            userChatRecord.setUid2(uid);
             userChatRecord.setUid1((String) map.get("peerUid"));
             userChatRecord.setType("file");
             userChatRecord.setContent(map.get("bucketName")+"/"+map.get("objectName"));

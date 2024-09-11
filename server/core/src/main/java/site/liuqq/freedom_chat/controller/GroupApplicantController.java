@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class GroupApplicantController {
     @GetMapping("/groupApplicants/applicantSide")
     public Result getGroupApplicants(HttpSession session) {
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         List<GroupApplicant> list = groupApplicantServiceImpl
                 .lambdaQuery()
@@ -61,7 +62,7 @@ public class GroupApplicantController {
     @GetMapping("/groupApplicants/adminSide")
     public Result getGroupApplicants2(HttpSession session) {
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         //查询这个用户具有管理权限的群聊
         List<GroupMember> list = groupMemberServiceImpl
@@ -102,7 +103,7 @@ public class GroupApplicantController {
     @PostMapping("/groupApplicant")
     public Result groupApplicant(@RequestBody GroupApplicant groupApplicant, HttpSession session) {
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         groupApplicant.setApplicantUid(uid);
         groupApplicant.setApplyTime(Tools.now(customConfig.getZone()));
@@ -151,7 +152,7 @@ public class GroupApplicantController {
     @DeleteMapping("/groupApplicant/{id}")
     public Result delete(@PathVariable Integer id, HttpSession session){
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         groupApplicantServiceImpl.removeById(id);
 
@@ -162,7 +163,7 @@ public class GroupApplicantController {
     @PutMapping("/groupApplicant/agree/{id}")
     public Result agree(@PathVariable Integer id, HttpSession session){
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         //其实需要验证用户是否有这个权限的，这里先暂时省略
 
@@ -190,7 +191,7 @@ public class GroupApplicantController {
     @PutMapping("/groupApplicant/refuse/{id}")
     public Result refuse(@PathVariable Integer id, HttpSession session){
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         //其实需要验证用户是否有这个权限的，这里先暂时省略
 

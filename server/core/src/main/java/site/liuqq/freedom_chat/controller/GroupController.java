@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import jakarta.servlet.http.HttpSession;
@@ -48,7 +49,7 @@ public class GroupController {
         }
 
         //获取我方uid
-        String uid=((User)session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
         group.setCreatorUid(uid);
         group.setGid(Tools.generateRandomNumberString(10));
         group.setAvatar("/avatar/0-120x120.jpg");
@@ -92,7 +93,7 @@ public class GroupController {
     Result update(@RequestBody Group group, HttpSession session){
 
         //获取我方uid
-        String uid=((User)session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         //修改之前要做权限判定的，这里省略
 
@@ -116,7 +117,8 @@ public class GroupController {
     @DeleteMapping("/group/{gid}")
     @Transactional
     Result delete(@PathVariable String gid, HttpSession session){
-        String uid=((User)session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
+
 
         //鉴权，略
 

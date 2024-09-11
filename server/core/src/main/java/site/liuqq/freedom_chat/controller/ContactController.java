@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.pojo.Contact;
@@ -17,19 +18,17 @@ public class ContactController {
 
     //查询用户所拥有的好友的信息的接口
     @GetMapping("/contacts")
-    public Result list(@RequestHeader String token){
-        User user= Tools.checkJwtToken(token);
-        String uid=user.getUid();
-
+    public Result list(){
+        String uid=(String) StpUtil.getLoginId();
         return contactService.listByUid(uid);
     }
 
     //查询用户所拥有的好友的信息的接口 新接口，比list1新增了功能
     @GetMapping("/contacts2")
-    public Result list2(@RequestHeader String token,String uid2){
-        User user= Tools.checkJwtToken(token);
+    public Result list2(String uid2){
 
-        String uid=user.getUid();
+        String uid=(String) StpUtil.getLoginId();
+
         Contact contact = new Contact();
         contact.setUid1(uid);
         contact.setUid2(uid2);

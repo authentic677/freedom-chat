@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private ServletContext servletContext;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
@@ -95,7 +94,7 @@ public class UserController {
     @GetMapping("/user/self")
     public Result user(HttpSession session){
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         User one = userServiceImpl
                 .lambdaQuery()
@@ -108,7 +107,7 @@ public class UserController {
     @GetMapping("/user/{uid}")
     public Result queryUser(@PathVariable String uid,HttpSession session){
 
-        String uid0 = ((User) session.getAttribute("user")).getUid();
+        String uid0=(String) StpUtil.getLoginId();
 
         //不会查询所有的字段，敏感字段不能查询
         User one = userServiceImpl

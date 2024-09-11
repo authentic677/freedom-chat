@@ -1,7 +1,9 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpSession;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.conf.CustomConfig;
@@ -23,28 +25,25 @@ import java.util.List;
 @RequestMapping("/api")
 public class GroupMessageController {
 
-    private final GroupMessageServiceImpl groupMessageServiceImpl;
-    private final UserServiceImpl userServiceImpl;
-    private final CustomConfig customConfig;
-    private final GroupMemberServiceImpl groupMemberServiceImpl;
-    private final GroupMessageNoticeServiceImpl groupMessageNoticeServiceImpl;
-    private final SqlSessionTemplate sqlSessionTemplate;
+    @Autowired
+    private GroupMessageServiceImpl groupMessageServiceImpl;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+    @Autowired
+    private CustomConfig customConfig;
+    @Autowired
+    private GroupMemberServiceImpl groupMemberServiceImpl;
+    @Autowired
+    private GroupMessageNoticeServiceImpl groupMessageNoticeServiceImpl;
 
-    public GroupMessageController(GroupMessageServiceImpl groupMessageServiceImpl, UserServiceImpl userServiceImpl, CustomConfig customConfig, GroupMemberServiceImpl groupMemberServiceImpl, GroupMessageNoticeServiceImpl groupMessageNoticeServiceImpl, SqlSessionTemplate sqlSessionTemplate) {
-        this.groupMessageServiceImpl = groupMessageServiceImpl;
-        this.userServiceImpl = userServiceImpl;
-        this.customConfig = customConfig;
-        this.groupMemberServiceImpl = groupMemberServiceImpl;
-        this.groupMessageNoticeServiceImpl = groupMessageNoticeServiceImpl;
-        this.sqlSessionTemplate = sqlSessionTemplate;
-    }
 
     //创建一条群聊消息
     @PostMapping("/groupMessage")
     @Transactional
     Result insert(@RequestBody GroupMessage groupMessage, HttpSession session){
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
+
 
         //前端填充了gid，type，和content，不做鉴权
 
@@ -98,7 +97,8 @@ public class GroupMessageController {
     @GetMapping("/groupMessages/{gid}")
     Result getGroupMessage(@PathVariable String gid, HttpSession session){
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid =(String) StpUtil.getLoginId();
+
 
         //鉴权略
 

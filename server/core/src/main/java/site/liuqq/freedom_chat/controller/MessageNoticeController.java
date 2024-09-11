@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,9 @@ public class MessageNoticeController {
     //某用户在它的消息通知列表中添加另一个用户
     //增
     @PostMapping("/messageNotice/{uid2}")
-    Result insert(@PathVariable String uid2, HttpSession session){
+    Result insert(@PathVariable String uid2){
 
-        String uid1 = ((User) session.getAttribute("user")).getUid();
+        String uid1=(String) StpUtil.getLoginId();
 
         //不存在则新增，否则不做任何事
         //1.判断是否存在
@@ -87,18 +88,18 @@ public class MessageNoticeController {
 
     //查
     @GetMapping("/messageNotices")
-    Result selectByUid(@RequestHeader String token,String targetUid){
-        User user = Tools.checkJwtToken(token);
-        String uid=user.getUid();
+    Result selectByUid(String targetUid){
+
+        String uid=(String) StpUtil.getLoginId();
 
         return messageNoticeService.selectByUid(uid,targetUid);
     }
 
     //改
     @PutMapping("/messageNotice/clearCount/{uid2}")
-    Result clearCount(@PathVariable String uid2,HttpSession session){
+    Result clearCount(@PathVariable String uid2){
 
-        String uid1 = ((User) session.getAttribute("user")).getUid();
+        String uid1=(String) StpUtil.getLoginId();
 
         boolean update = messageNoticeServiceImpl
                 .lambdaUpdate()
@@ -116,10 +117,9 @@ public class MessageNoticeController {
 
     //删
     @DeleteMapping("/messageNotice")
-    Result delete(@RequestBody MessageNotice messageNotice,@RequestHeader String token){
+    Result delete(@RequestBody MessageNotice messageNotice){
 
-        User user = Tools.checkJwtToken(token);
-        String uid=user.getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         messageNotice.setUid1(uid);
 

@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class GroupMessageNoticeController {
     @GetMapping("/groupMessageNotices")
     Result query(HttpSession session){
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid= (String) StpUtil.getLoginId();
 
         List<GroupMessageNotice> list = groupMessageNoticeServiceImpl
                 .lambdaQuery()
@@ -63,7 +64,7 @@ public class GroupMessageNoticeController {
     @PutMapping("/groupMessageNotice/clearCount/{gid}")
     Result clearCount(@PathVariable("gid") String gid,HttpSession session){
 
-        String uid = ((User) session.getAttribute("user")).getUid();
+        String uid = (String) StpUtil.getLoginId();
 
         boolean update = groupMessageNoticeServiceImpl
                 .lambdaUpdate()

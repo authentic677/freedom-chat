@@ -114,7 +114,7 @@ public class ToolController {
 
     //检查邮箱是否注册过或用户ID是否存在的接口
     @GetMapping("/checkAccount")
-    public Result checkAccount(String account,HttpSession session){
+    public Result checkAccount(String account){
 
         User user = userMapper.selectByAccount(account);
         if (user==null){

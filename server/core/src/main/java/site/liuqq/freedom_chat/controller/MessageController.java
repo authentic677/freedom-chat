@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class MessageController {
     @PostMapping("/message/{peerUid}")
     public Result sendMessage(@PathVariable String peerUid, HttpSession session, HttpServletRequest request) throws Exception {
         //获取我方uid
-        String uid=((User)session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         //消息内容输入流
         InputStream inputStream=request.getInputStream();

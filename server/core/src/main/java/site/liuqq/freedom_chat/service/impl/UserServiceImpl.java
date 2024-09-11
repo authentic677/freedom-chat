@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
             user.setPassword(Tools.passwordHash(user.getPassword()));
             User user1=userMapper.getByAccountAndPassword(user);
 
-            return user1==null?Result.error("用户名或密码错误"):Result.success(Tools.makeJwtToken(user1));
+            if (user1!=null){
+                StpUtil.login(user1.getUid());
+                return Result.success(Tools.makeJwtToken(user1));
+            }else {
+                return Result.error("用户名或密码错误");
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
             return null;

@@ -1,5 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class GroupMemberController {
     Result group(HttpSession session){
 
         //获取我方uid
-        String uid=((User)session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         List<GroupMember> list = groupMemberService
                 .lambdaQuery()
@@ -52,7 +53,7 @@ public class GroupMemberController {
     Result specifyGroup(@PathVariable String gid, HttpSession session){
 
         //获取我方uid
-        String uid=((User)session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
 
         GroupMember groupMember = groupMemberService
                 .lambdaQuery()
@@ -84,7 +85,8 @@ public class GroupMemberController {
     Result update(@RequestBody GroupMember groupMember, HttpSession session){
 
         //获取我方uid
-        String uid=((User)session.getAttribute("user")).getUid();
+        String uid=(String) StpUtil.getLoginId();
+
 
         LambdaUpdateWrapper<GroupMember> wrapper = new LambdaUpdateWrapper<>(GroupMember.class);
         //更新字段

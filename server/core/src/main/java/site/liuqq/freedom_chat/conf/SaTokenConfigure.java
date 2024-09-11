@@ -1,4 +1,4 @@
-package xyz677123.conf;
+package site.liuqq.freedom_chat.conf;
 
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
@@ -13,7 +13,15 @@ public class SaTokenConfigure implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册 Sa-Token 拦截器，打开注解式鉴权功能
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))
-                .addPathPatterns("/**");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/api/login")
+                .excludePathPatterns("/api/email_login")
+                .excludePathPatterns("/api/captcha")
+                .excludePathPatterns("/api/mailVerifyCode")
+                .excludePathPatterns("/api/checkToken")
+                .excludePathPatterns("/api/checkAccount")
+                .excludePathPatterns("/api/checkEmailVerifyCode")
+                .excludePathPatterns("/api/resetPwd");
     }
 }
 
