@@ -13,7 +13,6 @@ import xyz677123.service.PostService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/zone")
 public class PostController {
 
     @Autowired

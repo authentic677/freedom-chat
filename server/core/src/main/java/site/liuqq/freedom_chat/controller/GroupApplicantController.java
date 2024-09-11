@@ -1,6 +1,7 @@
 package site.liuqq.freedom_chat.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.conf.CustomConfig;
 import site.liuqq.freedom_chat.pojo.Result;
@@ -22,19 +23,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class GroupApplicantController {
 
-    private final CustomConfig customConfig;
-    private final GroupApplicantServiceImpl groupApplicantServiceImpl;
-    private final GroupMemberServiceImpl groupMemberServiceImpl;
-    private final GroupServiceImpl groupServiceImpl;
-    private final UserServiceImpl userServiceImpl;
+    @Autowired
+    private CustomConfig customConfig;
+    @Autowired
+    private GroupApplicantServiceImpl groupApplicantServiceImpl;
+    @Autowired
+    private GroupMemberServiceImpl groupMemberServiceImpl;
+    @Autowired
+    private GroupServiceImpl groupServiceImpl;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
-    public GroupApplicantController(CustomConfig customConfig, GroupApplicantServiceImpl groupApplicantServiceImpl, GroupMemberServiceImpl groupMemberServiceImpl, GroupServiceImpl groupServiceImpl, UserServiceImpl userServiceImpl) {
-        this.customConfig = customConfig;
-        this.groupApplicantServiceImpl = groupApplicantServiceImpl;
-        this.groupMemberServiceImpl = groupMemberServiceImpl;
-        this.groupServiceImpl = groupServiceImpl;
-        this.userServiceImpl = userServiceImpl;
-    }
 
     //查询已经发出了向哪些群的申请
     @GetMapping("/groupApplicants/applicantSide")

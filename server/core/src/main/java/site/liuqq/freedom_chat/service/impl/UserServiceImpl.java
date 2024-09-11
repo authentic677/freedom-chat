@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.liuqq.freedom_chat.conf.CustomConfig;
-import site.liuqq.freedom_chat.dao.UserDao;
+
 import site.liuqq.freedom_chat.mapper.UserMapper;
 import site.liuqq.freedom_chat.pojo.Result;
 import site.liuqq.freedom_chat.pojo.User;
@@ -16,8 +16,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
 
-    @Autowired
-    private UserDao userDao;
+
     @Autowired
     private UserMapper userMapper;
     @Autowired

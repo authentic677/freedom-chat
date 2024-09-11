@@ -1,5 +1,7 @@
 package xyz677123.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.stp.StpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.minio.MinioClient;
@@ -14,6 +16,7 @@ import xyz677123.service.PostService;
 
 @RestController
 @RequestMapping("/test")
+@SaCheckLogin
 public class TestController {
 
     @Autowired
@@ -27,27 +30,12 @@ public class TestController {
 
 
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
-        Post post = objectMapper.readValue(text, Post.class);
-
-        postService.save(post);
-
-        if (attachments!=null){
-            int i=0;
-            for (MultipartFile attachment : attachments) {
-                minioClient.putObject(PutObjectArgs.builder()
-                        .bucket("post")
-                        .object(n[i])
-                        .stream(attachment.getInputStream(),attachment.getSize(),-1)
-                        .build()
-                );
-                i++;
-            }
-        }
-
-
         return "ok";
+    }
+
+    @GetMapping("/t")
+    public String t(){
+
+        return "ok2";
     }
 }
