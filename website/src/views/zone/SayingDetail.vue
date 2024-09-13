@@ -2,7 +2,7 @@
 
 import {useRoute, useRouter} from "vue-router";
 import SayingNode from "../../components/SayingNode.vue";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 
 const router=useRouter()
 const route=useRoute()
@@ -77,6 +77,10 @@ const getData=async ()=>{
 }
 
 getData()
+
+watch(()=>route.params.id,(newId,oldId)=>{
+    getData()
+})
 </script>
 
 <script>
@@ -93,7 +97,7 @@ export default {
         </div>
         <div class="main">
             <div class="subject">
-                <SayingNode :data="post" variant="primary" />
+                <SayingNode :data="post" variant="primary" @update="getData" />
             </div>
             <div class="comment">
                 <div class="filter">
@@ -112,7 +116,7 @@ export default {
                 </div>
                 <div class="list">
                     <div class="item" v-for="(item,index) in commentPosts">
-                        <SayingNode :data="item" :key="item.id" variant="secondary" />
+                        <SayingNode :data="item" :key="item.id" variant="secondary" @update="getData" />
                     </div>
                 </div>
             </div>

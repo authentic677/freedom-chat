@@ -4,7 +4,7 @@
 
 前端框架：Vue3、Element-Plus、Less
 
-后端框架：SpringBoot3
+后端框架：SpringBoot3、MyBatis、MyBatisPlus
 
 项目管理工具：Vite，Maven
 
