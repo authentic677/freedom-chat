@@ -7,11 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.freedomchat.common.pojo.Result;
 import site.liuqq.freedom_chat.pojo.UserChatRecord;
 import site.liuqq.freedom_chat.service.UserChatRecordService;
-import site.liuqq.freedom_chat.common.Tools;
+import xyz677123.freedomchat.common.util.Tools;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -41,7 +40,7 @@ public class MessageController {
         String size = request.getHeader("x-amz-meta-size");
 
         if ("img".equals(type)){
-            String objectName=Tools.getCurrentYearMonth()+"/img/"+ UUID.randomUUID()+"/"+name;
+            String objectName= Tools.getCurrentYearMonth()+"/img/"+ UUID.randomUUID()+"/"+name;
 
             //自定义自己的元数据，必须以x-amz-meta前缀开头
             Map<String,String> headers=new HashMap<>();

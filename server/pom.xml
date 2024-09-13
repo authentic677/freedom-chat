@@ -8,6 +8,7 @@
     <modules>
         <module>core</module>
         <module>zone</module>
+        <module>common</module>
     </modules>
 
     <groupId>xyz.677123</groupId>
@@ -44,17 +45,20 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+
+
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
         <dependency>
@@ -161,29 +165,26 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-<!--        数据源-->
+        <!--        数据源-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.2.6</version> <!-- 这里是版本号，你可以根据需求选择最新的版本 -->
         </dependency>
 
-<!--        minio-->
+        <!--        minio-->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>8.5.11</version>
         </dependency>
 
-<!--        resend 邮件发送平台，只需有一个域名就能提供发送以此域名的邮箱作为发件人的邮件，有免费计划-->
+        <!--        resend 邮件发送平台，只需有一个域名就能提供发送以此域名的邮箱作为发件人的邮件，有免费计划-->
         <dependency>
             <groupId>com.resend</groupId>
             <artifactId>resend-java</artifactId>
             <version>3.1.0</version>
         </dependency>
-
-
-
     </dependencies>
 
 

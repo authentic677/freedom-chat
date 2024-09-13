@@ -1,4 +1,4 @@
-package xyz677123.controller;
+package xyz677123.freedomchat.zone.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
@@ -11,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import xyz677123.pojo.Post;
-import xyz677123.service.PostService;
+import xyz677123.freedomchat.zone.service.PostService;
 
 @RestController
 @RequestMapping("/test")

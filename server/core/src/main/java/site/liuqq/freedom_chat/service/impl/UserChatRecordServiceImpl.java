@@ -14,8 +14,8 @@ import site.liuqq.freedom_chat.mapper.MessageNoticeMapper;
 import site.liuqq.freedom_chat.pojo.*;
 import site.liuqq.freedom_chat.service.UserChatRecordService;
 import site.liuqq.freedom_chat.common.DataUpdateNotify;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.common.Tools;
+import xyz677123.freedomchat.common.pojo.Result;
+import xyz677123.freedomchat.common.util.Tools;
 
 import java.util.ArrayList;
 import java.util.List;

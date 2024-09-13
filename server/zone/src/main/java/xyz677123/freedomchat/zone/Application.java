@@ -1,4 +1,4 @@
-package xyz677123;
+package xyz677123.freedomchat.zone;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

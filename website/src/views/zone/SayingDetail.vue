@@ -1,12 +1,31 @@
 <script setup>
 
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import SayingNode from "../../components/SayingNode.vue";
 
 const router=useRouter()
+const route=useRoute()
 
 const back=()=>{
     router.back()
+}
+
+const getData=async ()=>{
+
+    let res=await fetch(`/api/zone/post/${route.params.id}`)
+    let json=await res.json()
+
+    console.log(json)
+
+}
+
+getData()
+</script>
+
+<script>
+// 在 export default 中指定组件名称
+export default {
+    name: 'SayingDetail'
 }
 </script>
 

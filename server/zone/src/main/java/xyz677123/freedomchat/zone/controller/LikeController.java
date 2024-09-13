@@ -1,13 +1,12 @@
-package xyz677123.controller;
+package xyz677123.freedomchat.zone.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import site.liuqq.freedom_chat.common.Tools;
-import site.liuqq.freedom_chat.pojo.Result;
-import xyz677123.pojo.Like;
-import xyz677123.service.LikeService;
+import xyz677123.freedomchat.common.pojo.Result;
+import xyz677123.freedomchat.common.util.Tools;
+import xyz677123.freedomchat.zone.pojo.Like;
+import xyz677123.freedomchat.zone.service.LikeService;
 
 @RestController
 public class LikeController {

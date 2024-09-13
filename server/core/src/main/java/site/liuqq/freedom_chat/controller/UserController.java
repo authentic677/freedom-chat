@@ -1,13 +1,12 @@
 package site.liuqq.freedom_chat.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.freedomchat.common.pojo.Result;
+import xyz677123.freedomchat.common.pojo.User;
 import site.liuqq.freedom_chat.service.UserService;
 import site.liuqq.freedom_chat.service.impl.UserServiceImpl;
 

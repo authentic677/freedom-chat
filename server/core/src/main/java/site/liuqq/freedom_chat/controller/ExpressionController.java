@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import site.liuqq.freedom_chat.pojo.Result;
+import xyz677123.freedomchat.common.pojo.Result;
 import site.liuqq.freedom_chat.service.ExpressionService;
 
 @RestController

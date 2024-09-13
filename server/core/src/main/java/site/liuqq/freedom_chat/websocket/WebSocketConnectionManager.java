@@ -3,11 +3,9 @@ package site.liuqq.freedom_chat.websocket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.freedomchat.common.pojo.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class WebSocketConnectionManager {

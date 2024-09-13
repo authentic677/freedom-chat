@@ -1,7 +1,6 @@
 package site.liuqq.freedom_chat.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +9,7 @@ import site.liuqq.freedom_chat.service.MessageNoticeService;
 import site.liuqq.freedom_chat.service.impl.MessageNoticeServiceImpl;
 import site.liuqq.freedom_chat.service.impl.MessageServiceImpl;
 import site.liuqq.freedom_chat.service.impl.UserChatRecordServiceImpl;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.common.Tools;
+import xyz677123.freedomchat.common.pojo.Result;
 
 import java.time.LocalDateTime;
 import java.util.List;

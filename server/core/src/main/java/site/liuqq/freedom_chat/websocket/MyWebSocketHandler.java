@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
-import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.freedomchat.common.pojo.User;
 import site.liuqq.freedom_chat.common.DataUpdateNotify;
-import site.liuqq.freedom_chat.common.Tools;
+import xyz677123.freedomchat.common.util.Tools;
 
 import java.util.HashMap;
 import java.util.Map;

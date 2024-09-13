@@ -23,6 +23,13 @@ const getData=async ()=>{
 getData()
 </script>
 
+<script>
+// 在 export default 中指定组件名称
+export default {
+    name: 'Zone'
+}
+</script>
+
 <template>
 <div class="zone">
     <div class="main">
@@ -43,7 +50,11 @@ getData()
                 <div class="item">留言板</div>
             </div>
 
-            <router-view :currentUser="currentUser"></router-view>
+            <router-view include="Saying" v-slot="{ Component }" :currentUser="currentUser">
+                <keep-alive>
+                    <component :is="Component" />
+                </keep-alive>
+            </router-view>
 
         </div>
     </div>

@@ -1,4 +1,4 @@
-package site.liuqq.freedom_chat.common;
+package xyz677123.freedomchat.common.util;
 
 import com.resend.Resend;
 import com.resend.services.emails.model.CreateEmailOptions;
@@ -6,11 +6,10 @@ import com.resend.services.emails.model.CreateEmailResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import site.liuqq.freedom_chat.conf.CustomConfig;
-import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.freedomchat.common.pojo.User;
 
+import java.rmi.MarshalledObject;
 import java.security.MessageDigest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,9 +26,6 @@ import javax.mail.internet.MimeMessage;
 @Component
 public class Tools {
     private static final String secretKey="lqq677...";
-
-    @Autowired
-    CustomConfig customConfig;
 
     public static byte[] hexStringToByteArray(String hexString) {
         int len = hexString.length();
@@ -111,12 +107,11 @@ public class Tools {
         }
     }
 
-    public void sendMail2(String email,String code) throws Exception{
-        Resend resend = new Resend(customConfig.getResendApiKey());
-        System.out.println(customConfig.getResendApiKey());
+    public static void sendMail2(String email, String code,Map<String,String> config) throws Exception{
+        Resend resend = new Resend(config.get("resendApiKey"));
 
         CreateEmailOptions build = CreateEmailOptions.builder()
-                .from("freedom-chat <admin@"+customConfig.getEmailDomain()+">")
+                .from("freedom-chat <admin@"+config.get("emailDomain")+">")
                 .to(email)
                 .subject("自由聊天")
                 .html("<p>您的邮箱验证码是：<strong>"+code+"</strong></p>")

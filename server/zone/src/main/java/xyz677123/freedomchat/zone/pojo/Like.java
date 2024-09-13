@@ -1,7 +1,6 @@
-package xyz677123.pojo;
+package xyz677123.freedomchat.zone.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -15,18 +14,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@TableName("posts")
-public class Post {
+@TableName("likes")
+public class Like {
     @TableId(type = IdType.AUTO)
     Integer id;
     String uid;
     LocalDateTime time;
-    String content;
-    Long view;
-    Integer parent;
-
-    @TableField(exist = false)
-    Integer commentCount;
-    @TableField(exist = false)
-    Integer likeCount;
+    Integer postId;
 }

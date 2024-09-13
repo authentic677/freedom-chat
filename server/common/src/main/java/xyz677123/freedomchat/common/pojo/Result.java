@@ -1,4 +1,4 @@
-package site.liuqq.freedom_chat.pojo;
+package xyz677123.freedomchat.common.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

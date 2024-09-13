@@ -4,10 +4,8 @@ import cn.dev33.satoken.stp.StpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.pojo.UserChatRecord;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.freedomchat.common.pojo.Result;
 import site.liuqq.freedom_chat.service.UserChatRecordService;
-import site.liuqq.freedom_chat.common.Tools;
 
 import java.time.LocalDateTime;
 

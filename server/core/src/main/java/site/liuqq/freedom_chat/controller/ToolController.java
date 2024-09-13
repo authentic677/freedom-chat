@@ -2,7 +2,6 @@ package site.liuqq.freedom_chat.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
@@ -13,17 +12,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import site.liuqq.freedom_chat.conf.CustomConfig;
 import site.liuqq.freedom_chat.mapper.UserMapper;
-import site.liuqq.freedom_chat.pojo.Result;
+import xyz677123.freedomchat.common.pojo.Result;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import site.liuqq.freedom_chat.pojo.User;
-import site.liuqq.freedom_chat.common.Tools;
+import xyz677123.freedomchat.common.pojo.User;
+import xyz677123.freedomchat.common.util.Tools;
 
 import static site.liuqq.freedom_chat.common.RedisConstants.*;
 
@@ -36,7 +38,7 @@ public class ToolController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
-    private Tools tools;
+    private CustomConfig customConfig;
 
     //图片验证码接口
     @GetMapping("/captcha")
@@ -95,7 +97,10 @@ public class ToolController {
 //        boolean result=true;
         boolean result;
         try {
-            tools.sendMail2(email,code);
+            Map<String, String> config = new HashMap<>();
+            config.put("resendApiKey",customConfig.getResendApiKey());
+            config.put("emailDomain",customConfig.getEmailDomain());
+            Tools.sendMail2(email,code,config);
             result=true;
         }catch (Exception e){
             System.out.println(e.getMessage());

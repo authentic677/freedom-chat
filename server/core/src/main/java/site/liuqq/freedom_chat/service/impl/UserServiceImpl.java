@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import site.liuqq.freedom_chat.conf.CustomConfig;
 
 import site.liuqq.freedom_chat.mapper.UserMapper;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.freedomchat.common.pojo.Result;
+import xyz677123.freedomchat.common.pojo.User;
 import site.liuqq.freedom_chat.service.UserService;
-import site.liuqq.freedom_chat.common.Tools;
+import xyz677123.freedomchat.common.util.Tools;
 
 import java.util.List;
 

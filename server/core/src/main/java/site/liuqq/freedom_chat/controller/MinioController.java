@@ -5,13 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.freedomchat.common.pojo.Result;
 import site.liuqq.freedom_chat.pojo.UserChatRecord;
 import site.liuqq.freedom_chat.service.UserChatRecordService;
 

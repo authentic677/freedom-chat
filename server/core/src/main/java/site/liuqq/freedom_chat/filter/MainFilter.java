@@ -1,15 +1,8 @@
 package site.liuqq.freedom_chat.filter;
 
-import com.alibaba.fastjson2.JSONObject;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.pojo.User;
-import site.liuqq.freedom_chat.common.Tools;
 
 import java.io.IOException;
 

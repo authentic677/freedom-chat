@@ -93,11 +93,9 @@ const router= createRouter({
                 {
                     path:'saying',component: ()=>import('../views/zone/Saying.vue'),
                     props:true, //此属性为真时，路由参数(params)当作props传递给路由子组件
-                    children:[
-                        {
-                            path:'sayingDetail',component:()=>import('../views/zone/SayingDetail.vue'),
-                        }
-                    ]
+                },
+                {
+                    path:'sayingDetail/:id',component:()=>import('../views/zone/SayingDetail.vue'),
                 }
             ]
         },

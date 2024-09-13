@@ -1,4 +1,4 @@
-package xyz677123.conf;
+package xyz677123.freedomchat.zone.conf;
 
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpUtil;

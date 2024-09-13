@@ -1,8 +1,8 @@
-package xyz677123.exception;
+package xyz677123.freedomchat.zone.exception;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import site.liuqq.freedom_chat.pojo.Result;
+import xyz677123.freedomchat.common.pojo.Result;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

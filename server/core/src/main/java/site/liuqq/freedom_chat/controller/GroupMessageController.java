@@ -2,13 +2,12 @@ package site.liuqq.freedom_chat.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpSession;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import site.liuqq.freedom_chat.conf.CustomConfig;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.pojo.User;
+import xyz677123.freedomchat.common.pojo.Result;
+import xyz677123.freedomchat.common.pojo.User;
 import site.liuqq.freedom_chat.pojo.group.GroupMember;
 import site.liuqq.freedom_chat.pojo.group.GroupMessage;
 import site.liuqq.freedom_chat.pojo.group.GroupMessageNotice;
@@ -17,7 +16,7 @@ import site.liuqq.freedom_chat.service.impl.GroupMessageNoticeServiceImpl;
 import site.liuqq.freedom_chat.service.impl.GroupMessageServiceImpl;
 import site.liuqq.freedom_chat.service.impl.UserServiceImpl;
 import site.liuqq.freedom_chat.common.DataUpdateNotify;
-import site.liuqq.freedom_chat.common.Tools;
+import xyz677123.freedomchat.common.util.Tools;
 
 import java.util.List;
 

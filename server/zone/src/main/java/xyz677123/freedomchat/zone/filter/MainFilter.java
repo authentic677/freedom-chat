@@ -1,18 +1,9 @@
-package xyz677123.filter;
+package xyz677123.freedomchat.zone.filter;
 
-import cn.dev33.satoken.stp.StpUtil;
-import com.alibaba.fastjson2.JSONObject;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import site.liuqq.freedom_chat.common.Tools;
-import site.liuqq.freedom_chat.pojo.Result;
-import site.liuqq.freedom_chat.pojo.User;
-
+import xyz677123.freedomchat.common.pojo.User;
 
 
 import java.io.IOException;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.liuqq.freedom_chat.mapper.ContactMapper;
 import site.liuqq.freedom_chat.pojo.Contact;
-import site.liuqq.freedom_chat.pojo.Result;
+import xyz677123.freedomchat.common.pojo.Result;
 import site.liuqq.freedom_chat.service.ContactService;
 import site.liuqq.freedom_chat.websocket.WebSocketConnectionManager;
 

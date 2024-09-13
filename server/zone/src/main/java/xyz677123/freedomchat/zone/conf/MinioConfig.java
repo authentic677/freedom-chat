@@ -1,4 +1,4 @@
-package xyz677123.conf;
+package xyz677123.freedomchat.zone.conf;
 
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
