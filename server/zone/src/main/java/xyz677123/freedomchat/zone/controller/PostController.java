@@ -128,7 +128,20 @@ public class PostController {
                 .eq(Post::getParent, id)
                 .list();
 
-        //处理外键
+        //评论和点赞数
+        commentPost.forEach(e->{
+            //获取评论数
+            List<Post> comment = postService.lambdaQuery()
+                    .eq(Post::getParent, e.getId())
+                    .list();
+            e.setCommentCount(comment.size());
+            //获取点赞数
+
+            List<Like> like = likeService.lambdaQuery()
+                    .eq(Like::getPostId, e.getId())
+                    .list();
+            e.setLikeCount(like.size());
+        });
 
 
         return Result.success(commentPost);

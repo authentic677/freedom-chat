@@ -50,8 +50,9 @@ export default {
                 <div class="item">留言板</div>
             </div>
 
-            <router-view include="Saying" v-slot="{ Component }" :currentUser="currentUser">
-                <keep-alive>
+            <router-view v-slot="{ Component }" :currentUser="currentUser">
+<!--                只让Saying组件缓存不销毁-->
+                <keep-alive include="Saying" >
                     <component :is="Component" />
                 </keep-alive>
             </router-view>

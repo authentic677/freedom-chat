@@ -2,9 +2,29 @@
 
 import {useRoute, useRouter} from "vue-router";
 import SayingNode from "../../components/SayingNode.vue";
+import {ref} from "vue";
 
 const router=useRouter()
 const route=useRoute()
+
+//坑逼，如果不进行初始值，子组件在渲染时会报undefined错误，刷新时就知道了
+let post=ref({
+    user:{},
+    content:{}
+})
+let commentPosts=ref([])
+
+let commentFilter=ref('byTime')
+let options=ref([
+    {
+        value: 'byTime',
+        label: '按时间',
+    },
+    {
+        value: 'byLike',
+        label: '按点赞数',
+    }
+])
 
 const back=()=>{
     router.back()
@@ -12,10 +32,47 @@ const back=()=>{
 
 const getData=async ()=>{
 
-    let res=await fetch(`/api/zone/post/${route.params.id}`)
-    let json=await res.json()
+    //获取主帖子
+    {
+        let res = await fetch(`/api/zone/post/${route.params.id}`)
+        let json = await res.json()
 
-    console.log(json)
+        console.log(json)
+
+        json.data.content=JSON.parse(json.data.content)
+        json.data.user={}
+
+        fetch(`/api/user/${json.data.uid}`).then(res=>{
+            return res.json()
+        }).then(j=>{
+            post.value.user=j.data
+        })
+
+        post.value=json.data
+    }
+    //获取主帖子跟随的评论帖子
+    {
+        let res = await fetch(`/api/zone/commentPost/${route.params.id}`)
+        let json = await res.json()
+
+        console.log(json)
+
+        json.data.forEach((e,i)=> {
+            e.content = JSON.parse(e.content)
+            e.user={}
+            fetch(`/api/user/${e.uid}`).then(res=>{
+                return res.json()
+            }).then(j=>{
+                //必须操作commentPosts，操作e.user是无法实现响应式的
+                commentPosts.value[i].user=j.data
+            })
+        })
+
+        commentPosts.value=json.data
+    }
+
+    console.log(post.value)
+    console.log(commentPosts.value)
 
 }
 
@@ -36,14 +93,27 @@ export default {
         </div>
         <div class="main">
             <div class="subject">
-                <SayingNode />
+                <SayingNode :data="post" variant="primary" />
             </div>
             <div class="comment">
                 <div class="filter">
-                    条件筛选
+                    <el-select
+                        v-model="commentFilter"
+                        placeholder="Select"
+                        size="large"
+                    >
+                        <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                        />
+                    </el-select>
                 </div>
                 <div class="list">
-                    <SayingNode v-for="item in 10" />
+                    <div class="item" v-for="(item,index) in commentPosts">
+                        <SayingNode :data="item" :key="item.id" variant="secondary" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,6 +135,7 @@ export default {
 
     .back{
         padding: 1rem;
+
         svg{
             width: 20px;
             height: 20px;
@@ -73,16 +144,26 @@ export default {
     .main{
         max-width: 800px;
         margin: 0 auto;
-        border-left: 1px solid #7F7F7F;
-        border-right: 1px solid #7F7F7F;
+        border-left: 1px solid rgba(0,0,0,0.2);
+        border-right: 1px solid rgba(0,0,0,0.2);
 
         .subject{
 
-
+            border-bottom: 1px solid rgba(0,0,0,0.2);
         }
         .comment{
-            border-top: 1px solid gray;
-            padding-top: 1rem;
+
+            .filter{
+                overflow: hidden;
+                margin: 1rem;
+            }
+            .list{
+
+                .item{
+                    margin: 1rem 0;
+                    border-bottom: 1px solid rgba(0,0,0,0.2);
+                }
+            }
         }
     }
 
