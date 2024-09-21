@@ -32,101 +32,111 @@ export default {
 
 <template>
 <div class="zone">
-    <div class="main">
-        <div class="middle">
-            <div class="title">{{ currentUser.username }}的空间</div>
 
-            <div class="header">
-                <div class="img-wrapper">
-                    <img :src="config.minioUrl+currentUser.avatar" alt="">
-                </div>
-                <div class="name">{{ currentUser.username }}</div>
+    <div class="layout-head">
+        <div class="title">{{ currentUser.username }}的空间</div>
+    </div>
+    <div class="layout-nav">
+        <div class="inner">
+            <div class="avatar">
+                <img :src="config.minioUrl+currentUser.avatar" alt="">
+                <div class="username">{{ currentUser.username }}</div>
             </div>
-
-            <div class="nav">
-                <div class="item">说说</div>
-                <div class="item">日志</div>
-                <div class="item">相册</div>
-                <div class="item">留言板</div>
-            </div>
-
+            <ul>
+                <li @click="$router.push(`/zone/${$route.params.uid}/saying`)" >说说</li>
+                <li @click="$router.push(`/zone/${$route.params.uid}/journal`)" >日志</li>
+                <li>相册</li>
+                <li>留言板</li>
+            </ul>
+        </div>
+    </div>
+    <div class="layout-main">
+        <div class="box">
             <router-view v-slot="{ Component }" :currentUser="currentUser">
-<!--                只让Saying组件缓存不销毁-->
+                <!--                只让Saying组件缓存不销毁-->
                 <keep-alive include="Saying" >
                     <component :is="Component" />
                 </keep-alive>
             </router-view>
-
         </div>
     </div>
+
 </div>
 </template>
 
 <style scoped lang="less">
 .zone{
 
-    background-image: url("/zone-bg.png");
-    background-repeat: no-repeat;
-    background-position-x: center;
+    .layout-head{
+        height: 250px;
 
-    .main{
-        min-height: 100vh;
+        background-image: url("/zone-bg.png");
+        background-repeat: no-repeat;
+        background-position-x: center;
 
-        background: linear-gradient(to bottom,rgba(0,0,0,0) 50px,#E9E9E9 300px);
-        //background: red;
+        .title{
+            font-size: 30px;
+            color: white;
 
+            padding: 30px;
+        }
+    }
+    .layout-nav{
         display: flex;
         justify-content: center;
+        height: 50px;
 
-        .middle{
-            width: 100%;
-            max-width: 1000px;
-            height: 100%;
-            padding: 0 1rem;
-            box-sizing: border-box;
+        .inner{
+            display: flex;
+            width: 900px;
 
-            .title{
-                font-size: 30px;
-                color: white;
+            .avatar{
+                width: 128px;
+                height: 128px;
+                box-sizing: border-box;
+                padding: 3px;
+                background-color: white;
+                border: 1px solid #D9D9D9;
+                border-radius: 5px;
 
-                padding: 30px 0 60px;
-            }
-            .header{
-                margin-top: 1rem;
+                position: relative;
+                top: -200%;
 
-                display: flex;
-                align-items: center;
+                margin-right: 1rem;
 
-                .img-wrapper{
-                    padding: 3px;
-                    border: 1px solid #D9D9D9;
-                    background-color: white;
-                    margin-right: 1rem;
-
-                    img{
-                        width: 120px;
-                        height: 120px;
-                        vertical-align: top;
-                    }
+                img{
+                    width: 100%;
+                    height: 100%;
                 }
-                .name{
+                .username{
+                    position: absolute;
+                    left: 100%;
+                    top: 50%;
+                    margin-left: 1rem;
+
                     font-size: 25px;
                     color: white;
                 }
             }
-            .nav{
+            ul{
                 display: flex;
-                margin-top: 1rem;
+                align-items: center;
 
-                padding-bottom: 1rem;
-                border-bottom: 1px solid gray;
-
-                .item{
-                    margin-right: 1rem;
+                li{
+                    margin: 0 1rem;
                     cursor: pointer;
                 }
             }
+        }
+    }
+    .layout-main{
+        display: flex;
+        justify-content: center;
 
+        background-color: #E9E9E9;
+
+        .box{
+            width: 900px;
         }
     }
 }

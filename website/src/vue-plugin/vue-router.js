@@ -20,7 +20,7 @@ import AudioLiveCaller from "../views/live/AudioLiveCaller.vue";
 import VideoLiveCaller from "../views/live/VideoLiveCaller.vue";
 import VideoLiveCallee from "../views/live/VideoLiveCallee.vue";
 import GroupInfoShow from "../views/Contact/GroupInfoShow.vue";
-import * as path from "node:path";
+import Journal from "../views/zone/Journal.vue";
 
 const router= createRouter({
     history: createWebHashHistory(),
@@ -96,6 +96,9 @@ const router= createRouter({
                 },
                 {
                     path:'sayingDetail/:id',component:()=>import('../views/zone/SayingDetail.vue'),
+                },
+                {
+                    path:'journal',component: Journal
                 }
             ]
         },
@@ -108,7 +111,7 @@ const router= createRouter({
 //路由前置守卫
 router.beforeEach(async (to, from) => {
     //使用条件，避免登录后每次切换路由都请求一次很脓肿
-    if(from.path==='/'||from.path.startsWith('/authentication')){ //刷新时会触发，而普通路由切换不会触发
+    if(from.path==='/'||from.path.startsWith('/authentication')&&!to.path.startsWith('/test')){ //刷新时会触发，而普通路由切换不会触发
         console.log('身份验证')
         console.log(to,from)
         let token=localStorage.getItem("token")

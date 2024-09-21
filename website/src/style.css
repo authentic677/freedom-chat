@@ -5,3 +5,15 @@
 html{
     /*font-size: 18px;*/
 }
+
+ul{
+    list-style: none;
+}
+
+/*el-table组件的全局样式修改*/
+.el-table__inner-wrapper::before{
+    display: none;
+}
+.el-table__row{
+    cursor: pointer;
+}

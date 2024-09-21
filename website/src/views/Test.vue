@@ -7,25 +7,18 @@
 <template>
 <div class="test">
 
-    <div class="grid">
-        <div class="item" v-for="item in 2">
-            aaa
-        </div>
-        <div class="item">+</div>
+    <div class="container">
+        <el-empty description="no data" />
+
     </div>
 
 </div>
 </template>
 
 <style lang="less" scoped>
-.test{
-    .grid{
-        display: grid;
-        grid-template-columns: repeat(3,1fr);
-
-        .item{
-            aspect-ratio: 1;
-        }
-    }
+.container{
+    width: 400px;
+    height: 600px;
+    border: 1px solid black;
 }
 </style>

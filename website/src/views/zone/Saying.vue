@@ -83,7 +83,7 @@ export default {
 
 <style scoped lang="less">
 .saying{
-    margin-top: 2rem;
+    padding-top: 2rem;
 
     .item{
         border: 1px solid white;
