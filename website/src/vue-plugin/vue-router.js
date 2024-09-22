@@ -23,6 +23,7 @@ import GroupInfoShow from "../views/Contact/GroupInfoShow.vue";
 import Journal from "../views/zone/Journal.vue";
 import JournalEditor from "../views/zone/JournalEditor.vue";
 import JournalViewer from "../views/zone/JournalViewer.vue";
+import GuestBook from "../views/zone/GuestBook.vue";
 
 const router= createRouter({
     history: createWebHashHistory(),
@@ -107,6 +108,9 @@ const router= createRouter({
                 },
                 {
                     path:'journalViewer/:id',component: JournalViewer
+                },
+                {
+                    path:'guestBook',component: GuestBook
                 }
             ]
         },
