@@ -66,9 +66,14 @@ export default {
 
 <style scoped lang="less">
 .zone{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 
     .layout-head{
         height: 250px;
+
+        flex-shrink: 0;
 
         background-image: url("/zone-bg.png");
         background-repeat: no-repeat;
@@ -85,6 +90,8 @@ export default {
         display: flex;
         justify-content: center;
         height: 50px;
+
+        flex-shrink: 0;
 
         .inner{
             display: flex;
@@ -134,6 +141,8 @@ export default {
         justify-content: center;
 
         background-color: #E9E9E9;
+
+        flex-grow: 1;
 
         .box{
             width: 900px;

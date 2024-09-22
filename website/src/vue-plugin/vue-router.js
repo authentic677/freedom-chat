@@ -21,6 +21,8 @@ import VideoLiveCaller from "../views/live/VideoLiveCaller.vue";
 import VideoLiveCallee from "../views/live/VideoLiveCallee.vue";
 import GroupInfoShow from "../views/Contact/GroupInfoShow.vue";
 import Journal from "../views/zone/Journal.vue";
+import JournalEditor from "../views/zone/JournalEditor.vue";
+import JournalViewer from "../views/zone/JournalViewer.vue";
 
 const router= createRouter({
     history: createWebHashHistory(),
@@ -99,6 +101,12 @@ const router= createRouter({
                 },
                 {
                     path:'journal',component: Journal
+                },
+                {
+                    path:'journalEditor',component: JournalEditor
+                },
+                {
+                    path:'journalViewer/:id',component: JournalViewer
                 }
             ]
         },

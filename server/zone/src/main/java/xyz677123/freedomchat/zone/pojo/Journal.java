@@ -1,7 +1,6 @@
 package xyz677123.freedomchat.zone.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -15,15 +14,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@TableName("journal_categorys")
-public class JournalCategory {
+@TableName("journals")
+public class Journal {
     @TableId(type = IdType.AUTO)
     Integer id;
     String uid;
-    String name;
+    String title;
+    String content;
+    String status;
+    String letterPaper;
+    String visibility;
+    byte allowComments;
+    Integer categoryId;
+    byte isPrivate;
+    byte isDeleted;
+    LocalDateTime deletedAt;
+    byte isPinned;
+    LocalDateTime pinnedAt;
     LocalDateTime createdAt;
     LocalDateTime updateAt;
-
-    @TableField(exist = false)
-    Integer journalCount;
 }

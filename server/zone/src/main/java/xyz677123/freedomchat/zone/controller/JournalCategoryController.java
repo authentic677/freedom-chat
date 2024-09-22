@@ -4,11 +4,15 @@ import cn.dev33.satoken.stp.StpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz677123.freedomchat.common.pojo.Result;
+import xyz677123.freedomchat.zone.pojo.Journal;
 import xyz677123.freedomchat.zone.pojo.JournalCategory;
 import xyz677123.freedomchat.zone.service.JournalCategoryService;
+import xyz677123.freedomchat.zone.service.JournalService;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static net.sf.jsqlparser.parser.feature.Feature.update;
 
@@ -17,6 +21,8 @@ public class JournalCategoryController {
 
     @Autowired
     JournalCategoryService journalCategoryService;
+    @Autowired
+    private JournalService journalService;
 
     //用户创建日志分类
     @PostMapping("/journalCategory")
@@ -46,9 +52,36 @@ public class JournalCategoryController {
         List<JournalCategory> list = journalCategoryService.lambdaQuery()
                 .eq(JournalCategory::getUid, uid)
                 .list();
-
+        //除了分类的数据外，还要把各分类下有多少篇日志也要查出来
+        list.forEach(e->{
+            List<Journal> list1 = journalService.lambdaQuery()
+                    .eq(Journal::getCategoryId, e.getId())
+                    .eq(Journal::getIsDeleted,0)
+                    .list();
+            e.setJournalCount(list1.size());
+        });
 
         return Result.success(list);
+    }
+
+    //获取用户默认分类和全部的日志数
+    @GetMapping("journalCategory/count")
+    public Result getJournalCategoryCount() {
+
+        String uid=(String) StpUtil.getLoginId();
+
+        Map<String,Object> map=new HashMap<>();
+
+        List<Journal> list = journalService.lambdaQuery()
+                .eq(Journal::getUid, uid)
+                .eq(Journal::getIsDeleted,0)
+                .list();
+        long defaultCount = list.stream().filter(e ->e.getCategoryId() == 0).count();
+
+        map.put("total",list.size());
+        map.put("default", defaultCount);
+
+        return Result.success(map);
     }
 
     //用户修改分类
