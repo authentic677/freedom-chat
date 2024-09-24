@@ -25,8 +25,11 @@ public class TestController {
 
     @PostMapping("/post")
     @Transactional
-    public String test(@RequestParam(required = false) String[] n,@RequestParam String text,@RequestParam(required = false) MultipartFile[] attachments) throws Exception {
+    public String test(@RequestParam String name,@RequestParam String type,@RequestParam(required = false) MultipartFile file) throws Exception {
 
+        System.out.println("name="+name);
+        System.out.println("type="+type);
+        System.out.println("file="+file.getOriginalFilename());
 
 
         return "ok";

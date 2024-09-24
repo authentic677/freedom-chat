@@ -45,7 +45,7 @@ export default {
             <ul>
                 <li @click="$router.push(`/zone/${$route.params.uid}/saying`)" >说说</li>
                 <li @click="$router.push(`/zone/${$route.params.uid}/journal`)" >日志</li>
-                <li>相册</li>
+                <li @click="$router.push(`/zone/${$route.params.uid}/album`)" >相册</li>
                 <li @click="$router.push(`/zone/${$route.params.uid}/guestBook`)">留言板</li>
             </ul>
         </div>

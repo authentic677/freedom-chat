@@ -24,6 +24,8 @@ import Journal from "../views/zone/Journal.vue";
 import JournalEditor from "../views/zone/JournalEditor.vue";
 import JournalViewer from "../views/zone/JournalViewer.vue";
 import GuestBook from "../views/zone/GuestBook.vue";
+import Album from "../views/zone/Album.vue";
+import AlbumDetail from "../views/zone/AlbumDetail.vue";
 
 const router= createRouter({
     history: createWebHashHistory(),
@@ -111,6 +113,12 @@ const router= createRouter({
                 },
                 {
                     path:'guestBook',component: GuestBook
+                },
+                {
+                    path:'album',component: Album
+                },
+                {
+                    path: 'albumDetail/:id',component: AlbumDetail
                 }
             ]
         },
