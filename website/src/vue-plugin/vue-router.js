@@ -26,6 +26,13 @@ import JournalViewer from "../views/zone/JournalViewer.vue";
 import GuestBook from "../views/zone/GuestBook.vue";
 import Album from "../views/zone/Album.vue";
 import AlbumDetail from "../views/zone/AlbumDetail.vue";
+import Official from "../views/official/Official.vue";
+import OfficialDetail from "../views/official/OfficialDetail.vue";
+import OfficialArticle from "../views/official/OfficialArticle.vue";
+import OfficialCreativeSpace from "../views/official/OfficialCreativeSpace.vue";
+import OfficialArticleManage from "../views/official/OfficialArticleManage.vue";
+import OfficialArticleEditor from "../views/official/OfficialArticleEditor.vue";
+import OfficialGongzhonghaoManage from "../views/official/OfficialGongzhonghaoManage.vue";
 
 const router= createRouter({
     history: createWebHashHistory(),
@@ -119,6 +126,31 @@ const router= createRouter({
                 },
                 {
                     path: 'albumDetail/:id',component: AlbumDetail
+                }
+            ]
+        },
+        {
+            path:'/official',component:Official,
+            children:[
+                {
+                    path: 'detail/:id',component:OfficialDetail
+                },
+                {
+                    path: 'article/:id',component:OfficialArticle
+                },
+            ]
+        },
+        {
+            path: '/creativeSpace/official',component:OfficialCreativeSpace,
+            children:[
+                {
+                    path:'manage/article',component:OfficialArticleManage
+                },
+                {
+                    path: 'manage/article/editor',component: OfficialArticleEditor
+                },
+                {
+                    path: 'manage/gongzhonghao',component: OfficialGongzhonghaoManage
                 }
             ]
         },

@@ -311,7 +311,7 @@ export default {
     </div>
 <!--    <div class="textarea" contenteditable ref="msg" @keydown="keydown" @input="input"></div>-->
     <!--这里使用了quill这个富文本编辑框架-->
-    <div class="editor" ref="editor"></div>
+    <div MsgSend class="editor" ref="editor"></div>
     <div class="control">
         <div class="send" @click="send">发送</div>
     </div>
@@ -319,10 +319,14 @@ export default {
 </template>
 
 <style>
-@import "quill/dist/quill.snow.css";
-.editor img{
-    width: 30px;
-    vertical-align: middle;
+/*@import "quill/dist/quill.core.css";*/
+
+/*MsgSend是样式冲突解决方法，用组件名作为命名空间*/
+.editor[MsgSend]{
+    img{
+        width: 30px;
+        vertical-align: middle;
+    }
 }
 </style>
 <style scoped lang="less">
@@ -428,6 +432,7 @@ export default {
     .editor{
         font-size: 18px;
         height: 150px;
+
     }
     .control{
         margin-top: 20px;

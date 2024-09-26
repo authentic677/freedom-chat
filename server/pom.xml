@@ -9,6 +9,7 @@
         <module>core</module>
         <module>zone</module>
         <module>common</module>
+        <module>content-platform</module>
     </modules>
 
     <groupId>xyz.677123</groupId>

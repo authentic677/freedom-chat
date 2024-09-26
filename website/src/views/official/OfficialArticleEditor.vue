@@ -1,11 +1,11 @@
 <script>
 import {
-    BalloonEditor,
     AccessibilityHelp,
     Alignment,
     Autoformat,
     AutoImage,
     Autosave,
+    BalloonEditor,
     BalloonToolbar,
     BlockQuote,
     BlockToolbar,
@@ -42,6 +42,7 @@ import {
     Paragraph,
     RemoveFormat,
     SelectAll,
+    SimpleUploadAdapter,
     SpecialCharacters,
     SpecialCharactersArrows,
     SpecialCharactersCurrency,
@@ -57,24 +58,24 @@ import {
     TableCaption,
     TableCellProperties,
     TableColumnResize,
-    TableProperties,
-    TableToolbar,
-    TextTransformation,
-    TodoList,
-    Underline,
-    Undo, SimpleUploadAdapter
-} from 'ckeditor5';
-
+    TableProperties, TableToolbar, TextTransformation, TodoList, Underline, Undo
+} from "ckeditor5";
 import 'ckeditor5/ckeditor5.css';
 
 export default {
-
-    data() {
+    name: "OfficialArticleEditor",
+    data(){
         return {
             isLayoutReady: false,
             config: null, // CKEditor needs the DOM tree before calculating the configuration.
-            editor: BalloonEditor
-        };
+            editor: BalloonEditor,
+            editorData: '',
+        }
+    },
+    methods:{
+        publish(){
+            console.log(this.editorData)
+        }
     },
     mounted() {
         this.config = {
@@ -278,8 +279,6 @@ export default {
                     'resizeImage'
                 ]
             },
-            initialData:'',
-                // '<h2>Congratulations on setting up CKEditor 5! 🎉</h2>\n<p>\n    You\'ve successfully created a CKEditor 5 project. This powerful text editor will enhance your application, enabling rich text editing\n    capabilities that are customizable and easy to use.\n</p>\n<h3>What\'s next?</h3>\n<ol>\n    <li>\n        <strong>Integrate into your app</strong>: time to bring the editing into your application. Take the code you created and add to your\n        application.\n    </li>\n    <li>\n        <strong>Explore features:</strong> Experiment with different plugins and toolbar options to discover what works best for your needs.\n    </li>\n    <li>\n        <strong>Customize your editor:</strong> Tailor the editor\'s configuration to match your application\'s style and requirements. Or even\n        write your plugin!\n    </li>\n</ol>\n<p>\n    Keep experimenting, and don\'t hesitate to push the boundaries of what you can achieve with CKEditor 5. Your feedback is invaluable to us\n    as we strive to improve and evolve. Happy editing!\n</p>\n<h3>Helpful resources</h3>\n<ul>\n    <li>📝 <a href="https://orders.ckeditor.com/trial/premium-features">Trial sign up</a>,</li>\n    <li>📕 <a href="https://ckeditor.com/docs/ckeditor5/latest/installation/index.html">Documentation</a>,</li>\n    <li>⭐️ <a href="https://github.com/ckeditor/ckeditor5">GitHub</a> (star us if you can!),</li>\n    <li>🏠 <a href="https://ckeditor.com">CKEditor Homepage</a>,</li>\n    <li>🧑‍💻 <a href="https://ckeditor.com/ckeditor-5/demo/">CKEditor 5 Demos</a>,</li>\n</ul>\n<h3>Need help?</h3>\n<p>\n    See this text, but the editor is not starting up? Check the browser\'s console for clues and guidance. It may be related to an incorrect\n    license key if you use premium features or another feature-related requirement. If you cannot make it work, file a GitHub issue, and we\n    will help as soon as possible!\n</p>\n',
             link: {
                 addTargetToExternalLinks: true,
                 defaultProtocol: 'https://',
@@ -300,7 +299,7 @@ export default {
                     reversed: true
                 }
             },
-            placeholder: 'Type or paste your content here!',
+            placeholder: '请在这里输入你的正文内容',
             style: {
                 definitions: [
                     {
@@ -355,7 +354,7 @@ export default {
             },
             simpleUpload: {
                 // The URL that the images are uploaded to.
-                uploadUrl: 'http://example.com',
+                uploadUrl: '/api/zone/test/t',
 
                 // Enable the XMLHttpRequest.withCredentials property.
                 withCredentials: true,
@@ -374,16 +373,113 @@ export default {
 </script>
 
 <template>
-<div class="test">
-    <ckeditor v-if="isLayoutReady" v-model="config.initialData" :editor="editor" :config="config" />
+<div class="official-article-editor">
+    <div class="topBar">
+        <h3>编辑文章</h3>
+    </div>
 
+    <div class="editArea">
+        <div class="article">
+            <div class="title">
+                <input type="text" placeholder="请输入标题">
+                <div class="line"></div>
+            </div>
+            <div class="body">
+                <!--                    <div class="editor"></div>-->
+                <ckeditor
+                    v-if="isLayoutReady"
+                    v-model="editorData"
+                    :editor="editor"
+                    :config="config"
+                />
+            </div>
+        </div>
+
+        <div class="more">
+            更多设置
+        </div>
+    </div>
+
+    <div class="bottomBar">
+        <el-button @click="publish">发布</el-button>
+    </div>
 </div>
 </template>
 
-<style lang="less" scoped>
-.test{
-    width: 400px;
-    height: 600px;
-    border: 1px solid black;
+<style scoped lang="less">
+.official-article-editor{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-color: #F5F6F7;
+
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* 第一行和第三行高度由内容决定,中间行撑满剩余空间 */
+
+    .topBar{
+        padding: 1rem;
+        background-color: white;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05);
+
+        h3{
+            margin: 0;
+        }
+    }
+    .editArea{
+
+        padding: 2rem 0;
+
+
+        overflow: auto;
+
+        .article{
+            margin: 0 auto;
+            width: 820px;
+            //min-height: 100%;
+            background-color: white;
+
+            .title{
+                padding: 32px 64px;
+
+                input{
+                    width: 100%;
+                    font-weight: 600;
+                    border: none;               /* 去掉边框 */
+                    outline: none;              /* 去掉聚焦时的轮廓 */
+                    font-size: 23px;           /* 设置文字尺寸 */
+                    /* 可选：设置背景色和内边距以保持视觉一致性 */
+                    background: transparent;    /* 可选：去掉背景色 */
+                    padding: 5px;              /* 可选：调整内边距 */
+                }
+                .line{
+                    margin-top: 1rem;
+                    height: 1px;
+                    background-color: #E8E7E8;
+                }
+            }
+            .body{
+                margin-top: 24px;
+                padding: 0 64px 64px;
+
+                .editor{
+
+                }
+            }
+        }
+        .more{
+            width: 820px;
+            margin: 24px auto 0;
+            padding: 64px;
+            background-color: white;
+            box-sizing: border-box;
+        }
+    }
+    .bottomBar{
+        border-top: 1px solid #E8E8E8;
+        padding: 1rem;
+    }
 }
 </style>

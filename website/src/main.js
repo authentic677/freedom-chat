@@ -16,6 +16,9 @@ import Vuex from "./vue-plugin/vuex.js";
 //Vuetify
 // import Vuetify from './vue-plugin/vuetify.js'
 
+//ckeditor 富文本编辑器
+import { CkeditorPlugin } from '@ckeditor/ckeditor5-vue';
+
 const app= createApp(App)
 
 
@@ -28,5 +31,6 @@ app
     .use(VueRouter)
     .use(ElementPlus)
     // .use(Vuetify)
+    .use(CkeditorPlugin)
     .use(Vuex)
     .mount('#app')

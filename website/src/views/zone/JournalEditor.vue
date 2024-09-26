@@ -1,6 +1,6 @@
 <script>
 import Quill from "quill";
-import "quill/dist/quill.core.css";
+// import "quill/dist/quill.snow.css";
 
 export default {
     name: "JournalEditor",
@@ -64,6 +64,7 @@ export default {
             this.getEditor=function () {
                 return editor
             }
+            window.q=editor
         },
         //发表日志的回调
         async publishJournal(){
@@ -117,12 +118,25 @@ export default {
             // quill.formatLine(0, 1, { align: 'center' });
         }
     },
-    created() {
+    async created() {
         this.getCategoryData()
+        //加载quill的snow主题css
+        let style=document.createElement('style')
+        style.setAttribute("type","text/css")
+        style.setAttribute("id","quill.snow.css")
+        let res=await fetch('/css/quill.snow.css')
+        let text=await res.text()
+        style.innerHTML=text
+        document.head.appendChild(style)
     },
     mounted() {
         this.initQuillEditor()
     },
+    beforeUnmount() {
+        //卸载css
+        let snow_css=document.getElementById('quill.snow.css')
+        document.head.removeChild(snow_css)
+    }
 }
 </script>
 
@@ -192,6 +206,8 @@ export default {
 </template>
 
 <style scoped lang="less">
+@import url("quill/dist/quill.snow.css");
+
 .journal-editor{
     padding: 1rem 0 2rem;
 

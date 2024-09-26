@@ -1,6 +1,6 @@
 <script>
 import Quill from "quill";
-import "quill/dist/quill.core.css";
+// import "quill/dist/quill.core.css";
 import config from "../../config/config.js";
 
 export default {

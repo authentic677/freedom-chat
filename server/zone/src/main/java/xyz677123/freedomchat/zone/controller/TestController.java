@@ -8,9 +8,11 @@ import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import xyz677123.freedomchat.common.pojo.Result;
 import xyz677123.freedomchat.zone.service.PostService;
 
 @RestController
@@ -35,9 +37,12 @@ public class TestController {
         return "ok";
     }
 
-    @GetMapping("/t")
-    public String t(){
+    @PostMapping("/t")
+    public ResponseEntity<String> t(MultipartFile upload){
 
-        return "ok2";
+        String originalFilename = upload.getOriginalFilename();
+        System.out.println(originalFilename);
+
+        return ResponseEntity.ok().body("{\"url\":\""+originalFilename+"\"}");
     }
 }
