@@ -33,6 +33,11 @@ import OfficialCreativeSpace from "../views/official/OfficialCreativeSpace.vue";
 import OfficialArticleManage from "../views/official/OfficialArticleManage.vue";
 import OfficialArticleEditor from "../views/official/OfficialArticleEditor.vue";
 import OfficialGongzhonghaoManage from "../views/official/OfficialGongzhonghaoManage.vue";
+import Shipinhao from "../views/shipinhao/Shipinhao.vue";
+import ShipinhaoConsumerSide from "../views/shipinhao/ShipinhaoConsumerSide.vue";
+import ShipinhaoProducerSide from "../views/shipinhao/ShipinhaoProducerSide.vue";
+import ShipinhaoProfile from "../views/shipinhao/ShipinhaoProfile.vue";
+import ShipinhaoPlayer from "../views/shipinhao/ShipinhaoPlayer.vue";
 
 const router= createRouter({
     history: createWebHashHistory(),
@@ -156,6 +161,25 @@ const router= createRouter({
         },
         {
             path:'/test',component:Test
+        },
+        {
+            path:'/shipinhao',component:Shipinhao,
+            children:[
+                {
+                    path: 'consumer',component: ShipinhaoConsumerSide,
+                    children:[
+                        {
+                            path:'',component:ShipinhaoPlayer
+                        },
+                        {
+                            path:'profile/:id',component:ShipinhaoProfile
+                        }
+                    ]
+                },
+                {
+                    path: 'producer',component: ShipinhaoProducerSide
+                }
+            ]
         }
     ]
 })

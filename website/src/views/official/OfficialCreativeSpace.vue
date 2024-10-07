@@ -25,6 +25,9 @@ export default {
     <div class="official-creative-space">
         <div class="header">
             <div class="left">创作空间</div>
+            <div class="right">
+                <el-link @click="$router.push('/message')">退出</el-link>
+            </div>
         </div>
         <div class="bottom">
             <div class="navBar">
@@ -77,10 +80,17 @@ export default {
         background-color: white;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
         .left{
             padding: 1rem;
             font-size: 18px;
             color: #1772F6;
+        }
+        .right{
+            margin-right: 1rem;
         }
     }
     .bottom{

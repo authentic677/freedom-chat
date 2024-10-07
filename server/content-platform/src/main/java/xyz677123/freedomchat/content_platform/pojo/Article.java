@@ -19,6 +19,7 @@ public class Article {
     @TableId(type = IdType.AUTO)
     Integer id;
     String title;
+    String cover;
     String content;
     String gongzhonghaoId;
     Long view;

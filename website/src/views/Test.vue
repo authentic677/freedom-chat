@@ -375,15 +375,17 @@ export default {
 
 <template>
 <div class="test">
-    <ckeditor v-if="isLayoutReady" v-model="config.initialData" :editor="editor" :config="config" />
 
 </div>
 </template>
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
 <style lang="less" scoped>
 .test{
     width: 400px;
     height: 600px;
     border: 1px solid black;
+
+
 }
 </style>
