@@ -16,8 +16,8 @@ export default {
         <div class="item search">
             搜索
         </div>
-        <div class="item me">
-            我的
+        <div class="item me" @click="$router.push('/shipinhao/producer')">
+            <el-link>管理</el-link>
         </div>
     </div>
     <div class="bottom">
@@ -73,6 +73,9 @@ export default {
         .item.name{
             text-align: center;
             font-size: 25px;
+        }
+        .item.me{
+            padding: 0 1rem;
         }
     }
     .bottom{

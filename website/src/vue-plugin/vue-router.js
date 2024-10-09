@@ -38,6 +38,10 @@ import ShipinhaoConsumerSide from "../views/shipinhao/ShipinhaoConsumerSide.vue"
 import ShipinhaoProducerSide from "../views/shipinhao/ShipinhaoProducerSide.vue";
 import ShipinhaoProfile from "../views/shipinhao/ShipinhaoProfile.vue";
 import ShipinhaoPlayer from "../views/shipinhao/ShipinhaoPlayer.vue";
+import ShipinhaoContentManage from "../views/shipinhao/ShipinhaoContentManage.vue";
+import ShipinhaoCommentManage from "../views/shipinhao/ShipinhaoCommentManage.vue";
+import ShipinhaoCustomization from "../views/shipinhao/ShipinhaoCustomization.vue";
+import ShipinhaoPublishVideo from "../views/shipinhao/ShipinhaoPublishVideo.vue";
 
 const router= createRouter({
     history: createWebHashHistory(),
@@ -177,7 +181,21 @@ const router= createRouter({
                     ]
                 },
                 {
-                    path: 'producer',component: ShipinhaoProducerSide
+                    path: 'producer',component: ShipinhaoProducerSide,
+                    children:[
+                        {
+                            path: 'contentManage',component:ShipinhaoContentManage,
+                        },
+                        {
+                            path: 'commentManage',component: ShipinhaoCommentManage
+                        },
+                        {
+                            path: 'customization',component: ShipinhaoCustomization
+                        },
+                        {
+                            path: 'publishVideo',component: ShipinhaoPublishVideo
+                        }
+                    ]
                 }
             ]
         }
